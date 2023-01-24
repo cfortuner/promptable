@@ -1,0 +1,14 @@
+{
+    "name": "promptable",
+    "main": "dist/index.ts",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsup src/index.ts --format cjs --dts",
+        "dev": "pnpm run build --watch"
+
+    },
+    "dependencies": {
+        "tsup": "^6.5.0",
+        "typescript": "latest"
+    }
+}
