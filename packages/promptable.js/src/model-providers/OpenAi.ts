@@ -1,5 +1,7 @@
-import { Prompt } from "@prompts/Prompt";
+import axios, { AxiosRequestConfig } from 'axios'
 import GPT3Tokenizer from "gpt3-tokenizer";
+
+import { Prompt } from "@prompts/Prompt";
 import { ModelProviderType } from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
 
@@ -39,12 +41,16 @@ export class OpenAi extends ModelProvider {
 /**
  * API Client for interacting with OpenAi
  */
-export interface CompletionRequest {
+export interface CreateCompletionRequest {
   model: string;
   prompt: string;
   max_tokens: number;
   temperature: number;
   stop: string | string[] | null;
+}
+
+export interface CreateCompletionResponse {
+  
 }
 
 export class OpenAiApi {
@@ -53,7 +59,9 @@ export class OpenAiApi {
     this.apiKey = apiKey;
   }
 
-  createCompletion = async (request: CompletionRequest) => {};
+  createCompletion = async ( createCompletionRequest: CreateCompletionRequest, options?: AxiosRequestConfig): Promise<CreateCompletionResponse>) => {
+
+  };
 }
 
 /** Configs */
