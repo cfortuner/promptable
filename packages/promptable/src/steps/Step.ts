@@ -51,7 +51,14 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
     };
 
     // update the call with the outputs
-    this.calls[this.calls.length - 1].outputs = outputs;
+
+    const call = this.calls[this.calls.length - 1];
+    this.calls[this.calls.length - 1] = {
+      ...(call as any),
+      outputs,
+    };
+
+    console.log("OUTPUTs", this.calls);
 
     this.postprocess();
 

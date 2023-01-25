@@ -11,5 +11,5 @@ export abstract class ModelProvider {
     this.type = type;
   }
 
-  abstract generate(prompt: Prompt, ...args: any[]): Promise<any>;
+  abstract generate(prompt: Prompt, ...args: any[]): Promise<string>;
 }

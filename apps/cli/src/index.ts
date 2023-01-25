@@ -4,8 +4,6 @@ import { PromptStep, SequentialChain, OpenAI, z } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-console.log("Starting");
-
 // A Prompt Step. The thing that runs the prompt
 const step = new PromptStep(new OpenAI(apiKey), "voice")
   // Validators
@@ -20,7 +18,7 @@ const step = new PromptStep(new OpenAI(apiKey), "voice")
 // Run the steps sequentially
 const chain = new SequentialChain("First");
 
-chain.run({
+await chain.run({
   // The steps in the chain
   steps: [step],
   // Get's passed into the first step
@@ -35,6 +33,11 @@ chain.run({
   outputs: {},
 });
 
-console.log(JSON.stringify(chain.getProps(), undefined, 2));
+console.log(
+  JSON.stringify({
+    inputs: step.calls[0].inputs,
+    outputs: step.calls[0].outputs,
+  })
+);
 
 console.log("FINISHED");

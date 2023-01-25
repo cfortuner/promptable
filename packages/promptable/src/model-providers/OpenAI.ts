@@ -42,7 +42,7 @@ export class OpenAI extends ModelProvider {
         ...this.config,
       });
 
-      return res.data;
+      return res.data.choices[0]?.text || "";
     } catch (e) {
       // console.error(e);
     }
