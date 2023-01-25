@@ -1,7 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { PromptStep, SequentialChain, OpenAI, z } from "promptable";
 
+const apiKey = process.env.OPENAI_API_KEY || "missing";
+
+console.log("Starting");
+
 // A Prompt Step. The thing that runs the prompt
-const step = new PromptStep(new OpenAI(""), "voice")
+const step = new PromptStep(new OpenAI(apiKey), "voice")
   // Validators
   .inputs(
     z.object({
@@ -26,3 +32,5 @@ await new SequentialChain("First").run({
   // Nothing yet
   outputs: {},
 });
+
+console.log("FINISHED");
