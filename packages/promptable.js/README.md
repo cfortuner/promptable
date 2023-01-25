@@ -1,6 +1,12 @@
-# Promptable
+# Promptable.js
 
 ⚡ Build fullstack AI apps in Typescript/Javascript. ⚡
+
+A simple, lightweight, and flexible library for building prompt engineering pipelines in Typescript/Javascript.
+
+# Install
+
+# Usage
 
 # Motivation
 

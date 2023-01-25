@@ -6,9 +6,10 @@
     "scripts": {
         "build": "tsup src/index.ts --format cjs --dts",
         "dev": "pnpm run build --watch"
-
     },
     "dependencies": {
+        "axios": "^1.2.4",
+        "gpt3-tokenizer": "^1.1.4",
         "tsup": "^6.5.0",
         "typescript": "latest"
     }
