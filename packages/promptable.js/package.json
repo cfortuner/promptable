@@ -1,5 +1,6 @@
 {
     "name": "promptable",
+    "version": "0.0.7",
     "main": "dist/index.ts",
     "types": "dist/index.d.ts",
     "scripts": {

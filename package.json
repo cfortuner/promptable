@@ -1,6 +1,5 @@
 {
-  "name": "@promptable/root",
-  "version": "0.0.0",
+  "name": "root",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -10,6 +9,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
+    "test": "",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "publish-packages": "turbo run build lint test && changeset version && changeset publish",
     "postinstall": "manypkg check"
@@ -26,5 +26,17 @@
     "@changesets/cli": "^2.26.0",
     "@manypkg/cli": "^0.20.0"
   },
-  "packageManager": "pnpm@7.18.2"
+  "packageManager": "pnpm@7.18.2",
+  "keywords": [
+    "llm",
+    "langchain",
+    "ai",
+    "gptindex",
+    "gpt3",
+    "chatgpt",
+    "model",
+    "machine learning",
+    "ml",
+    "typescript"
+  ],
 }
