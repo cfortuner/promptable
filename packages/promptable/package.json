@@ -1,7 +1,7 @@
 {
     "name": "promptable",
     "version": "0.0.7",
-    "main": "dist/index.ts",
+    "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsup src/index.ts --format cjs --dts",

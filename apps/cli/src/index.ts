@@ -18,7 +18,9 @@ const step = new PromptStep(new OpenAI(apiKey), "voice")
   .outputs(z.object({ voice: z.string() }));
 
 // Run the steps sequentially
-await new SequentialChain("First").run({
+const chain = new SequentialChain("First");
+
+chain.run({
   // The steps in the chain
   steps: [step],
   // Get's passed into the first step
@@ -32,5 +34,7 @@ await new SequentialChain("First").run({
   // Nothing yet
   outputs: {},
 });
+
+console.log(JSON.stringify(chain.getProps(), undefined, 2));
 
 console.log("FINISHED");
