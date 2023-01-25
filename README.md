@@ -1,10 +1,16 @@
 # Promptable.js (Langchain + GPT Index for Typescript)
 
-This a monorepo of tooling for Typescript developers building LLM apps.
+⚡ Build fullstack AI apps in Typescript/Javascript. ⚡
+
+## What is this?
+
+A simple, lightweight, and flexible library for building prompt engineering pipelines in Typescript/Javascript.
 
 ## What's inside?
 
-The monorepo uses [pnpm](https://pnpm.io) as a package manager. It includes the following packages/apps:
+This a monorepo of tooling for Typescript developers building LLM apps.
+
+It uses [pnpm](https://pnpm.io) as a package manager and includes the following packages/apps:
 
 - `packages/promptable`: The Promptable Library for building LLM apps in Typescript / Javascript!
 - `apps/cli`: The Promptable CLI tool (for running examples locally)
