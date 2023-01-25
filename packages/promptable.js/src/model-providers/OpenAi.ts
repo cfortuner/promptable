@@ -1,66 +1,52 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig } from "axios";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
 import { Prompt } from "@prompts/Prompt";
 import { ModelProviderType } from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
+import { Configuration, OpenAIApi } from "openai";
+import { unescapeStopTokens } from "src/utils/unescapeStopTokens";
 
 /**
  * OpenAI Model Provider
  */
-export class OpenAi extends ModelProvider {
-  api: OpenAiApi;
-  apiKey: string;
+export class OpenAI extends ModelProvider {
+  api: OpenAIApi;
+  config: OpenAIConfig = DEFAULT_OPENAI_MODEL_CONFIG;
 
   constructor(apiKey: string, config?: Partial<OpenAIConfig>) {
     super(ModelProviderType.OpenAI);
-    this.apiKey = apiKey;
-    this.api = new OpenAiApi(this.apiKey);
+
+    this.api = new OpenAIApi(
+      new Configuration({
+        apiKey: apiKey,
+      })
+    );
+
+    if (config) {
+      this.config = {
+        ...this.config,
+        ...config,
+      };
+    }
   }
 
-  generate = async (prompt: Prompt, config: OpenAIConfig) => {
-    let cfg = { ...config };
+  generate = async (prompt: Prompt) => {
     try {
-      if (cfg.stop != null) {
-        cfg.stop = unescapeStopTokens(config.stop);
+      if (this.config.stop != null) {
+        this.config.stop = unescapeStopTokens(this.config.stop);
       }
 
-      const data = await this.api.createCompletion({
+      const res = await this.api.createCompletion({
         prompt: prompt.format(),
-        ...cfg,
+        ...this.config,
       });
 
-      return data?.choices?.[0].text as string;
+      return res.data;
     } catch (e) {
       // console.error(e);
     }
     return "failed";
-  };
-}
-
-/**
- * API Client for interacting with OpenAi
- */
-export interface CreateCompletionRequest {
-  model: string;
-  prompt: string;
-  max_tokens: number;
-  temperature: number;
-  stop: string | string[] | null;
-}
-
-export interface CreateCompletionResponse {
-  
-}
-
-export class OpenAiApi {
-  apiKey: string;
-  constructor(apiKey: string) {
-    this.apiKey = apiKey;
-  }
-
-  createCompletion = async ( createCompletionRequest: CreateCompletionRequest, options?: AxiosRequestConfig): Promise<CreateCompletionResponse>) => {
-
   };
 }
 
@@ -98,35 +84,16 @@ interface OpenAIConfig {
 }
 
 /** Utilities */
+
 const tokenizer = new GPT3Tokenizer({ type: "gpt3" });
 
-// replace any escaped stop tokens like "\\n" their unescaped versions
-export const unescapeStopTokens = (stop_tokens: any) => {
-  if (Array.isArray(stop_tokens)) {
-    console.debug("found array of tokens");
-    return stop_tokens.map((token) => {
-      return JSON.parse(`"${token}"`);
-    });
-  } else {
-    console.debug("found single token", stop_tokens);
-    return JSON.parse(`"${stop_tokens}"`);
-  }
-};
-
+/**
+ * Count tokens in text using GPT3-Tokenizer
+ *
+ * @param text
+ * @returns
+ */
 export const countTokens = (text: string): number => {
-  // do something here
   const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(text);
   return encoded.bpe.length;
-};
-
-export const splitTextByTokens = (
-  text: string,
-  maxTokens: number
-): string[] => {
-  const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(text);
-  const res: string[] = [];
-  for (let i = 0; i < encoded.text.length; i += maxTokens) {
-    res.push(encoded.text.slice(i, i + maxTokens).join(""));
-  }
-  return res;
 };
