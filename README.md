@@ -6,6 +6,14 @@
 
 A simple, lightweight, and flexible library for building prompt engineering pipelines in Typescript/Javascript.
 
+## Install Library
+
+`npm i promptable`
+
+## Usage
+
+See `packages/prompable/usage` or our docs
+
 ## What's inside?
 
 This a monorepo of tooling for Typescript developers building LLM apps.
