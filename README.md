@@ -21,16 +21,19 @@ This turborepo has some additional tools already setup for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
-### Build
+### Install and Run
 
-To build all apps and packages, run the following command:
+To install run (at the root)
 
 ```
-cd my-turborepo
-pnpm run build
+pnpm i
 ```
 
-### Develop
+To install package in a single workspace
+
+```
+pnpm i <package> --filter <workspace>
+```
 
 To develop all apps and packages, run the following command:
 
@@ -39,13 +42,27 @@ cd my-turborepo
 pnpm run dev
 ```
 
-## Run Example
+This will start watching the files for changes.
 
-To Run the Examples
+### Run Examples
+
+To make it easy to test the library, run the `examples`:
+
+1. copy the `.env.example` file to `.env` and add your keys
+
+```
+OPENAI_API_KEY=<your openai key>
+```
+
+2. Start the dev script
 
 ```
 pnpm run start --filter examples
 ```
+
+### UI
+
+todo
 
 ## Useful Links
 
