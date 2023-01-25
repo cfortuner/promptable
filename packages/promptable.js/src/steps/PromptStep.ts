@@ -19,8 +19,6 @@ export class PromptStep<
   provider: ModelProvider;
   outputName: keyof J;
 
-  calls: RunStepArgs<T, J>[] = [];
-
   constructor(provider: ModelProvider, outputName: keyof J, name = "Prompt") {
     super(name);
     this.provider = provider;
@@ -56,7 +54,7 @@ const steps = [
 
 const chain = new SequentialChain("First");
 
-chain.run({
+await chain.run({
   steps,
   inputs: {
     text: "hi",

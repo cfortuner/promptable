@@ -7,8 +7,4 @@ export abstract class Chain extends Step<any, any> {
     super(name);
     this.substeps = substeps || [];
   }
-
-  step(step: Step<StepInput, StepOutput>) {
-    this.substeps.push(step);
-  }
 }

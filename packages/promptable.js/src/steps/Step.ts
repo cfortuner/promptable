@@ -12,6 +12,8 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
 
   private _props: Partial<RunStepArgs<T, J>> = {};
 
+  calls: RunStepArgs<T, J>[] = [];
+
   constructor(name: string) {
     this.name = name;
   }
@@ -37,6 +39,8 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
   async run(args: RunStepArgs<T, J>) {
     this._props = { ...args };
 
+    this.calls.push(args);
+
     this.preprocess();
 
     const outputs = await this._run(this.getProps());
@@ -45,7 +49,13 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
       ...this._props,
       outputs,
     };
+
+    // update the call with the outputs
+    this.calls[this.calls.length - 1].outputs = outputs;
+
     this.postprocess();
+
+    return outputs;
   }
 
   protected preprocess() {
