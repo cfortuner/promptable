@@ -30,12 +30,11 @@ This project is a monorepo (Turborepo) and contains the following:
 Apps
 
 - Examples
-- Visualizer - The visualizer for promptable tracing.
+- Web - The visualizer for promptable.js
 
 Packages
 
 - promptable.js - The Library for building LLM Apps in Typescript/Javascript
-- tracing - Middleware for Promptable.js to support Tracing calls Chains.
 
 # Motivation
 
