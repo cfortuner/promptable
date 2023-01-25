@@ -46,7 +46,7 @@ This will start watching the files for changes.
 
 ### Run Examples
 
-To make it easy to test the library, run the `examples`:
+To make it easy to test the library, run the `cli`:
 
 1. copy the `.env.example` file to `.env` and add your keys
 
