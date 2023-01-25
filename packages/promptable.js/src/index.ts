@@ -1,5 +1,7 @@
 import { Chain } from "@chains/Chain";
-import { PromptChain } from "src/steps/PromptStep";
+import { SequentialChain } from "@chains/SequentialChain";
+import { Step } from "@steps/Step";
+import { PromptStep } from "@steps/PromptStep";
 
 import {
   ModelProvider,
@@ -11,7 +13,9 @@ import z from "zod";
 
 export {
   Chain,
-  PromptChain,
+  SequentialChain,
+  Step,
+  PromptStep,
   ModelProvider,
   ModelProviderType,
   OpenAI,

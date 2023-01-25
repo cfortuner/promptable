@@ -40,25 +40,3 @@ export class PromptStep<
     return output as J;
   }
 }
-
-const steps = [
-  new PromptStep(new OpenAI(""), "voice")
-    .inputs(
-      z.object({
-        text: z.string(),
-        variables: z.any(),
-      })
-    )
-    .outputs(z.object({ voice: z.string() })),
-];
-
-const chain = new SequentialChain("First");
-
-await chain.run({
-  steps,
-  inputs: {
-    text: "hi",
-    variables: {},
-  },
-  outputs: {},
-});
