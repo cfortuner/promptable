@@ -24,18 +24,18 @@ export const Tabs = () => {
   return (
     <div
       className="daisy-tabs"
-      style={{
-        borderStyle: "solid",
-        borderColor: "lightgray",
-        // borderBottomWidth: "calc(var(--tab-border, .5px))",
-        borderBottomWidth: ".25px",
-      }}
+      style={
+        {
+          // borderStyle: "solid",
+          // borderBottomWidth: "calc(var(--tab-border, .5px))",
+        }
+      }
     >
       {Object.values(tabs).map((tab) => {
         return (
           <button
             className={classnames(
-              "daisy-tab daisy-tab-bordered daisy-tab-lg",
+              "daisy-tab daisy-tab-bordered daisy-tab-lg ",
               activeTab === tab && "daisy-tab-active",
               "capitalize"
             )}
@@ -46,6 +46,8 @@ export const Tabs = () => {
           </button>
         );
       })}
+      {/* hack for border */}
+      <div className="daisy-tab daisy-tab-bordered daisy-tab-lg flex-grow" />
     </div>
   );
 };

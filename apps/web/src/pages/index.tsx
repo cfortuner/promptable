@@ -6,22 +6,27 @@ import { Provider as JotaiProvider } from "jotai";
 
 import { api } from "../utils/api";
 import { Content } from "@components/Content";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
-    <JotaiProvider>
-      <Head>
-        <title>Promptable UI</title>
-        <meta name="description" content="Built for magic." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className="flex h-full flex-col bg-base-300" data-theme={"night"}>
-        <Tabs />
-        <Content />
-      </main>
-    </JotaiProvider>
+    <QueryClientProvider client={queryClient}>
+      <JotaiProvider>
+        <Head>
+          <title>Promptable UI</title>
+          <meta name="description" content="Built for magic." />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main className="flex h-full flex-col" data-theme={"black"}>
+          <Tabs />
+          <Content />
+        </main>
+      </JotaiProvider>
+    </QueryClientProvider>
   );
 };
 
