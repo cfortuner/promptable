@@ -34,25 +34,24 @@ await chain.run({
 
 console.log(step.calls);
 
-// console.log(
-//   JSON.stringify({
-//     inputs: step.calls[0].inputs,
-//     outputs: step.calls[0].outputs,
-//   })
-// );
+console.log(
+  JSON.stringify({
+    inputs: step.calls[0].inputs,
+    outputs: step.calls[0].outputs,
+  })
+);
 
-// post the chain
-
-// await axios.post("http://localhost:3000/api/chains", {
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   data: {
-//     chain: {
-//       inputs: step.calls[0].inputs,
-//       outputs: step.calls[0].outputs,
-//     },
-//   },
-// });
+await axios.post("http://localhost:3000/api/chains", {
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: {
+    chain: {
+      name: step.name,
+      inputs: step.calls[0].inputs,
+      outputs: step.calls[0].outputs,
+    },
+  },
+});
 
 console.log("FINISHED");
