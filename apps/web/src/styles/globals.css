@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Set the height of the document full */
+@layer base {
+    html,
+    body,
+    body > div:first-child,
+    div#__next {
+      @apply h-full;
+    }
+  }

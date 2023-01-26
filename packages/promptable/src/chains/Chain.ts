@@ -1,10 +1,21 @@
-import { Step, StepInput, StepOutput } from "../steps/Step";
+import {
+  RunStepArgs,
+  Step,
+  StepCall,
+  StepInput,
+  StepOutput,
+} from "../steps/Step";
 
 export abstract class Chain extends Step<any, any> {
-  substeps: Step<StepInput, StepOutput>[] = [];
-
-  constructor(name: string, substeps?: Step<StepInput, StepOutput>[]) {
+  constructor(name: string) {
     super(name);
-    this.substeps = substeps || [];
+  }
+
+  protected preprocess(inputs: any) {
+    return inputs;
+  }
+
+  protected postprocess(outputs: any) {
+    return outputs;
   }
 }

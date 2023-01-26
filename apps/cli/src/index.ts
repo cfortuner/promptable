@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import axios from "axios";
 import { PromptStep, SequentialChain, OpenAI, z } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
@@ -16,7 +17,7 @@ const step = new PromptStep(new OpenAI(apiKey), "voice")
   .outputs(z.object({ voice: z.string() }));
 
 // Run the steps sequentially
-const chain = new SequentialChain("First");
+const chain = new SequentialChain("Second");
 
 await chain.run({
   // The steps in the chain
@@ -29,9 +30,9 @@ await chain.run({
     text: "hi",
     variables: {},
   },
-  // Nothing yet
-  outputs: {},
 });
+
+console.log(step.calls);
 
 console.log(
   JSON.stringify({
@@ -39,5 +40,18 @@ console.log(
     outputs: step.calls[0].outputs,
   })
 );
+
+await axios.post("http://localhost:3000/api/chains", {
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: {
+    chain: {
+      name: step.name,
+      inputs: step.calls[0].inputs,
+      outputs: step.calls[0].outputs,
+    },
+  },
+});
 
 console.log("FINISHED");
