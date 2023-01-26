@@ -1,20 +1,27 @@
-export type PromptVariables = { [name: string]: string };
+import * as z from "zod";
 export class Prompt {
   text: string;
-  variables: PromptVariables;
+  variableNames: string[];
 
-  constructor(text: string, variables: { [name: string]: string }) {
+  constructor(text: string, variableNames: string[]) {
     this.text = text;
-    this.variables = variables;
+    this.variableNames = variableNames;
   }
 
-  format() {
-    return this.injectVariables();
+  format(variables: { [name: string]: any }) {
+    return this.injectVariables(variables);
   }
 
-  private injectVariables() {
-    return Object.entries(this.variables)?.reduce((acc, [name, value]) => {
+  private injectVariables(variables: { [name: string]: any }) {
+    return Object.entries(variables)?.reduce((acc, [name, value]) => {
       return acc.replaceAll(`{{${name}}}`, value);
     }, this.text);
+  }
+
+  toJson() {
+    return {
+      text: this.text,
+      variableNames: this.variableNames,
+    };
   }
 }

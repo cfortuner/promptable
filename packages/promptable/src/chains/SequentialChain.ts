@@ -2,9 +2,7 @@ import { RunStepArgs, StepInput, StepOutput } from "src/steps/Step";
 import { Chain } from "./Chain";
 
 export class SequentialChain extends Chain {
-  async _run(args: RunStepArgs<StepInput, StepOutput>) {
-    console.log("CHAIN INPUTS", args.inputs);
-
+  async _run(args: RunStepArgs<any, any>) {
     let nextInputs = { ...args.inputs };
 
     for (const step of args.steps) {
@@ -13,7 +11,13 @@ export class SequentialChain extends Chain {
         inputs: nextInputs,
       });
 
-      nextInputs = { ...outputs };
+      nextInputs = {
+        ...nextInputs,
+        ...outputs,
+      };
     }
+
+    // the final output
+    return nextInputs;
   }
 }

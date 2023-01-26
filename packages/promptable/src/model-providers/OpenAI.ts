@@ -31,19 +31,23 @@ export class OpenAI extends ModelProvider {
     }
   }
 
-  generate = async (prompt: Prompt) => {
+  generate = async (prompt: Prompt, variables: { [key: string]: any }) => {
     try {
       if (this.config.stop != null) {
         this.config.stop = unescapeStopTokens(this.config.stop);
       }
 
+      const promptText = prompt.format(variables);
+      console.log("PROMPT TEXT", promptText);
+
       const res = await this.api.createCompletion({
-        prompt: prompt.format(),
+        prompt: prompt.format(variables),
         ...this.config,
       });
 
       return res.data.choices[0]?.text || "";
     } catch (e) {
+      console.log(e);
       // console.error(e);
     }
     return "failed";

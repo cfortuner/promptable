@@ -2,7 +2,7 @@ import z from "zod";
 
 export type StepInput = { [input: string]: any };
 
-export type StepOutput = { [output: string]: any };
+export type StepOutput = StepInput & { [output: string]: any };
 
 export type StepCall<T extends StepInput, J extends StepOutput> = Omit<
   RunStepArgs<T, J>,
@@ -17,6 +17,10 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
   private inputsSchema?: z.Schema;
   private outputsSchema?: z.Schema;
 
+  // todo: This should be put into it's own class
+  // responsible for logging calls
+  // Might also want to store different execution ids
+  // within a chain?
   calls: Partial<StepCall<any, any>>[] = [];
 
   constructor(name: string) {
@@ -54,8 +58,8 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
       true
     );
 
-    // validate outputs
-    return this.postprocess(outputs);
+    // validate outputs and build outputs
+    return this.postprocess(inputs, outputs);
   }
 
   /**
@@ -93,17 +97,35 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
 
     return inputs;
   }
-  protected postprocess(outputs: any) {
+
+  protected postprocess(inputs: T, outputs: any) {
     if (!this.validateOutputs(outputs)) {
       throw Error(
         `Invalid outputs ${JSON.stringify(outputs)} at step ${this.name}`
       );
     }
 
-    return outputs;
+    return {
+      ...inputs,
+      ...outputs,
+    };
   }
 
   protected abstract _run(args: RunStepArgs<T, J>): any;
+
+  serialize() {
+    if (!this.calls) {
+      return {};
+    }
+
+    const call = this.calls[this.calls.length - 1];
+
+    return {
+      call,
+      ...this._serialize(),
+    };
+  }
+  abstract _serialize(): object;
 
   private validateInputs(inputs?: any): inputs is T {
     console.log("THE INPUTS", inputs);
