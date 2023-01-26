@@ -1,13 +1,5 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "react-query";
-import { atom, useAtom } from "jotai";
-import classnames from "classnames";
-import { useState } from "react";
+import { useQuery } from "react-query";
+import { useAtom } from "jotai";
 import { tabAtom } from "./Tabs";
 import dynamic from "next/dynamic";
 

@@ -6,7 +6,7 @@ const chains: any[] = [];
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     chains.push(req.body.data.chain);
-    res.status(200);
+    res.status(200).send(null);
     return;
   }
 
