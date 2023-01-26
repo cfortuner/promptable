@@ -36,7 +36,6 @@ export class PromptStep<
 
     const output = { [this.outputName]: completion };
 
-    // TODO: How do i remove this cast? this is probably not a good idea
-    return output as J;
+    return output;
   }
 }

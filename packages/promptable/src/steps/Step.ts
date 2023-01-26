@@ -4,15 +4,20 @@ export type StepInput = { [input: string]: any };
 
 export type StepOutput = { [output: string]: any };
 
+export type StepCall<T extends StepInput, J extends StepOutput> = Omit<
+  RunStepArgs<T, J>,
+  "steps"
+> & {
+  outputs: J;
+};
+
 export abstract class Step<T extends StepInput, J extends StepOutput> {
   name: string;
 
   private inputsSchema?: z.Schema;
   private outputsSchema?: z.Schema;
 
-  private _props: Partial<RunStepArgs<T, J>> = {};
-
-  calls: RunStepArgs<T, J>[] = [];
+  calls: Partial<StepCall<any, any>>[] = [];
 
   constructor(name: string) {
     this.name = name;
@@ -28,66 +33,93 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
     return this;
   }
 
-  getProps() {
-    return {
-      steps: this._props.steps || [this],
-      inputs: (this._props.inputs || {}) as T,
-      outputs: (this._props.outputs || {}) as J,
-    };
-  }
+  async run(args: UnknownRunStepArgs) {
+    this.recordCall({
+      inputs: args.inputs,
+    });
 
-  async run(args: RunStepArgs<T, J>) {
-    this._props = { ...args };
+    // validate inputs
+    const inputs = this.preprocess(args.inputs);
 
-    this.calls.push(args);
-
-    this.preprocess();
-
-    const outputs = await this._run(this.getProps());
-
-    this._props = {
-      ...this._props,
-      outputs,
-    };
+    const outputs: any = await this._run({
+      ...args,
+      inputs,
+    });
 
     // update the call with the outputs
+    this.recordCall(
+      {
+        outputs,
+      },
+      true
+    );
 
-    const call = this.calls[this.calls.length - 1];
-    this.calls[this.calls.length - 1] = {
-      ...(call as any),
-      outputs,
-    };
+    // validate outputs
+    return this.postprocess(outputs);
+  }
 
-    console.log("OUTPUTs", this.calls);
+  /**
+   * Record the calls to this step.
+   *
+   * @param args
+   * @param updatePrev
+   */
+  protected recordCall(args: Partial<StepCall<any, any>>, updatePrev = false) {
+    if (updatePrev) {
+      if (!this.calls.length) {
+        throw Error("Cannot update last call, calls length is 0");
+      }
 
-    this.postprocess();
+      const prev = this.calls[this.calls.length - 1];
+
+      this.calls[this.calls.length - 1] = {
+        ...prev,
+        ...args,
+      };
+    } else {
+      this.calls.push({
+        ...args,
+      });
+    }
+  }
+
+  protected preprocess(inputs: any) {
+    console.log("PREPROCESS", this.validateInputs(inputs), inputs);
+    if (!this.validateInputs(inputs)) {
+      throw Error(
+        `Invalid inputs ${JSON.stringify(inputs)} at step ${this.name}`
+      );
+    }
+
+    return inputs;
+  }
+  protected postprocess(outputs: any) {
+    if (!this.validateOutputs(outputs)) {
+      throw Error(
+        `Invalid outputs ${JSON.stringify(outputs)} at step ${this.name}`
+      );
+    }
 
     return outputs;
   }
 
-  protected preprocess() {
-    const props = this.getProps();
-    // Validate input
-    this.validateInputs(props.inputs);
-  }
-  protected postprocess() {
-    const props = this.getProps();
-    // Validate output
-    this.validateOutputs(props.outputs);
-  }
+  protected abstract _run(args: RunStepArgs<T, J>): any;
 
-  protected abstract _run(args: RunStepArgs<T, J>): Promise<J> | J;
-
-  private validateInputs(inputs?: T) {
-    this.inputsSchema?.parse(inputs);
+  private validateInputs(inputs?: any): inputs is T {
+    console.log("THE INPUTS", inputs);
+    return this.inputsSchema?.parse(inputs);
   }
-  private validateOutputs(outputs?: J) {
-    this.outputsSchema?.parse(outputs);
+  private validateOutputs(outputs?: any): outputs is J {
+    return this.outputsSchema?.parse(outputs);
   }
 }
+
+export type UnknownRunStepArgs = {
+  steps: Step<any, any>[];
+  inputs: any;
+};
 
 export type RunStepArgs<T extends StepInput, J extends StepOutput> = {
   steps: Step<T, J>[];
   inputs: T;
-  outputs: J;
 };

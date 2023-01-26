@@ -3,12 +3,17 @@ import { Chain } from "./Chain";
 
 export class SequentialChain extends Chain {
   async _run(args: RunStepArgs<StepInput, StepOutput>) {
+    console.log("CHAIN INPUTS", args.inputs);
+
+    let nextInputs = { ...args.inputs };
+
     for (const step of args.steps) {
-      await step.run({
+      const outputs = await step.run({
         steps: args.steps,
-        inputs: { ...args.inputs },
-        outputs: { ...args.outputs },
+        inputs: nextInputs,
       });
+
+      nextInputs = { ...outputs };
     }
   }
 }
