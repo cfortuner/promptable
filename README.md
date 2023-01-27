@@ -12,7 +12,17 @@ A simple, lightweight, and flexible library for building prompt engineering pipe
 
 ## Usage
 
-See `packages/prompable/usage` or our docs
+TODO
+
+## Contributing
+
+See `packages/promptable/README.md`
+
+### Run an Example
+
+```
+pnpm run example <example name>
+```
 
 ## What's inside?
 
@@ -21,7 +31,7 @@ This a monorepo of tooling for Typescript developers building LLM apps.
 It uses [pnpm](https://pnpm.io) as a package manager and includes the following packages/apps:
 
 - `packages/promptable`: The Promptable Library for building LLM apps in Typescript / Javascript!
-- `apps/cli`: The Promptable CLI tool (for running examples locally)
+- `apps/examples`: The Promptable CLI tool (for running examples locally)
 - `apps/docs`: a Docusaurus docs site
 - `apps/web`: A nextjs app for visulizing / debugging chains!
 

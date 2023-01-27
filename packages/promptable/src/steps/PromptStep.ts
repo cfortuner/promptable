@@ -57,7 +57,7 @@ export class PromptStep<
       outputNames.reduce((acc, name) => {
         return acc.merge(
           z.object({
-            [name]: z.string(),
+            [name]: z.any(),
           })
         );
       }, z.object({}))
@@ -67,8 +67,11 @@ export class PromptStep<
   async _run(args: RunStepArgs<PromptStepInput, PromptStepOutput>) {
     const completion = await this.provider.generate(this.prompt, args.inputs);
 
-    // todo: how to parse the prompts?
-    const output = { [this.outputNames[0]]: completion };
+    console.debug("Prompt Step:", completion);
+
+    const parsed = this.prompt.parse(completion);
+
+    const output = { [this.outputNames[0]]: parsed };
 
     return output;
   }

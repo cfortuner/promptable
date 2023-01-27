@@ -10,6 +10,7 @@ import {
 import { OpenAI } from "@model-providers/OpenAI";
 import utils from "@utils/index";
 import z from "zod";
+import { JSONParser, CSVParser, Parser } from "@prompts/Parser";
 
 export {
   Chain,
@@ -17,6 +18,9 @@ export {
   Step,
   Prompt,
   PromptStep,
+  Parser,
+  JSONParser,
+  CSVParser,
   ModelProvider,
   ModelProviderType,
   OpenAI,

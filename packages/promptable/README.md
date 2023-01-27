@@ -14,6 +14,8 @@ npm i promptable
 
 # Usage
 
+TODO
+
 # Contributing
 
 Install deps and run
@@ -35,6 +37,16 @@ Apps
 Packages
 
 - promptable.js - The Library for building LLM Apps in Typescript/Javascript
+
+## Run an Example
+
+Examples are located in `apps/examples`
+
+From the root dir, run:
+
+```
+pnpm run start --filter examples -- chain
+```
 
 # Motivation
 

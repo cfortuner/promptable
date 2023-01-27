@@ -1,5 +1,21 @@
 # TODO
 
+- Utilities
+  - Embeddings
+  - Document Loaders / Readers
+- Prompt Templates
+  - Few shot
+  - Chain of thought
+  - etc.
+- Prompt Parsers
+  - Parse the output of a prompt
+    - Json
+    - XML
+    - Variables
+    - etc.
+- Chains
+- Agents
+- Memory
 - How to design Tools
 - What does middleware look like
 - How to allow for storage, documents and file readers
