@@ -2,7 +2,7 @@
 
 import chain from "./chain";
 import parser from "./parser";
-import textSplitter from "./text-splitter";
+import textSplitter from "./textSplitter";
 
 const commands: {
   [key: string]: () => Promise<any>;
