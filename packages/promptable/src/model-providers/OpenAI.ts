@@ -5,7 +5,7 @@ import { Prompt } from "@prompts/Prompt";
 import { ModelProviderType } from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
 import { Configuration, OpenAIApi } from "openai";
-import { unescapeStopTokens } from "src/utils/unescapeStopTokens";
+import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 
 /**
  * OpenAI Model Provider

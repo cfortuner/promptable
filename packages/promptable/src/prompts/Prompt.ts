@@ -1,3 +1,4 @@
+import { injectVariables } from "@utils/inject-variables";
 import * as z from "zod";
 export class Prompt {
   text: string;
@@ -9,13 +10,7 @@ export class Prompt {
   }
 
   format(variables: { [name: string]: any }) {
-    return this.injectVariables(variables);
-  }
-
-  private injectVariables(variables: { [name: string]: any }) {
-    return Object.entries(variables)?.reduce((acc, [name, value]) => {
-      return acc.replaceAll(`{{${name}}}`, value);
-    }, this.text);
+    return injectVariables(this.text, variables);
   }
 
   toJson() {

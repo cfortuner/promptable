@@ -6,6 +6,7 @@ import {
   StepOutput,
 } from "../steps/Step";
 
+// TODO: Should this be moved into Steps?
 export abstract class Chain extends Step<any, any> {
   steps: Step<any, any>[] = [];
 
@@ -32,7 +33,6 @@ export abstract class Chain extends Step<any, any> {
     return this.steps.reduce(
       (acc: any, step) => {
         acc.steps.push(step.serialize());
-
         return acc;
       },
       {

@@ -1,10 +1,10 @@
-import { LLM } from "./llm";
+import { LLM } from "./LLM";
 import { Prompt } from "./Prompt";
 
 type Context = {
   prompt: Prompt | string;
   [key: string]: any;
-}
+};
 
 type ChainCall<C extends Context> = (ctx: C) => Promise<Prompt | string>;
 
@@ -47,7 +47,9 @@ abstract class ParallelChain<C extends Context> extends Chain<C> {
   }
 
   async call(_call: ChainCall<C>): Promise<Prompt | string> {
-    const results = await Promise.all(this._chains.map((chain) => chain.call(_call)));
+    const results = await Promise.all(
+      this._chains.map((chain) => chain.call(_call))
+    );
     return results.join("\n\n");
   }
 }
