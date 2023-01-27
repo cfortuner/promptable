@@ -88,7 +88,6 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
   }
 
   protected preprocess(inputs: any) {
-    console.log("PREPROCESS", this.validateInputs(inputs), inputs);
     if (!this.validateInputs(inputs)) {
       throw Error(
         `Invalid inputs ${JSON.stringify(inputs)} at step ${this.name}`
@@ -128,7 +127,6 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
   abstract _serialize(): object;
 
   private validateInputs(inputs?: any): inputs is T {
-    console.log("THE INPUTS", inputs);
     return this.inputsSchema?.parse(inputs);
   }
   private validateOutputs(outputs?: any): outputs is J {

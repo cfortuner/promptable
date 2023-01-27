@@ -1,5 +1,6 @@
 import { Chain } from "@chains/Chain";
 import { SequentialChain } from "@chains/SequentialChain";
+import { ParallelChain } from "@chains/ParallelChain";
 import { Step } from "@steps/Step";
 import { PromptStep } from "@steps/PromptStep";
 import { Prompt } from "@prompts/Prompt";
@@ -15,6 +16,7 @@ import { JSONParser, CSVParser, Parser } from "@prompts/Parser";
 export {
   Chain,
   SequentialChain,
+  ParallelChain,
   Step,
   Prompt,
   PromptStep,
