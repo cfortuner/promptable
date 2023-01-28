@@ -1,4 +1,5 @@
 import { injectVariables } from "@utils/inject-variables";
+import { logger } from "@utils/Logger";
 import * as z from "zod";
 import { NoopParser, Parser } from "./Parser";
 export class Prompt {
@@ -21,7 +22,9 @@ export class Prompt {
   }
 
   format(variables: { [name: string]: any }) {
-    return injectVariables(this.text, variables);
+    const formattedPrompt = injectVariables(this.text, variables);
+    logger.info(`Formatted prompt: ${formattedPrompt}`);
+    return formattedPrompt;
   }
 
   toJson() {

@@ -3,6 +3,7 @@ import { Prompt } from "@prompts/Prompt";
 import { ModelProvider } from "../model-providers/ModelProvider";
 import { z } from "zod";
 import { Step, StepInput, StepOutput, RunStepArgs } from "./Step";
+import { logger } from "@utils/Logger";
 
 interface PromptStepInput extends StepInput {}
 interface PromptStepOutput extends StepOutput {}
@@ -65,13 +66,19 @@ export class PromptStep<
   }
 
   async _run(args: RunStepArgs<PromptStepInput, PromptStepOutput>) {
+    logger.info(`Running PromptStep: ${this.name}, with args: ${args}`);
+
     const completion = await this.provider.generate(this.prompt, args.inputs);
 
-    console.debug("Prompt Step:", completion);
+    logger.info(`PromptStep: ${this.name} generated completion: ${completion}`);
 
     const parsed = this.prompt.parse(completion);
 
+    logger.info(`PromptStep: ${this.name} parsed completion: ${parsed}`);
+
     const output = { [this.outputNames[0]]: parsed };
+
+    logger.info(`PromptStep: ${this.name} output: ${output}`);
 
     return output;
   }

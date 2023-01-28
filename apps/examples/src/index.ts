@@ -4,6 +4,12 @@ import chain from "./chain";
 import parser from "./parser";
 import textSplitter from "./textSplitter";
 
+import { utils } from "promptable";
+import { logger } from "./utils/Logger";
+
+utils.logger.setLevel("debug");
+utils.logger.setLogger(logger);
+
 const commands: {
   [key: string]: () => Promise<any>;
 } = {
@@ -13,7 +19,6 @@ const commands: {
 };
 
 async function run(args: string[]) {
-  console.log("Hello, world!");
   const command = args[0];
   if (commands[command]) {
     await commands[command]();

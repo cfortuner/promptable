@@ -47,23 +47,31 @@ This turborepo has some additional tools already setup for you:
 
 ### Install and Run
 
-To install run (at the root)
+Then to install run (at the root)
 
 ```
+
 pnpm i
+
 ```
 
 To install package in a single workspace
 
 ```
+
 pnpm i <package> --filter <workspace>
-```
-
-To develop all apps and packages, run the following command:
 
 ```
+
+First copy the `apps/web/.env.example` file to `apps/web/.env`.
+
+Then, To develop all apps and packages, run the following command:
+
+```
+
 cd my-turborepo
 pnpm run dev
+
 ```
 
 This will start watching the files for changes.
@@ -75,13 +83,17 @@ To make it easy to test the library, run the `cli`:
 1. copy the `.env.example` file to `.env` and add your keys
 
 ```
+
 OPENAI_API_KEY=<your openai key>
+
 ```
 
 2. Start the dev script
 
 ```
+
 pnpm run start --filter examples
+
 ```
 
 ### UI
@@ -98,3 +110,7 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
 - [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
 - [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+
+```
+
+```

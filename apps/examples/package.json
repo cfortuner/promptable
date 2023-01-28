@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "axios": "^1.2.4",
-    "chalk": "^5.2.0",
     "commander": "^9.4.1",
     "dotenv": "^16.0.3",
-    "promptable": "workspace:*"
+    "promptable": "workspace:*",
+    "tslog": "^4.7.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

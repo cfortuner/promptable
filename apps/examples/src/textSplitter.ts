@@ -58,16 +58,18 @@ Of more than we know, and`;
         name: "Eval Poem Phrase",
         prompt: evalPoemChunksPrompt,
         provider: openai,
-        inputNames: ["phrase_" + i],
+        inputNames: ["phrase"],
         outputNames: ["eval"],
       });
     }),
 
-    // The inputs to the chain
-    inputs: chunks.reduce((acc: any, chunk, i) => {
-      acc["phrase_" + i] = chunk;
-      return acc;
-    }, {}),
+    inputs: {
+      parallelInputs: chunks.map((chunk) => {
+        return {
+          phrase: chunk,
+        };
+      }),
+    },
   });
 
   const chainData = chain.serialize();

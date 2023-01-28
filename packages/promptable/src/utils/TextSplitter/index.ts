@@ -1,3 +1,4 @@
+import { logger } from "../Logger";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
 export interface TextSplitterOptions {
@@ -33,7 +34,9 @@ export abstract class TextSplitter {
   abstract splitText(text: string): string[];
 
   protected createChunks(texts: string[], separator: string): string[] {
-    console.log("CREATE CHUNKS", texts);
+    logger.debug(
+      `Creating chunks with texts: ${texts} and separator: ${separator}`
+    );
     // build up chunks based on chunk size
     return texts.reduce((chunks: string[], text) => {
       let chunk = "";
@@ -75,6 +78,7 @@ export class CharacterTextSplitter extends TextSplitter {
   }
 
   splitText = (text: string): string[] => {
+    logger.debug(`Splitting text by character: ${this.character}`);
     const texts = text.split(this.character);
 
     return this.createChunks(texts, this.character);

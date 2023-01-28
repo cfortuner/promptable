@@ -1,3 +1,5 @@
+import { logger } from "./Logger";
+
 /**
  * Replace any escaped stop tokens like "\\n" their unescaped versions
  *
@@ -5,6 +7,7 @@
  * @returns
  */
 export const unescapeStopTokens = (stop_tokens: string | string[]) => {
+  logger.debug(`Unescaping stop tokens: ${stop_tokens}`);
   if (Array.isArray(stop_tokens)) {
     return stop_tokens.map((token) => {
       return JSON.parse(`"${token}"`);

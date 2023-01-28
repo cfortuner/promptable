@@ -7,14 +7,17 @@ import {
 } from "../steps/Step";
 
 // TODO: Should this be moved into Steps?
-export abstract class Chain extends Step<any, any> {
-  steps: Step<any, any>[] = [];
+export abstract class Chain<
+  T extends StepInput,
+  J extends StepOutput
+> extends Step<T, J> {
+  steps: Step<T, J>[] = [];
 
   constructor(name: string) {
     super(name);
   }
 
-  async run(args: RunStepArgs<StepInput, StepOutput>) {
+  async run(args: RunStepArgs<T, J>) {
     this.steps = args.steps;
 
     return super.run(args);

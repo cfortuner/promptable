@@ -1,3 +1,4 @@
+import { logger } from "@utils/Logger";
 import z from "zod";
 
 export type StepInput = { [input: string]: any };
@@ -38,6 +39,8 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
   }
 
   async run(args: UnknownRunStepArgs) {
+    logger.info(`Running step: ${this.name}, with args: ${args}`);
+
     this.recordCall({
       inputs: args.inputs,
     });
@@ -76,14 +79,24 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
 
       const prev = this.calls[this.calls.length - 1];
 
-      this.calls[this.calls.length - 1] = {
+      const call = {
         ...prev,
         ...args,
       };
+
+      this.calls[this.calls.length - 1] = call;
+
+      logger.debug(
+        `Recorded call: ${JSON.stringify(call)} at step ${this.name}`
+      );
     } else {
       this.calls.push({
         ...args,
       });
+
+      logger.debug(
+        `Recorded call: ${JSON.stringify({ ...args })} at step ${this.name}`
+      );
     }
   }
 
@@ -94,6 +107,8 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
       );
     }
 
+    logger.debug(`Preprocessed inputs: ${JSON.stringify(inputs)}`);
+
     return inputs;
   }
 
@@ -103,6 +118,12 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
         `Invalid outputs ${JSON.stringify(outputs)} at step ${this.name}`
       );
     }
+
+    logger.debug(
+      `Postprocessed inputs: ${JSON.stringify(
+        inputs
+      )}, outputs: ${JSON.stringify(outputs)}`
+    );
 
     return {
       ...inputs,
@@ -119,6 +140,10 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
 
     const call = this.calls[this.calls.length - 1];
 
+    logger.debug(
+      `Serializing step: ${this.name}, call: ${JSON.stringify(call)}`
+    );
+
     return {
       call,
       ...this._serialize(),
@@ -127,9 +152,20 @@ export abstract class Step<T extends StepInput, J extends StepOutput> {
   abstract _serialize(): object;
 
   private validateInputs(inputs?: any): inputs is T {
+    logger.debug(
+      `Validating inputs: ${JSON.stringify(inputs)}, schema: ${
+        this.inputsSchema
+      }`
+    );
+
     return this.inputsSchema?.parse(inputs);
   }
   private validateOutputs(outputs?: any): outputs is J {
+    logger.debug(
+      `Validating inputs: ${JSON.stringify(outputs)}, schema: ${
+        this.inputsSchema
+      }`
+    );
     return this.outputsSchema?.parse(outputs);
   }
 }

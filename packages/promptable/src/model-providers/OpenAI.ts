@@ -6,6 +6,7 @@ import { ModelProviderType } from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
 import { Configuration, OpenAIApi } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
+import { logger } from "@utils/Logger";
 
 /**
  * OpenAI Model Provider
@@ -38,12 +39,17 @@ export class OpenAI extends ModelProvider {
       }
 
       const promptText = prompt.format(variables);
-      console.log("PROMPT TEXT", promptText);
+
+      logger.debug(
+        `OpenAi generate prompt: ${promptText}, config: ${this.config}`
+      );
 
       const res = await this.api.createCompletion({
         prompt: prompt.format(variables),
         ...this.config,
       });
+
+      logger.debug(`OpenAi generate response: ${res}`);
 
       return res.data.choices[0]?.text || "";
     } catch (e) {

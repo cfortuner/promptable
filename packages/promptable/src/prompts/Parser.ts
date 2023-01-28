@@ -1,3 +1,5 @@
+import { logger } from "@utils/Logger";
+
 export abstract class Parser {
   abstract parse(text: string): any;
 }
@@ -17,7 +19,7 @@ export class JSONParser extends Parser {
     try {
       return JSON.parse(text);
     } catch (e) {
-      console.error(e);
+      logger.error(e as any);
       throw e;
     }
   }
@@ -32,7 +34,7 @@ export class CSVParser extends Parser {
     try {
       return text.split(",").map((t) => t.trim());
     } catch (e) {
-      console.error(e);
+      logger.error(e as any);
       throw e;
     }
   }

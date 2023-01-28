@@ -26,4 +26,5 @@
         "typescript": "latest",
         "zod": "^3.20.2"
     }
+      
 }
