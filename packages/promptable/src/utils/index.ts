@@ -1,3 +1,4 @@
+import { parseJsonSSE } from "./parse-json-sse";
 import { injectVariables } from "./inject-variables";
 import { unescapeStopTokens } from "./unescape-stop-tokens";
 import { TextSplitter, CharacterTextSplitter } from "./TextSplitter";
@@ -8,6 +9,7 @@ const utils = {
   CharacterTextSplitter,
   unescapeStopTokens,
   injectVariables,
+  parseJsonSSE,
   logger,
 };
 

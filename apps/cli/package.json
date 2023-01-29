@@ -1,5 +1,5 @@
 {
-  "name": "examples",
+  "name": "cli",
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",

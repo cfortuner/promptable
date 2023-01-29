@@ -70,15 +70,17 @@ export class PromptStep<
 
     const completion = await this.provider.generate(this.prompt, args.inputs);
 
-    logger.info(`PromptStep: ${this.name} generated completion: ${completion}`);
+    logger.debug(
+      `PromptStep: ${this.name} generated completion: ${completion}`
+    );
 
     const parsed = this.prompt.parse(completion);
 
-    logger.info(`PromptStep: ${this.name} parsed completion: ${parsed}`);
+    logger.debug(`PromptStep: ${this.name} parsed completion: ${parsed}`);
 
     const output = { [this.outputNames[0]]: parsed };
 
-    logger.info(`PromptStep: ${this.name} output: ${output}`);
+    logger.debug(`PromptStep: ${this.name} output: ${output}`);
 
     return output;
   }

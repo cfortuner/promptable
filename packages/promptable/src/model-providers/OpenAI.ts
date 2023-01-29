@@ -7,17 +7,19 @@ import { ModelProvider } from "./ModelProvider";
 import { Configuration, OpenAIApi } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { logger } from "@utils/Logger";
+import { parseJsonSSE } from "@utils/parse-json-sse";
 
 /**
  * OpenAI Model Provider
  */
 export class OpenAI extends ModelProvider {
+  apiKey: string;
   api: OpenAIApi;
   config: OpenAIConfig = DEFAULT_OPENAI_MODEL_CONFIG;
 
   constructor(apiKey: string, config?: Partial<OpenAIConfig>) {
     super(ModelProviderType.OpenAI);
-
+    this.apiKey = apiKey;
     this.api = new OpenAIApi(
       new Configuration({
         apiKey: apiKey,

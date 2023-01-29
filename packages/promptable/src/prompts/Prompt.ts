@@ -23,7 +23,7 @@ export class Prompt {
 
   format(variables: { [name: string]: any }) {
     const formattedPrompt = injectVariables(this.text, variables);
-    logger.info(`Formatted prompt: ${formattedPrompt}`);
+    logger.debug(`Formatted prompt: ${formattedPrompt}`);
     return formattedPrompt;
   }
 
