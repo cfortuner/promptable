@@ -38,4 +38,3 @@ yarn-error.log*
 
 # vscode
 .vscode
-apps/examples/.env
