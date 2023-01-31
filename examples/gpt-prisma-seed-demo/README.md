@@ -1,6 +1,9 @@
 # How to run
 
-- make sure you're in gpt-prisma-seed directory
+make sure you're in gpt-prisma-seed directory
+copy .env.example to .env, add your openAI key
+
+run commands:
 - pnpm i
 - npx prisma db push
 - npx prisma db seed
