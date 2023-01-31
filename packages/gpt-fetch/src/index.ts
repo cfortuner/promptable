@@ -10,6 +10,8 @@ import {
 
 promptable.utils.logger.setLevel("info");
 
+// Possibly swap zod for https://github.com/sinclairzx81/typebox
+
 class GPTQueryClient extends QueryClient {
   apiKey: string;
   constructor(
