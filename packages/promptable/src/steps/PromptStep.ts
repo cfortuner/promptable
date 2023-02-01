@@ -1,14 +1,19 @@
-import { SequentialChain } from "@chains/SequentialChain";
 import { Prompt } from "@prompts/Prompt";
 import { ModelProvider } from "../model-providers/ModelProvider";
 import { z } from "zod";
 import { Step, StepInput, StepOutput, RunStepArgs } from "./Step";
 import { logger } from "@utils/Logger";
 
-interface PromptStepInput extends StepInput {}
-interface PromptStepOutput extends StepOutput {}
+export interface PromptStepInput extends StepInput { }
+export interface PromptStepOutput extends StepOutput { }
 
-interface PromptStepArgs<
+interface UnmappedOutput {
+  promptText: string;
+  completion: string;
+  output: string;
+}
+
+export interface PromptStepArgs<
   T extends PromptStepInput,
   J extends PromptStepOutput
 > {
@@ -16,30 +21,31 @@ interface PromptStepArgs<
   prompt: Prompt;
   provider: ModelProvider;
   inputNames: (keyof T)[];
-  outputNames: (keyof J)[];
+  outputMap?: Partial<{ [key in keyof UnmappedOutput]: string }>;
 }
 
 export class PromptStep<
   T extends PromptStepInput,
   J extends PromptStepOutput
-> extends Step<T, J> {
+> extends Step<T, J, UnmappedOutput> {
   prompt: Prompt;
   provider: ModelProvider;
   inputNames: (keyof T)[] = [];
-  outputNames: (keyof J)[] = [];
 
   constructor({
     name,
     prompt,
     provider,
     inputNames,
-    outputNames,
+    outputMap,
   }: PromptStepArgs<T, J>) {
-    super(name || "Prompt");
+    super(name || "Prompt", outputMap);
     this.prompt = prompt;
     this.provider = provider;
     this.inputNames = inputNames;
-    this.outputNames = outputNames;
+    this.outputMap = (outputMap === undefined) ?
+      { output: "output", completion: "completion", promptText: "promptText" }
+      : outputMap;
 
     // Define the zod schemas for validating inputs and outputs
     this.inputs(
@@ -53,6 +59,7 @@ export class PromptStep<
       }, z.object({}))
     );
 
+    /*
     this.outputs(
       //@ts-expect-error
       outputNames.reduce((acc, name) => {
@@ -63,12 +70,14 @@ export class PromptStep<
         );
       }, z.object({}))
     );
+    */
   }
 
-  async _run(args: RunStepArgs<PromptStepInput, PromptStepOutput>) {
+  async _run(args: RunStepArgs<PromptStepInput, PromptStepOutput>): Promise<UnmappedOutput> {
     logger.info(`Running PromptStep: ${this.name}, with args: ${args}`);
 
-    const completion = await this.provider.generate(this.prompt, args.inputs);
+    const promptText = this.prompt.format(args.inputs);
+    const completion = await this.provider.generate(promptText);
 
     logger.debug(
       `PromptStep: ${this.name} generated completion: ${completion}`
@@ -78,11 +87,11 @@ export class PromptStep<
 
     logger.debug(`PromptStep: ${this.name} parsed completion: ${parsed}`);
 
-    const output = { [this.outputNames[0]]: parsed };
+    // const output = { [this.outputMap.output]: parsed, [this.outputMap.completion]: completion, [this.outputMap.promptText]: promptText };
+    const unmappedOutput = { output: parsed, completion, promptText };
+    logger.debug(`PromptStep: ${this.name} output: ${unmappedOutput}`);
 
-    logger.debug(`PromptStep: ${this.name} output: ${output}`);
-
-    return output;
+    return unmappedOutput;
   }
 
   _serialize = () => {

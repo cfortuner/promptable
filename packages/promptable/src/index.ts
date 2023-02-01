@@ -3,7 +3,11 @@ import { SequentialChain } from "@chains/SequentialChain";
 import { ParallelChain } from "@chains/ParallelChain";
 import { Step } from "@steps/Step";
 import { PromptStep } from "@steps/PromptStep";
+import { PausingStateMachineStep } from "@steps/PausingStateMachineStep";
+import { MemoryPromptStep } from "@steps/MemoryPromptStep";
 import { Prompt } from "@prompts/Prompt";
+import { TokenBufferMemory } from "@memory/TokenBufferMemory";
+import { ChatInteractionMemory } from "@memory/ChatInteractionMemory";
 import {
   ModelProvider,
   ModelProviderType,
@@ -20,6 +24,10 @@ export {
   Step,
   Prompt,
   PromptStep,
+  MemoryPromptStep,
+  PausingStateMachineStep,
+  TokenBufferMemory,
+  ChatInteractionMemory,
   Parser,
   JSONParser,
   CSVParser,

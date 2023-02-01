@@ -34,20 +34,18 @@ export class OpenAI extends ModelProvider {
     }
   }
 
-  generate = async (prompt: Prompt, variables: { [key: string]: any }) => {
+  generate = async (promptText: string) => {
     try {
       if (this.config.stop != null) {
         this.config.stop = unescapeStopTokens(this.config.stop);
       }
-
-      const promptText = prompt.format(variables);
 
       logger.debug(
         `OpenAi generate prompt: ${promptText}, config: ${this.config}`
       );
 
       const res = await this.api.createCompletion({
-        prompt: prompt.format(variables),
+        prompt: promptText,
         ...this.config,
       });
 

@@ -16,7 +16,7 @@ export default async function run() {
     ["poem"]
   );
 
-  const createPrompt = (provider: any, input: any, output: any) => {};
+  const createPrompt = (provider: any, input: any, output: any) => { };
 
   const chain = new SequentialChain("Second");
   await chain.run({

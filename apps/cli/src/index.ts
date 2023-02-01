@@ -3,6 +3,8 @@
 import chain from "./chain";
 import parser from "./parser";
 import textSplitter from "./textSplitter";
+import chatbot from "./chatbot";
+import chatbotWithInteractionMemory from "./chatbot_with_interaction_memory";
 
 import { utils } from "promptable";
 import { logger } from "./utils/Logger";
@@ -16,6 +18,8 @@ const commands: {
   chain,
   parser,
   textSplitter,
+  chatbot,
+  chatbotWithInteractionMemory
 };
 
 async function run(args: string[]) {
@@ -29,4 +33,4 @@ async function run(args: string[]) {
 
 run(process.argv.slice(2));
 
-export {};
+export { };

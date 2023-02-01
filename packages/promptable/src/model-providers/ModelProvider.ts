@@ -12,8 +12,7 @@ export abstract class ModelProvider {
   }
 
   abstract generate(
-    prompt: Prompt,
-    variables: { [key: string]: any },
+    promptText: string,
     ...args: any[]
   ): Promise<string>;
 }

@@ -31,7 +31,10 @@
             ],
             "@model-providers/*": [
                 "src/model-providers/*"
-            ]
+            ],
+            "@memory/*": [
+                "src/memory/*"
+            ],
         },
     },
     "exclude": [

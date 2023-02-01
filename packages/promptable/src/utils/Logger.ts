@@ -54,6 +54,7 @@ export class LoggerService {
   }
 
   public info(message: string): void {
+    if (this.level !== "debug" && this.level !== "info") return;
     this.logger.info(message);
   }
 

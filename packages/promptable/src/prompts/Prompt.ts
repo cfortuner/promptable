@@ -22,6 +22,7 @@ export class Prompt {
   }
 
   format(variables: { [name: string]: any }) {
+    // TODO(rohan): I think this should only inject variables set in variableNames?
     const formattedPrompt = injectVariables(this.text, variables);
     logger.info(`Formatted prompt: ${formattedPrompt}`);
     return formattedPrompt;

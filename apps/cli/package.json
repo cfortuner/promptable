@@ -18,6 +18,7 @@
     "axios": "^1.2.4",
     "commander": "^9.4.1",
     "dotenv": "^16.0.3",
+    "enquirer": "^2.3.6",
     "promptable": "workspace:*",
     "tslog": "^4.7.1"
   },
