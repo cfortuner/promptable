@@ -16,6 +16,7 @@ export class OpenAI extends ModelProvider {
   apiKey: string;
   api: OpenAIApi;
   config: OpenAIConfig = DEFAULT_OPENAI_MODEL_CONFIG;
+  tokenizer = new GPT3Tokenizer({ type: "gpt3" });
 
   constructor(apiKey: string, config?: Partial<OpenAIConfig>) {
     super(ModelProviderType.OpenAI);
@@ -53,6 +54,18 @@ export class OpenAI extends ModelProvider {
     }
     return "failed";
   };
+
+  /**
+   * Count tokens in text using GPT3-Tokenizer
+   *
+   * @param text
+   * @returns
+   */
+  countTokens = (text: string): number => {
+    const encoded: { bpe: number[]; text: string[] } =
+      this.tokenizer.encode(text);
+    return encoded.bpe.length;
+  };
 }
 
 /** Configs */
@@ -87,18 +100,3 @@ interface OpenAIConfig {
   max_tokens: number;
   stop: string[] | string | null;
 }
-
-/** Utilities */
-
-const tokenizer = new GPT3Tokenizer({ type: "gpt3" });
-
-/**
- * Count tokens in text using GPT3-Tokenizer
- *
- * @param text
- * @returns
- */
-export const countTokens = (text: string): number => {
-  const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(text);
-  return encoded.bpe.length;
-};

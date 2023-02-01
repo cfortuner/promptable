@@ -7,16 +7,16 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, Prompt, utils } from "promptable";
+import { OpenAI, Prompt } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
-// 1. Load the file
+// Load the file
 const cwd = process.cwd();
 const filepath = `${cwd}/data/startup-mistakes.txt`;
 let doc = fs.readFileSync(filepath, "utf8");
 
-// 2. Create the prompt and model provider
+// Prompt and Model Provider
 const openai = new OpenAI(apiKey);
 const prompt = new Prompt(
   `
@@ -32,30 +32,47 @@ Answer:`.trim(),
   ["document", "question"]
 );
 
-// 3. Split the text into chunks (to fit within token limit.)
-const textSplitter = new utils.CharacterTextSplitter("\n\n", {
-  chunkSize: 1000,
-  overlap: 100,
-});
-const chunks = textSplitter.splitText(doc);
+// Split the doc by the separator
+const separator = "\n\n";
+const texts = doc.split(separator);
 
-// 4. Set the question
+const chunkSize = 1000;
+const chunkOverlap = 100;
+
+// Create chunks to send to the model
+const chunks = texts.reduce((chunks: string[], text) => {
+  let chunk = chunks.pop() || "";
+  const chunkLength = openai.countTokens(chunk);
+  if (chunkLength >= chunkSize + chunkOverlap) {
+    chunks.push(chunk);
+    chunk = "";
+  }
+  chunk = chunk === "" ? text : chunk + separator + text;
+  chunks.push(chunk);
+  return chunks;
+}, []);
+
+// Run the Question-Answer prompt on each chunk
 const question = "What is the most common mistake founders make?";
 
-// 5. For each chunk, run the question prompt to get an answer
-
-console.log(chalk.blue.bold("\nRunning QA Example"));
-console.log(chalk.blue(`\nDocument: startup-mistakes.txt`));
+console.log(chalk.blue.bold("\nRunning QA Example: startup-mistakes.txt"));
 console.log(chalk.white(`Question: ${question}`));
 
-const answers = [];
 for (const chunk of chunks) {
-  console.log(`\n${chunk.substring(0, 100)}...`);
+  const tokensUsed = openai.countTokens(
+    prompt.format({ document: chunk, question })
+  );
+
+  console.log(
+    `\n${chunk.substring(0, 100).trim()}...\n\n...${chunk
+      .slice(-100)
+      .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
+  );
+
   const answer = await openai.generate(prompt, {
     document: chunk,
     question,
   });
 
-  answers.push(answer);
   console.log(chalk.greenBright(`Answer: ${answer}`));
 }
