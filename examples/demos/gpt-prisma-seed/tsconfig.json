@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,16 +16,8 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": [
-    "../demos/gpt-prisma-seed/next-env.d.ts",
-    "../demos/gpt-prisma-seed/**/*.ts",
-    "../demos/gpt-prisma-seed/**/*.tsx",
-    "../demos/gpt-prisma-seed/**/*.cjs",
-    "../demos/gpt-prisma-seed/**/*.mjs"
-  ],
-  "exclude": [
-    "../demos/gpt-prisma-seed/node_modules"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
+  "exclude": ["node_modules"],
   "ts-node": {
     // these options are overrides used only by ts-node
     // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable

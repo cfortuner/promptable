@@ -42,21 +42,14 @@ export class OpenAI extends ModelProvider {
 
       const promptText = prompt.format(variables);
 
-      logger.debug(
-        `OpenAi generate prompt: ${promptText}, config: ${this.config}`
-      );
-
       const res = await this.api.createCompletion({
-        prompt: prompt.format(variables),
+        prompt: promptText,
         ...this.config,
       });
-
-      logger.debug(`OpenAi generate response: ${res}`);
 
       return res.data.choices[0]?.text || "";
     } catch (e) {
       console.log(e);
-      // console.error(e);
     }
     return "failed";
   };
