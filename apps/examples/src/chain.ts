@@ -16,6 +16,8 @@ export default async function run() {
     ["poem"]
   );
 
+  const createPrompt = (provider: any, input: any, output: any) => {};
+
   const chain = new SequentialChain("Second");
   await chain.run({
     // The steps in the chain
@@ -26,6 +28,7 @@ export default async function run() {
         inputNames: ["topic"],
         outputNames: ["poem"],
       }),
+      // new MapStep(k)
       new PromptStep({
         prompt: evalPrompt,
         provider: openai,
