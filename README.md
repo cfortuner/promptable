@@ -12,13 +12,11 @@ A simple, lightweight, and flexible library for building prompt engineering pipe
 
 ## Usage
 
-TODO
+TODO!
 
-## Contributing
+### Examples
 
-See `packages/promptable/README.md`
-
-### Run an Example
+See `examples/README.md` for more info on running examples.
 
 ```
 pnpm run example <example name>
@@ -26,31 +24,22 @@ pnpm run example <example name>
 
 ## What's inside?
 
-This a monorepo of tooling for Typescript developers building LLM apps.
+This a Turborepo monorepo of tooling for Typescript developers building LLM apps.
 
 It uses [pnpm](https://pnpm.io) as a package manager and includes the following packages/apps:
 
 - `packages/promptable`: The Promptable Library for building LLM apps in Typescript / Javascript!
-- `apps/examples`: The Promptable CLI tool (for running examples locally)
-- `apps/docs`: a Docusaurus docs site
-- `apps/web`: A nextjs app for visulizing / debugging chains!
+- `examples`: Examples using the Promptable.js library!
+- `apps/docs`: The Promptable.js Docs
+- `apps/web`: A nextjs app for visualizing Promptable.js steps.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Contributing
 
-### Utilities
-
-This turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Install and Run
+## Install and Run
 
 Then to install run (at the root)
 
 ```
-
 pnpm i
 
 ```
@@ -76,41 +65,6 @@ pnpm run dev
 
 This will start watching the files for changes.
 
-### Run Examples
-
-To make it easy to test the library, run the `cli`:
-
-1. copy the `.env.example` file to `.env` and add your keys
-
-```
-
-OPENAI_API_KEY=<your openai key>
-
-```
-
-2. Start the dev script
-
-```
-
-pnpm run start --filter examples
-
-```
-
 ### UI
 
 todo
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
-
-```
-
-```
