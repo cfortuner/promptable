@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -13,7 +14,7 @@
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "publish-packages": "turbo run build lint test && changeset version && changeset publish",
-    "example": "pnpm run start --filter examples --"
+    "example": "pnpm run start --filter promptable-examples --"
   },
   "engines": {
     "node": ">=14.0.0"

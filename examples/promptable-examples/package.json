@@ -1,5 +1,5 @@
 {
-  "name": "examples",
+  "name": "promptable-examples",
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
