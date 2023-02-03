@@ -3,6 +3,7 @@
 import chain from "./chain";
 import parser from "./parser";
 import textSplitter from "./textSplitter";
+import semanticSearch from "./semanticSearch";
 
 import { utils } from "promptable";
 import { logger } from "./utils/Logger";
@@ -16,6 +17,7 @@ const commands: {
   chain,
   parser,
   textSplitter,
+  semanticSearch,
 };
 
 async function run(args: string[]) {
