@@ -17,8 +17,11 @@
   "dependencies": {
     "axios": "^1.2.4",
     "commander": "^9.4.1",
+    "danfojs-node": "^1.1.2",
     "dotenv": "^16.0.3",
+    "openai": "^3.1.0",
     "promptable": "workspace:*",
+    "seedrandom": "^3.0.5",
     "tslog": "^4.7.1"
   },
   "devDependencies": {
