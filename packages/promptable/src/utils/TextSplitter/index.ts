@@ -75,6 +75,7 @@ export class CharacterTextSplitter extends TextSplitter {
   }
 
   splitText = (text: string): string[] => {
+    // TODO: Maybe use https://github.com/Tessmore/sbd instead
     const texts = text.split(this.character);
     return this.createChunks(texts, this.character);
   };

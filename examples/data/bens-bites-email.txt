@@ -1,0 +1,167 @@
+
+Hey! Welcome to Ben's bites - coming in fresh from Austin - it's time to la=
+ugh, cringe, and enlighten yourself with today's top drawer in AI.
+=E2=80=94=E2=80=94=E2=80=94
+Have a product, service, job, event, newsletter, app, book, movie, tool, or=
+ anything you'd like to share with over 20k subscribers?=C2=A0Check out our=
+ sponsor options ( https://sponsor.bensbites.co/ ).=C2=A0
+Join Discord ( https://discord.gg/qd92NKjDdE )
+=E2=80=94=E2=80=94=E2=80=94
+=F0=9F=A4=8C Ben's Picks
+1/
+Microsoft releases Teams Premium using ChatGPT technology ( https://twitter=
+.com/satyanadella/status/1620923372858380289 )
+ChatGPT has officially just swooped into the mainstream with Microsoft=E2=
+=80=99s release of Teams Premium, with the AI technology being fully embedd=
+ed! Now I=E2=80=99ve just gotta convince my boss to fork out $7=E2=80=A6 Th=
+e tech comes with automatically generated meeting notes, recommended tasks,=
+ and personalised highlights, and looks pretty damn slick ( https://www.mic=
+rosoft.com/en-us/microsoft-365/blog/2023/02/01/microsoft-teams-premium-cut-=
+costs-and-add-ai-powered-productivity/ ) to boot.=C2=A0
+2/
+ChatGPT releases $20/month subscription plan ( https://techcrunch.com/2023/=
+02/01/openai-launches-chatgpt-plus-starting-at-20-per-month/ )
+Getting =E2=80=9Cservers busy=E2=80=9D messages on ChatGPT when you most wa=
+nt to use it? Well, wave that frustration goodbye for $20=E2=80=94gotta mak=
+e that $10bn back for investors. (But yeah, you=E2=80=99re right, the $42 p=
+ro fee that was doing the rounds indeed looks like some kind of weird error=
+.)
+Besides, this seems like a pretty reasonable fee for something that can hel=
+p you with basically anything and only lies sometimes. Sam Altman has even =
+hinted at upcoming, potentially cheaper, pro plans. It=E2=80=99s a shame th=
+at I=E2=80=99m based in England, and it=E2=80=99s only available in the US=
+=E2=80=A6
+3/
+AI chatbots can actually make us more skilled ( https://oneusefulthing.subs=
+tack.com/p/the-machines-of-mastery )
+With chatter circulating that over-use of chatbots can dumb you down, this =
+article actually makes a pretty compelling case for why using AI can make y=
+ou smarter. (And no, sitting there like a potato all day letting ChatGPT do=
+ your dirty work is not how it works.)
+They show a pretty awesome example of getting a chatbot to create scenarios=
+ to respond to, giving feedback on their responses, and then discussing how=
+ they can do better. Real, mistakes-driven practice=E2=80=94which is how an=
+yone can get better at anything.=C2=A0
+4/
+Git commands in plain English ( https://git.roo.app/ )
+For some of you seasoned developers, it may come as a surprise that a lot o=
+f people really struggle with using git from the command line. Personally, =
+I remember a time when it drove me absolutely crazy, and would have loved n=
+othing more than=C2=A0this tool ( https://git.roo.app/ ). Type what you wan=
+t to do into the command line in plain old English, and out comes the git c=
+ommand. Wicked!
+=E2=80=9CAutomationTown (Sponsor)A new, binge-worthy podcast about automati=
+on & AI. What if you hired a cast of professional voice actors,=C2=A0a team=
+ of writers and scripted a fictional universe to teach automation? It=E2=80=
+=99s a fresh spin on edutainment to trick your colleagues, friends, even yo=
+ur mom into being more productive. Listen to the season 3 trailer ( https:/=
+/share.transistor.fm/s/bab001af ) now.=E2=80=9D
+=E2=80=94=E2=80=94=E2=80=94
+=F0=9F=9B=A0=EF=B8=8F Cool Tools
+=C2=B7 Video Summarization by Cloudinary Labs - Automatically summarise lon=
+g videos to engage your audience with bitesize clips. (link ( https://smart=
+-ai-transformations.cloudinary.com/ ))
+
+=C2=B7 LinkOut - Generate a personalised LinkedIn cold message with a singl=
+e click. (link ( https://linkout.network/ ))
+
+=C2=B7 No Code Tutorial Search - Find the best no code education on YouTube=
+. (link ( https://codingwithnocode.com/ ))
+
+=C2=B7 GraphGPT - Extract knowledge graphs from unstructured text and visua=
+lise them. (link ( https://github.com/varunshenoy/GraphGPT ))
+
+=C2=B7 Latitude - Write faster SQL with AI. (link ( https://blog.latitude.s=
+o/ai-sql/ ))
+
+=C2=B7 Gradio QandA -=C2=A0 Answer your Gradio questions accurately along w=
+ith links. (link ( https://huggingface.co/spaces/ysharma/LangChain_GradioBo=
+t ))
+
+=C2=B7 GPTwitter - The first AI generated personalised social media platfor=
+m. (link ( http://gptwitter-neon.vercel.app ), blog here ( https://blog.lan=
+gchain.dev/gptwitter/ ))
+
+=C2=B7 Symbiotic FYI - Your AI knowledge assistant. (link ( https://symbiot=
+ic.fyi/ ))
+
+=C2=B7 Trigger - Effortless automation built for developers. (link ( https:=
+//trigger.dev/ ))
+
+View image: ( %{image_url)} )
+=E2=80=94=E2=80=94=E2=80=94
+=F0=9F=A4=93 Miscellaneous
+=C2=B7 Gaslighting and reality in AI. (link ( https://garymarcus.substack.c=
+om/p/gaslighting-and-reality-in-ai ))
+
+=C2=B7 Flan-T5 beats all public models for instruction tuning. Data and met=
+hods now released by Google. (link ( https://ai.googleblog.com/2023/02/the-=
+flan-collection-advancing-open.html ), author=E2=80=99s thread ( https://tw=
+itter.com/ShayneRedford/status/1620805305801261058?s=3D20&t=3DuGZs6VxZh8GBT=
+S8ljMjjUA ))
+
+=E2=80=94=E2=80=94=E2=80=94
+=F0=9F=8E=93 Learn
+=C2=B7 How to run GTR T5 LLM offline on a Macbook? (link ( https://til.simo=
+nwillison.net/python/gtr-t5-large ))
+
+=C2=B7 Introduction to multi-agents and AI vs AI challenge. (link ( https:/=
+/huggingface.co/deep-rl-course/unit7/introduction ))
+
+=C2=B7 How to build a simple semantic search engine. (link ( https://twitte=
+r.com/CohereAI/status/1620783720738308099?s=3D20&t=3DtELjIoyeRqP7IIjOgA_iDg=
+ ))
+
+=E2=80=9C=F0=9F=91=8B Too many links?! I created a database for all links m=
+entioned in these emails. Refer 1 friend=C2=A0using this link ( https://www=
+.bensbites.co/subscribe?ref=3DAvZtzWqyz6 )=C2=A0and I'll send over the=C2=
+=A0link=C2=A0database.=E2=80=9D
+=E2=80=94=E2=80=94=E2=80=94
+=F0=9F=94=AC Research
+=C2=B7 FROMAGe - A model that efficiently bootstraps frozen LLMs for images=
+. (link ( https://twitter.com/kohjingyu/status/1620602402813648898?s=3D20&t=
+=3DVVEMciVRCbDmdcrPOkLoKg ))
+
+=C2=B7 Epic-Sounds - A large-scale dataset of actions that sound. (link ( h=
+ttp://arxiv.org/abs/2302.00646 ))
+
+=C2=B7 Jointist from ByteDance - An instrument-aware framework capable of t=
+ranscribing, recognizing, and separating multiple musical instruments. (lin=
+k ( https://arxiv.org/abs/2302.00286 ))
+
+=C2=B7 Improving few-shot generalisation by exploring and exploiting auxili=
+ary data. (link ( http://arxiv.org/abs/2302.00674 ))
+
+=C2=B7 Clinical Decision Transformer - Intended treatment recommendation th=
+rough goal prompting. (link ( http://arxiv.org/abs/2302.00612 ))
+
+=C2=B7 mPLUG-2 - A new unified paradigm with modularized design for multi-m=
+odal pretraining. (link ( http://arxiv.org/abs/2302.00402 ))
+
+=C2=B7 Learning universal policies via text-guided video generation. (link =
+( https://arxiv.org/abs/2302.00111 ))
+
+=C2=B7 Transformers meet directed graphs - from Deepmind. (link ( https://a=
+rxiv.org/abs/2302.00049 ))
+
+=C2=B7 Synthetic Prompting by Microsoft - Generating chain-of-thought demon=
+strations for large language models. (link ( https://arxiv.org/abs/2302.006=
+18 ))
+
+=C2=B7 Large language models can be easily distracted by irrelevant context=
+. (link ( https://arxiv.org/abs/2302.00093 ))
+
+=C2=B7 In-context retrieval-augmented language models. (link ( https://arxi=
+v.org/abs/2302.00083 ))
+
+=C2=B7 Debiasing vision-language models via biassed prompts. (link ( https:=
+//arxiv.org/abs/2302.00070 ))
+
+=C2=B7 The power of external memory in increasing predictive model capacity=
+ - from Google. (link ( https://arxiv.org/abs/2302.00003 ))
+
+=C2=B7 CFM - Conditional flow matching, a simulation-free training objectiv=
+e for CNFs. (link ( http://arxiv.org/abs/2302.00482 ))
+
+=C2=B7 Two for One by Microsoft - Diffusion models and force fields for coa=
+rse-grained molecular dynamics. (link ( https://arxiv.org/abs/2302.00600 ))

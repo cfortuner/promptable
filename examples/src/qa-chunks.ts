@@ -1,0 +1,70 @@
+import dotenv from "dotenv";
+dotenv.config();
+import fs from "fs";
+import chalk from "chalk";
+import { OpenAI, Prompt, prompts } from "promptable";
+
+const apiKey = process.env.OPENAI_API_KEY || "";
+
+/**
+ * Run QA on a Document split into chunks.
+ *
+ * Each chunk is sent to the model as a separate request.
+ *
+ * @param args
+ */
+const run = async (args: string[]) => {
+  const openai = new OpenAI(apiKey);
+  const prompt = prompts.QAPrompt;
+
+  // Load the file
+  const filepath = "./data/startup-mistakes.txt";
+  let doc = fs.readFileSync(filepath, "utf8");
+
+  // Split the doc by the separator
+  const separator = "\n\n";
+  const texts = doc.split(separator);
+
+  const chunkSize = 1000;
+  const chunkOverlap = 100;
+
+  // Create chunks to send to the model
+  const chunks = texts.reduce((chunks: string[], text) => {
+    let chunk = chunks.pop() || "";
+    const chunkLength = openai.countTokens(chunk);
+    if (chunkLength >= chunkSize + chunkOverlap) {
+      chunks.push(chunk);
+      chunk = "";
+    }
+    chunk = chunk === "" ? text : chunk + separator + text;
+    chunks.push(chunk);
+    return chunks;
+  }, []);
+
+  // Run the Question-Answer prompt on each chunk
+  const question = args[0] || "What is the most common mistake founders make?";
+
+  console.log(chalk.blue.bold("\nRunning QA Example: startup-mistakes.txt"));
+  console.log(chalk.white(`Question: ${question}`));
+
+  for (const chunk of chunks) {
+    const tokensUsed = openai.countTokens(
+      prompt.format({ document: chunk, question })
+    );
+
+    console.log(
+      `\n${chunk.substring(0, 100).trim()}...\n\n...${chunk
+        .slice(-100)
+        .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
+    );
+
+    const answer = await openai.generate(prompt, {
+      document: chunk,
+      question,
+    });
+
+    console.log(chalk.greenBright(`Answer: ${answer}`));
+  }
+};
+
+export default run;

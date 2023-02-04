@@ -3,6 +3,12 @@
 - Utilities
   - Embeddings
   - Document Loaders / Readers
+  - text splitting, transformation
+    - https://github.com/retextjs/retext
+    - 'retext-simplify', 'retext-redundant-acronyms','retext-repeated-words'
+    - 'remove stopwords' -> https://github.com/fergiemcdowall/stopw
+    - https://github.com/NaturalNode/natural
+  - summarization (https://thetokenizer.com/2013/04/28/build-your-own-summary-tool/)
 - Prompt Templates
   - Few shot
   - Chain of thought
