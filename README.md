@@ -1,4 +1,4 @@
-# Promptable.js (Langchain + GPT Index for Typescript)
+# Promptable (Langchain + GPT Index for Typescript)
 
 ⚡ Build fullstack AI apps in Typescript/Javascript. ⚡
 
