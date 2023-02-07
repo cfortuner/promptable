@@ -18,12 +18,17 @@
     "axios": "^1.2.4",
     "commander": "^9.4.1",
     "dotenv": "^16.0.3",
+    "dropbox": "^10.34.0",
     "enquirer": "^2.3.6",
+    "file-system-cache": "^2.0.2",
+    "pdf-parse": "^1.1.1",
     "promptable": "workspace:*",
     "tslog": "^4.7.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "@types/node-fetch": "^2.6.2",
+    "@types/pdf-parse": "^1.1.1",
     "eslint": "7.32.0",
     "ts-node": "^10.9.1",
     "tsconfig": "0.0.0",

@@ -23,6 +23,9 @@
             "@utils/*": [
                 "src/utils/*"
             ],
+            "@indexes/*": [
+                "src/indexes/*"
+            ],
             "@prompts/*": [
                 "src/prompts/*"
             ],

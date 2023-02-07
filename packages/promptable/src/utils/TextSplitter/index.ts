@@ -1,6 +1,7 @@
 import { logger } from "../Logger";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
+
 export interface TextSplitterOptions {
   lengthFn?: (text: string) => number;
   chunkSize?: number;
@@ -51,7 +52,7 @@ export abstract class TextSplitter {
       chunk = chunk === "" ? text : chunk + separator + text;
 
       chunks.push(chunk);
-      console.log(chunks, chunk, lastChunk, lastChunkLength);
+      // console.log(chunks, chunk, lastChunk, lastChunkLength);
 
       return chunks;
     }, []);
@@ -67,6 +68,13 @@ export abstract class TextSplitter {
 
     return encoded.bpe.length;
   };
+
+  public serialize() {
+    return {
+      chunkSize: this.chunkSize,
+      overlap: this.overlap,
+    };
+  }
 }
 
 export class CharacterTextSplitter extends TextSplitter {

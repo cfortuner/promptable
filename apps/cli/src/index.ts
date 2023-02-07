@@ -5,6 +5,7 @@ import parser from "./parser";
 import textSplitter from "./textSplitter";
 import chatbot from "./chatbot";
 import chatbotWithInteractionMemory from "./chatbot_with_interaction_memory";
+import dropboxQa from "./dropboxQa";
 
 import { utils } from "promptable";
 import { logger } from "./utils/Logger";
@@ -19,10 +20,12 @@ const commands: {
   parser,
   textSplitter,
   chatbot,
-  chatbotWithInteractionMemory
+  chatbotWithInteractionMemory,
+  dropboxQa
 };
 
 async function run(args: string[]) {
+  console.log(commands)
   const command = args[0];
   if (commands[command]) {
     await commands[command]();
