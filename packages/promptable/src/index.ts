@@ -14,6 +14,32 @@ import z from "zod";
 import { JSONParser, CSVParser, Parser } from "@prompts/Parser";
 import * as common from "./common";
 
+/** ideal api
+ *
+ * import promptable from "@promptable";
+ *
+ * 1. create your index / store
+ *
+ * react
+ * <PromptableProvider>
+ * </PromptableProvider>
+ *
+ * nodejs
+ * const agent = promptable.create('agent', {})
+ *
+ * 2. use the hooks / functions
+ * const { query, mutate } = usePromptable()
+ *
+ * agent.query('hello')
+ *
+ * 3. provide tools to your agents via the api:
+ * const serp = promptable.tools.
+ * agent.use()
+ *
+ *
+ *
+ */
+
 export {
   Chain,
   SequentialChain,

@@ -1,0 +1,69 @@
+---
+slug: to-do 
+title: How to use Bridge in your existing Expressjs app. 
+authors: [raul]
+tags: [devops]
+---
+
+Migrating a project from one framework to another can be a challenging task, but it can also bring numerous benefits such as improved performance, increased functionality, and better security. Whether you're facing outdated dependencies, changing business requirements, or simply seeking to explore new technologies, there comes a time when every project must undergo a transition.
+
+But such thing is not always possible and sometimes the cost and effort required may not make it feasible. It is essential to weigh the benefits against the costs and determine whether migrating to a new framework is the right decision for your project.
+
+## Why would you transition to Bridge?
+
+Bridge is a TypeScript framework that leverages the same mechanisms as Express.js, but with an added layer of structure for improved development speed and efficiency. Its main objective is to provide type-safety across all components of your API, including middlewares, data validation, and endpoint handlers. 
+
+Additionally, Bridge can significantly reduce the boilerplate code required for a TypeScript Node.js application, making the development process faster and more streamlined. Whether you're looking to improve your backend or frontend development, Bridge provides a powerful solution that leverages the benefits of TypeScript to deliver a more efficient and scalable application.
+
+<!-- Here is an example of how Bridge uses Typescript to infer the types inside the resolve function, after validation the received body. -->
+
+<!-- ```ts twoslash -->
+<!-- import { z } from "zod" -->
+<!-- import { handler } from "bridge" -->
+
+<!-- const updateUser = handler({ -->
+<!--   body: z.object({ -->
+<!--     name: z.string(), -->
+<!--     email: z.string().email(), -->
+<!--     age: z.number().optional() -->
+<!--   }), -->
+<!--   resolve: (p) => { -->
+<!--           //^? -->
+<!--     // ... -->
+<!--     return "Success" -->
+<!--   } -->
+<!-- }) -->
+
+<!-- ``` -->
+
+<!-- The body is responsible for data validation and ensures that the client receives an error if the schema is not respected. The type of the body is inferred in the resolve function, providing added type-safety to your API. -->
+
+## Mixing Bridge and expressjs
+
+The good news is that while Bridge and Expressjs are different, they all share the same fundamental mechanisms and can co-exist inside the same project.
+
+ This means that you can continue to use your existing project while gradually incorporating new routes built with Bridge. The full migration can eventually be achieved over time.
+
+This compatibility is achieved by integrating Bridge as an Express.js middleware, making the transition process seamless and straightforward. With this approach, you can take advantage of the benefits of Bridge while maintaining the stability and functionality of your existing project.
+
+```ts
+import express from 'express';
+import { handler, initBridge } from 'bridge';
+
+const app = express();
+
+// ...
+// your existing express stuff
+// ...
+
+// Bridge
+const routes = { hello: handler({ resolve: () => 'Hello' }) };
+
+app.use('/bridge', initBridge({ routes }).expressMiddleware());
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
+```
+
+In conclusion, migrating a project to a new framework can be a challenging but rewarding experience that brings numerous benefits. Whether you're looking to improve performance, increase functionality, or explore new technologies, the process of migrating to Bridge can deliver the results you need. With its compatibility with Express.js and its ability to provide type-safety across all components of your API, Bridge offers a powerful solution for modern development. 
