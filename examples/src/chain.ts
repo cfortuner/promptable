@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-import axios from "axios";
 import { initPromptable, OpenAI, steps } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
