@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { logger } from "../Logger";
+import { logger } from "../../internal/Logger";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
 export interface TextSplitterOptions {

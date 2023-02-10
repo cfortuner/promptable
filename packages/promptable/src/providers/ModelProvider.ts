@@ -1,4 +1,4 @@
-import { Prompt } from "../prompts/Prompt";
+import { Prompt } from "@prompts/Prompt";
 
 export enum ModelProviderType {
   OpenAI,
@@ -10,8 +10,10 @@ export abstract class ModelProvider {
   constructor(type: ModelProviderType) {
     this.type = type;
   }
+}
 
-  abstract generate(
+export interface CompletionsModelProvider extends ModelProvider {
+  generate(
     prompt: Prompt,
     variables: { [key: string]: any },
     ...args: any[]

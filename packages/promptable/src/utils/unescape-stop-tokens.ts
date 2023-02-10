@@ -1,4 +1,4 @@
-import { logger } from "./Logger";
+import { logger } from "../internal/Logger";
 
 /**
  * Replace any escaped stop tokens like "\\n" their unescaped versions

@@ -1,4 +1,4 @@
-import { logger } from "@utils/Logger";
+import { logger } from "src/internal/Logger";
 
 export abstract class Parser {
   abstract parse(text: string): any;

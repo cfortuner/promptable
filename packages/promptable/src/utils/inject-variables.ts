@@ -1,14 +1,6 @@
-import { logger } from "./Logger";
+import Handlebars from "handlebars";
 
-// todo: Possibly replace with https://handlebarsjs.com/guide/expressions.html#html-escaping
-export const injectVariables = (
-  text: string,
-  variables: { [name: string]: any }
-) => {
-  logger.debug(
-    `Injecting variables into text: ${text} with variables: ${variables}`
-  );
-  return Object.entries(variables)?.reduce((acc, [name, value]) => {
-    return acc.replaceAll(`{{${name}}}`, value);
-  }, text);
-};
+export function injectVariables(text: string, variables: any): string {
+  const template = Handlebars.compile(text);
+  return template(variables);
+}

@@ -1,26 +1,23 @@
-import axios, { AxiosRequestConfig } from "axios";
-import GPT3Tokenizer from "gpt3-tokenizer";
-
 import { Prompt } from "@prompts/Prompt";
-import { ModelProviderType } from "./ModelProvider";
+import { CompletionsModelProvider, ModelProviderType } from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
-import { Configuration, OpenAIApi } from "openai";
+import { Configuration, OpenAIApi, CreateEmbeddingRequestInput } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
-import { logger } from "@utils/Logger";
-import { parseJsonSSE } from "@utils/parse-json-sse";
+import GPT3Tokenizer from "gpt3-tokenizer";
 
 /**
  * OpenAI Model Provider
  */
-export class OpenAI extends ModelProvider {
+export class OpenAI extends ModelProvider implements CompletionsModelProvider {
   apiKey: string;
   api: OpenAIApi;
   config: OpenAIConfig = DEFAULT_OPENAI_MODEL_CONFIG;
-  tokenizer = new GPT3Tokenizer({ type: "gpt3" });
+  tokenizer;
 
   constructor(apiKey: string, config?: Partial<OpenAIConfig>) {
     super(ModelProviderType.OpenAI);
     this.apiKey = apiKey;
+    this.tokenizer = new GPT3Tokenizer({ type: "gpt3" });
     this.api = new OpenAIApi(
       new Configuration({
         apiKey: apiKey,
