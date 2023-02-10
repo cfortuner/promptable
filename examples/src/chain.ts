@@ -19,7 +19,7 @@ export default async function run() {
 
   const chain = p.chain("Write and Evaluate poem");
 
-  chain.pipe(
+  chain.sequence(
     steps.llm.completion("poem", {
       prompt: writePoem,
       provider: openai,

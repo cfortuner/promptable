@@ -25,20 +25,20 @@ export class ChainStep<
     return outputs;
   }
 
-  pipe<A extends StepInput, B extends StepOutput>(
+  sequence<A extends StepInput, B extends StepOutput>(
     step: Step<A, B>
   ): ChainStep<A, B>;
-  pipe<A extends StepInput, B extends StepInput, C extends StepOutput>(
+  sequence<A extends StepInput, B extends StepInput, C extends StepOutput>(
     step1: Step<A, B>,
     step2: Step<B, C>
   ): ChainStep<A, C>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
     D extends StepOutput
   >(step1: Step<A, B>, step2: Step<B, C>, step3: Step<C, D>): ChainStep<A, D>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
@@ -50,7 +50,7 @@ export class ChainStep<
     step3: Step<C, D>,
     step4: Step<D, E>
   ): ChainStep<A, E>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
@@ -64,7 +64,7 @@ export class ChainStep<
     step4: Step<D, E>,
     step5: Step<E, F>
   ): ChainStep<A, F>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
@@ -80,7 +80,7 @@ export class ChainStep<
     step5: Step<E, F>,
     step6: Step<F, G>
   ): ChainStep<A, G>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
@@ -98,7 +98,7 @@ export class ChainStep<
     step6: Step<F, G>,
     step7: Step<G, H>
   ): ChainStep<A, H>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
@@ -118,7 +118,7 @@ export class ChainStep<
     step7: Step<G, H>,
     step8: Step<H, I>
   ): ChainStep<A, I>;
-  pipe<
+  sequence<
     A extends StepInput,
     B extends StepInput,
     C extends StepInput,
@@ -140,7 +140,7 @@ export class ChainStep<
     step8: Step<H, I>,
     step9: Step<I, J>
   ): ChainStep<A, J>;
-  pipe(...steps: Step<any, any>[]): ChainStep<any, any> {
+  sequence(...steps: Step<any, any>[]): ChainStep<any, any> {
     this.steps.push(...steps);
     return this;
   }
@@ -151,56 +151,5 @@ export class ChainStep<
  *
  * Chains are a way to compose steps together. They are useful for creating
  * complex workflows that can be reused across different prompts.
- *
- * @example
- *
- * const chain = Chain('my-chain')
- * .step('step-1', async (props) => {
- *  return { ...props, foo: 'bar' }
- * })
- * .step('step-2', async (props) => {
- * return { ...props, bar: 'baz' }
- * })
- *
- * @example
- * Parallel steps can be created by using the `parallel` method.
- *
- * const chain = Chain('my-chain')
- *  .parallel('parallel-step', [
- *    step('step-1', async (props) => {
- *      return { ...props, foo: 'bar' }
- *    }),
- *    step('step-2', async (props) => {
- *      return { ...props, bar: 'baz' }
- *    })
- *  ])
- *
- * @example
- *
- * Pipes can be created by using the `pipe` method.
- *
- * const chain = Chain('my-chain')
- *  .pipe('pipe-step', [
- *    step('step-1', async (props) => {
- *      return { ...props, foo: 'bar' }
- *    }),
- *    step('step-2', async (props) => {
- *      return { ...props, bar: 'baz' }
- *    })
- *  ])
- *
- * @example
- *
- * Running a chain is the same as running a step.
- *
- * const chain = Chain('my-chain')
- *  step('step-1', async (props) => {
- *    return { ...props, foo: 'bar' }
- *  })
- *
- * const result = await chain.run({ name: 'my-prompt' })
- *
- * @param name the name of the chain.
- * @returns a new chain.
  */
 export const chain = (name: string) => new ChainStep(name);
