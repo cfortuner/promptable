@@ -1,55 +1,45 @@
 import dotenv from "dotenv";
 dotenv.config();
 import axios from "axios";
-import { PromptStep, SequentialChain, OpenAI, z, Prompt } from "promptable";
+import { initPromptable, OpenAI, steps } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-// Run the steps sequentially
+// configure your providers etc.
+const p = initPromptable();
 
 export default async function run() {
   const openai = new OpenAI(apiKey);
 
-  const poemPrompt = new Prompt("Write a poem about {{topic}}:", ["topic"]);
-  const evalPrompt = new Prompt(
+  const writePoem = p.prompt("Write a poem about {{topic}}:", ["topic"]);
+  const evalPoem = p.prompt(
     "Rate the following poem on it's creativity\n{{poem}}\nRating",
     ["poem"]
   );
 
-  const createPrompt = (provider: any, input: any, output: any) => {};
+  const chain = p.chain("Write and Evaluate poem");
 
-  const chain = new SequentialChain("Second");
+  chain.pipe(
+    steps.llm.completion("poem", {
+      prompt: writePoem,
+      provider: openai,
+    }),
+    p.step("map outputs", async ({ completion }) => {
+      return {
+        variables: {
+          poem: completion,
+        },
+      };
+    }),
+    steps.llm.completion("eval", {
+      prompt: evalPoem,
+      provider: openai,
+    })
+  );
+
   await chain.run({
-    // The steps in the chain
-    steps: [
-      new PromptStep({
-        prompt: poemPrompt,
-        provider: openai,
-        inputNames: ["topic"],
-        outputNames: ["poem"],
-      }),
-      // new MapStep(k)
-      new PromptStep({
-        prompt: evalPrompt,
-        provider: openai,
-        inputNames: ["poem"],
-        outputNames: ["eval"],
-      }),
-    ],
-    // The inputs to the chain
-    inputs: {
+    variables: {
       topic: "Sports",
-    },
-  });
-
-  const chainData = chain.serialize();
-
-  await axios.post("http://localhost:3000/api/chains", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: {
-      chain: chainData,
     },
   });
 

@@ -71,17 +71,4 @@ Of more than we know, and`;
       }),
     },
   });
-
-  const chainData = chain.serialize();
-
-  await axios.post("http://localhost:3000/api/chains", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: {
-      chain: chainData,
-    },
-  });
-
-  console.log("FINISHED");
 }

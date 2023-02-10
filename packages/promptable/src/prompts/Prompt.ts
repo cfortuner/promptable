@@ -33,3 +33,9 @@ export class Prompt {
     };
   }
 }
+
+export const prompt = (
+  text: string,
+  variableNames: string[],
+  parser?: Parser
+) => new Prompt(text, variableNames, parser);

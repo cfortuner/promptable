@@ -26,9 +26,6 @@
             "@prompts/*": [
                 "src/prompts/*"
             ],
-            "@chains/*": [
-                "src/chains/*"
-            ],
             "@model-providers/*": [
                 "src/model-providers/*"
             ]
