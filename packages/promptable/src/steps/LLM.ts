@@ -1,5 +1,8 @@
 import { Prompt } from "@prompts/Prompt";
-import { ModelProvider } from "../model-providers/ModelProvider";
+import {
+  CompletionsModelProvider,
+  ModelProvider,
+} from "@providers/ModelProvider";
 import { Step } from "./Step";
 
 interface LLMCompletionProps {
@@ -20,11 +23,11 @@ export class LLMCompletionStep extends Step<
   LLMCompletionOutput
 > {
   prompt: Prompt;
-  provider: ModelProvider;
+  provider: CompletionsModelProvider;
 
   constructor(
     name: string,
-    { prompt, provider }: { prompt: Prompt; provider: ModelProvider }
+    { prompt, provider }: { prompt: Prompt; provider: CompletionsModelProvider }
   ) {
     super(name);
     this.prompt = prompt;
@@ -58,7 +61,7 @@ export class LLMCompletionStep extends Step<
 const completion = (
   name: string,
   // todo: maybe allow provider / prompt to be strings
-  opts: { prompt: Prompt; provider: ModelProvider }
+  opts: { prompt: Prompt; provider: CompletionsModelProvider }
 ) => new LLMCompletionStep(name, opts);
 
 const llm = { completion };

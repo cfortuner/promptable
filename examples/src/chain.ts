@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { initPromptable, OpenAI, steps } from "promptable";
+import { initPromptable, providers, steps } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
@@ -8,7 +8,7 @@ const apiKey = process.env.OPENAI_API_KEY || "missing";
 const p = initPromptable();
 
 export default async function run() {
-  const openai = new OpenAI(apiKey);
+  const openai = new providers.OpenAI(apiKey);
 
   const writePoem = p.prompt("Write a poem about {{topic}}:", ["topic"]);
   const evalPoem = p.prompt(

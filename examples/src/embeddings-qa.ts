@@ -18,7 +18,7 @@ The steps are:
     4. Submit the question along with the most relevant context to GPT, and receive an answer which makes use of the provided contextual information.
 **/
 
-import { OpenAI, Prompt, prompts } from "promptable";
+import { providers, prompts } from "promptable";
 import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
@@ -29,7 +29,7 @@ import chalk from "chalk";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 const EMBEDDING_MODEL = "text-embedding-ada-002";
-const openai = new OpenAI(apiKey);
+const openai = new providers.OpenAI(apiKey);
 
 async function createEmbedding(text: string, model: string = EMBEDDING_MODEL) {
   const result = await openai.api.createEmbedding({
@@ -229,7 +229,7 @@ const run = async (args: string[]) => {
     return acc + `\nDocument:\n${result.content}\n`;
   }, "");
 
-  const openai = new OpenAI(apiKey);
+  const openai = new providers.OpenAI(apiKey);
   const prompt = prompts.QAPrompt;
 
   console.log(chalk.blue(`Running QA Bot...`));

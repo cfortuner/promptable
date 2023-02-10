@@ -1,5 +1,5 @@
 import { CSVParser, JSONParser } from "../utils/Parser";
-import { Prompt } from "../common/Prompt";
+import { Prompt } from "@prompts/Prompt";
 
 /**
  * 
