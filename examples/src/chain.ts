@@ -37,11 +37,13 @@ export default async function run() {
     })
   );
 
-  await chain.run({
+  const result = await chain.run({
     variables: {
       topic: "Sports",
     },
   });
+
+  console.log(result);
 
   console.log("FINISHED");
 }

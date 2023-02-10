@@ -203,20 +203,4 @@ export class ChainStep<
  * @param name the name of the chain.
  * @returns a new chain.
  */
-import { LLMCompletion } from "./LLM";
 export const chain = (name: string) => new ChainStep(name);
-
-const c = chain("my-chain").pipe(
-  LLMCompletion("my-prompt", {
-    prompt: {} as any,
-    provider: {} as any,
-  }),
-  step("step-1", async () => {
-    return {
-      name: "hi",
-    };
-  }),
-  step("step-2", async (props: { name: string }) => {
-    return props;
-  })
-);
