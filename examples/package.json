@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "example": "pnpm build && node dist/index.js",
-    "build": "tsup ./index.ts --format cjs --dts"
+    "start": "pnpm build && node dist/index.js",
+    "build": "tsup ./src/index.ts --format cjs --dts"
   },
   "dependencies": {
     "axios": "^1.2.4",
