@@ -10,19 +10,24 @@ const p = initPromptable();
 export default async function run() {
   const openai = new providers.OpenAI(apiKey);
 
-  const writePoem = p.prompt("Write a poem about {{topic}}:", ["topic"]);
-  const evalPoem = p.prompt(
+  const writePoemPrompt = p.prompt("Write a poem about {{topic}}:", ["topic"]);
+  const evalPoemPrompt = p.prompt(
     "Rate the following poem on it's creativity\n{{poem}}\nRating",
     ["poem"]
   );
 
-  const chain = p.chain("Write and Evaluate poem");
+  const writePoem = steps.llm.completion("poem", {
+    prompt: writePoemPrompt,
+    provider: openai,
+  });
 
-  chain.sequence(
-    steps.llm.completion("poem", {
-      prompt: writePoem,
-      provider: openai,
-    }),
+  const evalPoem = steps.llm.completion("eval", {
+    prompt: evalPoemPrompt,
+    provider: openai,
+  });
+
+  const chain = p.chain(
+    writePoem,
     p.step("map outputs", async ({ completion }) => {
       return {
         variables: {
@@ -30,10 +35,7 @@ export default async function run() {
         },
       };
     }),
-    steps.llm.completion("eval", {
-      prompt: evalPoem,
-      provider: openai,
-    })
+    evalPoem
   );
 
   const result = await chain.run({
@@ -43,6 +45,4 @@ export default async function run() {
   });
 
   console.log(result);
-
-  console.log("FINISHED");
 }

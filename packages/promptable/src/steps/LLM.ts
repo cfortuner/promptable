@@ -13,11 +13,6 @@ interface LLMCompletionOutput {
   completion: string;
 }
 
-interface Opts {
-  prompt: Prompt;
-  provider: ModelProvider;
-}
-
 export class LLMCompletionStep extends Step<
   LLMCompletionProps,
   LLMCompletionOutput

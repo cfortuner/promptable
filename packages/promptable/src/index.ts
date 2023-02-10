@@ -1,6 +1,7 @@
 import { chain } from "@steps/Chain";
 import llm from "@steps/LLM";
 import { Step, step } from "@steps/Step";
+import { LLMCompletionStep } from "@steps/LLM";
 import { Prompt, prompt } from "@prompts/Prompt";
 import { ModelProvider, ModelProviderType } from "@providers/ModelProvider";
 
@@ -15,6 +16,7 @@ export const initPromptable = () => {
 // Prebuild steps
 export const steps = {
   llm,
+  LLMCompletionStep,
 };
 
 // Prebuilt prompts
