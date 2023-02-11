@@ -26,8 +26,6 @@ export class FileLoader implements Loader {
         content,
         meta: {
           source: this.path,
-          format: "text",
-          encoding: "utf-8",
           ...this.meta,
         },
       },

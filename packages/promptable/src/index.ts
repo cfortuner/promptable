@@ -1,4 +1,4 @@
-import { Prompt, prompt } from "@prompts/Prompt";
+import { Prompt } from "@prompts/Prompt";
 import { ModelProvider } from "@providers/ModelProvider";
 
 export interface Document {

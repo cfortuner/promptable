@@ -2,7 +2,8 @@ import chalk from "chalk";
 import { CharacterTextSplitter, SentenceTextSplitter } from "promptable";
 
 /**
- * Simple example showing how to chunk sentences
+ * Simple example showing how to use the TextSplitter to split and chunk text.
+ * This example splits a paragraph of text into sentences, then chunks the sentences into chunks of 50 tokens.
  *
  * outputs the following:
  *

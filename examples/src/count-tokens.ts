@@ -1,3 +1,4 @@
+import fs from "fs";
 import chalk from "chalk";
 import { FileLoader, OpenAI, QAPrompt } from "promptable";
 
@@ -12,13 +13,11 @@ export default async function run(args: string[]) {
 
   const filepath = "./data/startup-mistakes.txt";
   const loader = new FileLoader(filepath);
-
-  // load doc
   let docs = loader.load();
 
-  const tokensUsed = openai.countTokens(
-    prompt.format({ document: docs[0], question: "" })
-  );
+  const promptText = prompt.format({ document: docs[0].content, question: "" });
 
-  console.log(chalk.white(`Token Count` + tokensUsed));
+  const tokensUsed = openai.countTokens(promptText);
+
+  console.log(chalk.white(`Token Count`), chalk.green(tokensUsed));
 }

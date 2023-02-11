@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import promptSimple from "./prompt-simple";
-import promptMultiple from "./prompt-sequential";
+import promptSequential from "./prompt-sequential";
 import promptParallel from "./prompt-parallel";
 
 import embeddings from "./embeddings";
@@ -20,7 +20,7 @@ import summarizeRecursive from "./summarize-recursive";
 import parseJson from "./parse-json";
 import parseCSV from "./parse-csv";
 
-import tokenCount from "./token-count";
+import countTokens from "./count-tokens";
 
 import splitNewlines from "./split-newlines";
 import splitParagraphs from "./split-paragraphs";
@@ -34,7 +34,7 @@ import chunkSentences from "./chunk-sentences";
 
 const examples = {
   "prompt-simple": promptSimple,
-  "prompt-multiple": promptMultiple,
+  "prompt-sequential": promptSequential,
   "prompt-parallel": promptParallel,
 
   embeddings: embeddings,
@@ -53,7 +53,7 @@ const examples = {
   "parse-json": parseJson,
   "parse-csv": parseCSV,
 
-  "token-count": tokenCount,
+  "count-tokens": countTokens,
 
   "split-newlines": splitNewlines,
   "split-paragraphs": splitParagraphs,
