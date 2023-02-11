@@ -7,13 +7,13 @@
     "examples"
   ],
   "scripts": {
-    "build": "NODE_ENV=development turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
+    "build": "FORCE_COLOR=1 NODE_ENV=development turbo run build",
+    "dev": "FORCE_COLOR=1 turbo run dev --parallel",
+    "lint": "FORCE_COLOR=1 turbo run lint",
+    "test": "FORCE_COLOR=1 turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "publish-packages": "turbo run build lint test && changeset version && changeset publish",
-    "example": "turbo run start --filter examples --"
+    "publish-packages": "FORCE_COLOR=1 turbo run build lint test && changeset version && changeset publish",
+    "example": "FORCE_COLOR=1  turbo run start --filter examples --"
   },
   "engines": {
     "node": ">=14.0.0"

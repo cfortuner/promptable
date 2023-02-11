@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { common } from "promptable";
+import { OpenAI, ExtractJSONPrompt } from "promptable";
 import chalk from "chalk";
 
 /**
@@ -15,8 +15,8 @@ import chalk from "chalk";
 export default async function run() {
   const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-  const openai = new common.OpenAI(apiKey);
-  const prompt = common.prompts.ExtractJSONPrompt;
+  const openai = new OpenAI(apiKey);
+  const prompt = ExtractJSONPrompt;
 
   // Calendly email
   const data = `
@@ -55,7 +55,5 @@ Pacific Time - US & Canada`;
 
   const output = prompt.parse(json);
 
-  console.log("DATA", output);
-
-  console.log(chalk.greenBright(`JSON`, json));
+  console.log(chalk.greenBright(`JSON`, output));
 }

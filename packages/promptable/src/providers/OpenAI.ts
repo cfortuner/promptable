@@ -5,7 +5,7 @@ import {
   ModelProviderType,
 } from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
-import { Configuration, OpenAIApi } from "openai";
+import { Configuration, CreateEmbeddingResponse, OpenAIApi } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
@@ -61,9 +61,9 @@ export class OpenAI
     return "failed";
   }
 
-  async embed(texts: string[]): Promise<any>;
-  async embed(text: string): Promise<any>;
-  async embed(textOrTexts: any): Promise<any> {
+  async embed(texts: string[]): Promise<CreateEmbeddingResponse[]>;
+  async embed(text: string): Promise<CreateEmbeddingResponse>;
+  async embed(textOrTexts: any) {
     if (Array.isArray(textOrTexts)) {
       return this.embedMany(textOrTexts);
     } else {
@@ -71,26 +71,23 @@ export class OpenAI
     }
   }
 
-  private embedOne = async (text: string): Promise<any> => {
+  private embedOne = async (text: string) => {
     const result = await this.api.createEmbedding({
-      model: this.config.model,
+      model: this.embeddingsConfig.model,
       input: text.replace(/\n/g, " "),
     });
 
     return result?.data;
   };
 
-  private embedMany = async (
-    texts: string[],
-    chunkSize: number = 1000
-  ): Promise<any> => {
+  private embedMany = async (texts: string[], chunkSize: number = 1000) => {
     const results: any[] = [];
     for (let i = 0; i < texts.length; i += chunkSize) {
       const batch = texts.slice(i, i + chunkSize);
       const batchResults = await Promise.all(
         batch.map((text) =>
           this.api.createEmbedding({
-            model: this.config.model,
+            model: this.embeddingsConfig.model,
             input: text.replace(/\n/g, " "),
           })
         )

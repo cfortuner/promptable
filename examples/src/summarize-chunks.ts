@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, Prompt, prompts } from "promptable";
+import { OpenAI, SummarizePrompt } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -15,7 +15,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.SummarizePrompt;
+  const prompt = SummarizePrompt;
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";

@@ -1,20 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config();
-import axios from "axios";
-import {
-  PromptStep,
-  SequentialChain,
-  OpenAI,
-  z,
-  Prompt,
-  utils,
-  ParallelChain,
-} from "promptable";
+import { OpenAI, Prompt, CharacterTextSplitter } from "promptable";
 
+/**
+ * Evaluate a poem on each paragraph
+ */
 export default async function run() {
   const apiKey = process.env.OPENAI_API_KEY || "missing";
-
-  // Run the steps sequentially
 
   const openai = new OpenAI(apiKey);
 
@@ -37,38 +29,24 @@ Athletes everywhere at their share
 A reminder that we're all capable
 Of more than we know, and`;
 
-  const splitter = new utils.CharacterTextSplitter("\n\n", {
-    chunkSize: 50,
+  const splitter = new CharacterTextSplitter("\n\n", {
     overlap: 0,
   });
 
   const chunks = splitter.splitText(text);
+
+  console.log("Chunks");
 
   const evalPoemChunksPrompt = new Prompt(
     `Rate the following poem phrase on it's creativity:\n\nPoem:{{poem}}\n\n\nRating: Give the phrase a rating (1-5) and an explaination:`,
     ["poem"]
   );
 
-  const chain = new ParallelChain("Evaluate Poem Segments");
+  const evaluations = await Promise.all(
+    chunks.map((chunk) =>
+      openai.generate(evalPoemChunksPrompt, { poem: chunk })
+    )
+  );
 
-  await chain.run({
-    // The steps in the chain
-    steps: chunks.map((chunk, i) => {
-      return new PromptStep({
-        name: "Eval Poem Phrase",
-        prompt: evalPoemChunksPrompt,
-        provider: openai,
-        inputNames: ["phrase"],
-        outputNames: ["eval"],
-      });
-    }),
-
-    inputs: {
-      parallelInputs: chunks.map((chunk) => {
-        return {
-          phrase: chunk,
-        };
-      }),
-    },
-  });
+  console.log(evaluations);
 }

@@ -1,18 +1,17 @@
-import glob from "glob";
 import fs from "fs";
 import { Document } from "..";
 
-export abstract class Loader {
-  abstract load(): Document[];
+export interface Loader {
+  load(): Document[];
 }
 
-export class FileLoader extends Loader {
+export class FileLoader implements Loader {
   path: string;
   meta?: Record<string, any>;
 
   constructor(path: string, meta?: Record<string, any>) {
-    super();
     this.path = path;
+    this.meta = meta;
   }
 
   /**

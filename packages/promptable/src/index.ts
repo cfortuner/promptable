@@ -11,32 +11,27 @@ export * from "@prompts/prompts";
 
 // Providers
 import { OpenAI } from "@providers/OpenAI";
-export const providers = {
-  OpenAI,
-};
+export { OpenAI };
 
 // Loaders
 import { Loader, FileLoader } from "@loaders/index";
-export { Loader, FileLoader };
-
-// Utils
+export type { Loader };
+export { FileLoader };
 
 // Parsing
 import { JSONParser, CSVParser, Parser, ListParser } from "@utils/Parser";
 export type { Parser };
-export const parsers = {
-  JSONParser,
-  CSVParser,
-  ListParser,
-};
+export { JSONParser, CSVParser, ListParser };
 
 // Splitting
 import {
   TextSplitter,
   CharacterTextSplitter,
   SentenceTextSplitter,
+  TokenSplitter,
 } from "@utils/TextSplitter";
-export const splitters = {
+export {
+  TokenSplitter,
   TextSplitter,
   CharacterTextSplitter,
   SentenceTextSplitter,
@@ -46,9 +41,6 @@ import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
 export const utils = {
-  splitters,
-  parsers,
-  CharacterTextSplitter,
   unescapeStopTokens,
   injectVariables,
   parseJsonSSE,

@@ -1,9 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
-import axios from "axios";
-import { PromptStep, SequentialChain, OpenAI, z, Prompt } from "promptable";
-import dfd, { readCSV } from "danfojs-node";
-import { Configuration, OpenAIApi } from "openai";
+import { readCSV, toJSON } from "danfojs-node";
+import { OpenAI } from "promptable";
+import chalk from "chalk";
 
 /**
  * Semantic Search with Embeddings
@@ -34,21 +33,22 @@ function vectorSimilarity(x: number[], y: number[]): number {
 }
 
 export default async function run() {
-  const configuration = new Configuration({ apiKey: apiKey });
-  const openai = new OpenAIApi(configuration);
-  console.log("hello");
+  const openai = new OpenAI(apiKey);
 
+  // just loading embeddings from oai for now
   const df = await readCSV(
     "https://github.com/openai/openai-cookbook/raw/main/examples/data/fine_food_reviews_with_embeddings_1k.csv"
   );
 
-  const input = "delicious beans";
-  const embeddingResponse = await openai.createEmbedding({
-    input: input,
-    model: "text-embedding-ada-002",
-  });
-  const embedding = embeddingResponse.data.data[0].embedding;
+  const query = "delicious beans";
 
+  // todo: build index around this idea
+
+  // embed the input
+  const embeddingResponse = await openai.embed(query);
+  const embedding = embeddingResponse.data[0].embedding;
+
+  // compute similarity
   df.addColumn(
     "similarity",
     df
@@ -56,8 +56,13 @@ export default async function run() {
       .apply((x: any) => vectorSimilarity(JSON.parse(x), embedding)),
     { inplace: true }
   );
-  df.sortValues("similarity", { ascending: false })
-    .head(5)
-    .column("Text")
-    .print();
+
+  console.log(chalk.blue("Query: " + query));
+  // sort by similarity
+  const col = df
+    .sortValues("similarity", { ascending: false })
+    .head(1)
+    .column("Text");
+
+  console.log(chalk.green(JSON.stringify(toJSON(col), undefined, 2)));
 }

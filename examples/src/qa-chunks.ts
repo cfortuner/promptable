@@ -2,7 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, Prompt, prompts } from "promptable";
+import {
+  OpenAI,
+  Prompt,
+  QAPrompt,
+  FileLoader,
+  CharacterTextSplitter,
+} from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -13,33 +19,19 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  *
  * @param args
  */
-const run = async (args: string[]) => {
+export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.QAPrompt;
+  const prompt = QAPrompt;
 
-  // Load the file
   const filepath = "./data/startup-mistakes.txt";
-  let doc = fs.readFileSync(filepath, "utf8");
+  const loader = new FileLoader(filepath);
+  const splitter = new CharacterTextSplitter("\n");
 
-  // Split the doc by the separator
-  const separator = "\n\n";
-  const texts = doc.split(separator);
-
-  const chunkSize = 1000;
-  const chunkOverlap = 100;
-
-  // Create chunks to send to the model
-  const chunks = texts.reduce((chunks: string[], text) => {
-    let chunk = chunks.pop() || "";
-    const chunkLength = openai.countTokens(chunk);
-    if (chunkLength >= chunkSize + chunkOverlap) {
-      chunks.push(chunk);
-      chunk = "";
-    }
-    chunk = chunk === "" ? text : chunk + separator + text;
-    chunks.push(chunk);
-    return chunks;
-  }, []);
+  // load and split the documents
+  const docs = loader.load();
+  const chunks = splitter.splitText(docs.map((doc) => doc.content).join("\n"), {
+    chunk: true,
+  });
 
   // Run the Question-Answer prompt on each chunk
   const question = args[0] || "What is the most common mistake founders make?";
@@ -65,6 +57,4 @@ const run = async (args: string[]) => {
 
     console.log(chalk.greenBright(`Answer: ${answer}`));
   }
-};
-
-export default run;
+}

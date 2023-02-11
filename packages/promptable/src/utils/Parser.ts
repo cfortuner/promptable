@@ -1,17 +1,17 @@
 import { logger } from "src/internal/Logger";
 import { parse } from "csv-parse/sync";
 
-export interface Parser {
-  parse(text: string): any;
+export interface Parser<T extends any> {
+  parse(iterable: Iterable<string>): T;
 }
 
-export class NoopParser implements Parser {
+export class NoopParser implements Parser<string> {
   parse(text: string) {
     return text;
   }
 }
 
-export class JSONParser implements Parser {
+export class JSONParser implements Parser<any> {
   /**
    * Parses JSON text into an object
    *
@@ -35,7 +35,7 @@ export class JSONParser implements Parser {
 /**
  * Parser that parses CSV text into an array of objects
  */
-export class CSVParser implements Parser {
+export class CSVParser implements Parser<any> {
   /**
    * Parses CSV text into an array of objects
    *
@@ -61,7 +61,7 @@ export class CSVParser implements Parser {
   }
 }
 
-export class ListParser implements Parser {
+export class ListParser implements Parser<Array<any>> {
   /**
    * Parses a list of items separated by a character
    *

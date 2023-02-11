@@ -4,12 +4,14 @@ import { Document } from "..";
 
 export interface TextSplitterOptions {
   lengthFn?: (text: string) => number;
+  chunk?: boolean;
   chunkSize?: number;
   overlap?: number;
 }
 
 export abstract class TextSplitter {
-  chunkSize = 4000;
+  chunk = false;
+  chunkSize = 1000;
   overlap = 200;
 
   protected tokenizer = new GPT3Tokenizer({ type: "gpt3" });
@@ -27,29 +29,16 @@ export abstract class TextSplitter {
       this.overlap = opts.overlap;
     }
 
+    if (typeof opts?.chunk !== "undefined") {
+      this.chunk = opts.chunk;
+    }
+
     if (typeof opts?.lengthFn !== "undefined") {
       this.lengthFn = opts.lengthFn;
     }
   }
 
-  abstract splitText(text: string): string[];
-
-  splitDocuments(documents: Document[]): Document[] {
-    let texts = documents.map((doc) => doc.content);
-    let metas = documents.map((doc) => doc.meta);
-    return this.createDocuments(texts, metas);
-  }
-
-  createDocuments(texts: string[], metas?: Record<string, any>[]): Document[] {
-    let _metas = metas || new Array(texts.length).fill({});
-    let documents: Document[] = [];
-    for (let i = 0; i < texts.length; i++) {
-      for (const chunk of this.splitText(texts[i])) {
-        documents.push({ content: chunk, meta: _metas[i] });
-      }
-    }
-    return documents;
-  }
+  abstract splitText(text: string, opts?: TextSplitterOptions): string[];
 
   protected createChunks(texts: string[], separator: string): string[] {
     // build up chunks based on chunk size
@@ -65,7 +54,9 @@ export abstract class TextSplitter {
 
       chunk = chunk === "" ? text : chunk + separator + text;
 
-      chunks.push(chunk);
+      if (chunk.length) {
+        chunks.push(chunk);
+      }
 
       return chunks;
     }, []);
@@ -86,22 +77,71 @@ export abstract class TextSplitter {
 export class CharacterTextSplitter extends TextSplitter {
   character: string;
 
-  constructor(character: string = "\n\n", opts?: TextSplitterOptions) {
+  constructor(character: string = "\\n\\n", opts?: TextSplitterOptions) {
     super(opts);
     this.character = character;
   }
 
-  splitText = (text: string): string[] => {
-    // TODO: Maybe use something like https://github.com/Tessmore/sbd instead
-    const texts = text.split(this.character);
-    return this.createChunks(texts, this.character);
+  splitText = (text: string, opts?: TextSplitterOptions): string[] => {
+    const texts = text.split(this.character).map((t) => t.trim());
+    return opts?.chunk || this.chunk
+      ? this.createChunks(texts, " ")
+      : texts.filter((t) => t.length);
   };
 }
 
 export class SentenceTextSplitter extends TextSplitter {
-  splitText(text: string): string[] {
+  splitText(text: string, opts?: TextSplitterOptions): string[] {
     const tokenizer = new natural.SentenceTokenizer();
-    const texts = tokenizer.tokenize(text);
-    return this.createChunks(texts, " ");
+    const texts = tokenizer.tokenize(text).map((t) => t.trim());
+    return opts?.chunk || this.chunk
+      ? this.createChunks(texts, " ")
+      : texts.filter((t) => t.length);
+  }
+}
+
+export class TokenSplitter extends TextSplitter {
+  chunk = true;
+
+  splitText(text: string, opts?: Omit<TextSplitterOptions, "chunk">): string[] {
+    const chunkSize = opts?.chunkSize || this.chunkSize;
+    const overlap = opts?.overlap || this.overlap;
+
+    const chunks = [];
+
+    // Encode the text using the tokenizer
+    const encoded: { bpe: number[]; text: string[] } =
+      this.tokenizer.encode(text);
+
+    // Get the length of the input
+    const encodedLength = encoded.bpe.length;
+
+    // Set the starting index and current index for the loop
+    let startIndex = 0;
+    let currentIndex = Math.min(startIndex + chunkSize, encodedLength);
+
+    // Get the encodedChunk by slicing the encoded tokens from startIndex to currentIndex
+    let encodedChunk = encoded.bpe.slice(startIndex, currentIndex);
+
+    // While the startIndex is less than the length of the encoded tokens
+    while (startIndex < encodedLength) {
+      // Decode the encodedChunk and append it to the chunks array
+      const chunk = this.tokenizer.decode(encodedChunk);
+
+      // Push the chunk to the chunks array
+      chunks.push(chunk);
+
+      // Increment the startIndex by chunkSize - overlap
+      startIndex += chunkSize - overlap;
+
+      // Update the currentIndex by taking the minimum of startIndex + chunkSize and length of the encoded tokens
+      currentIndex = Math.min(startIndex + chunkSize, encodedLength);
+
+      // Get the encodedChunk by slicing the encoded tokens from startIndex to currentIndex
+      encodedChunk = encoded.bpe.slice(startIndex, currentIndex);
+    }
+
+    // Return the chunks
+    return chunks.map((chunk) => chunk.trim());
   }
 }

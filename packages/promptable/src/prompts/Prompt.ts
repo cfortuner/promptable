@@ -1,22 +1,41 @@
 import { injectVariables } from "@utils/inject-variables";
-import { NoopParser, Parser } from "./Parser";
-export class Prompt<T extends string = string> {
+import { NoopParser, Parser } from "@utils/Parser";
+export class Prompt<
+  T extends string = string,
+  P extends Parser<any> = NoopParser
+> implements Parser<any>
+{
   text: string;
   variableNames: T[];
 
-  private parser = new NoopParser();
+  private parser: P;
 
-  constructor(text: string, variableNames: T[], parser?: Parser) {
+  constructor(text: string, variableNames: T[], parser?: P) {
     this.text = text;
     this.variableNames = variableNames;
 
+    this.parser = new NoopParser() as P;
     if (typeof parser !== "undefined") {
       this.parser = parser;
     }
   }
 
-  parse(completion: string) {
-    return this.parser.parse(completion);
+  parse(completion: string): any;
+  parse(completions: string[]): any[];
+  parse(completions: string | string[]) {
+    if (typeof completions === "string") {
+      return this.parser.parse(completions);
+    }
+
+    if (completions.length === 0) {
+      return;
+    }
+
+    if (completions.length === 1) {
+      return this.parser.parse(completions[0]);
+    }
+
+    return completions.map((completion) => this.parser.parse(completion));
   }
 
   format(variables: { [name: string]: any }) {
@@ -35,5 +54,5 @@ export class Prompt<T extends string = string> {
 export const prompt = (
   text: string,
   variableNames: string[],
-  parser?: Parser
+  parser?: Parser<any>
 ) => new Prompt(text, variableNames, parser);

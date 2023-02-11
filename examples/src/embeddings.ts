@@ -32,10 +32,7 @@ const EMBEDDING_MODEL = "text-embedding-ada-002";
 const openai = new OpenAI(apiKey);
 
 async function createEmbedding(text: string, model: string = EMBEDDING_MODEL) {
-  const result = await openai.api.createEmbedding({
-    model,
-    input: text,
-  });
+  const result = await openai.embed(text);
 
   return result?.data;
 }

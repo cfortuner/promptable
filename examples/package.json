@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "pnpm build && node dist/index.js",
+    "start": "FORCE_COLOR=1 pnpm build && node dist/index.js",
     "build": "tsup ./src/index.ts --format cjs --dts"
   },
   "dependencies": {
