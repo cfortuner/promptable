@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
-import { common } from "promptable";
-import chalk from "chalk";
+import { ExtractCSVPrompt, providers } from "promptable";
 
 /**
  * Extract CSV from Data
@@ -16,10 +15,11 @@ import chalk from "chalk";
 export default async function run() {
   const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-  const openai = new OpenAI(apiKey, {
+  const openai = new providers.OpenAI(apiKey, {
     max_tokens: 2000,
   });
-  const prompt = prompts.ExtractCSVPrompt;
+
+  const prompt = ExtractCSVPrompt;
 
   // Load the file
   const filepath = "./data/bens-bites-email.txt";
@@ -49,9 +49,9 @@ export default async function run() {
 
   const csvs = await Promise.all(
     chunks.map((chunk) => {
-      return openai.generate(prompts.ExtractCSVPrompt, {
+      return openai.generate(prompt, {
         data: chunk,
-        headers,
+        headers: headers.join(","),
       });
     })
   );

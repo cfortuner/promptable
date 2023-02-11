@@ -1,10 +1,11 @@
-import { CSVParser, JSONParser } from "../utils/Parser";
+import { CSVParser, JSONParser } from "@utils/Parser";
 import { Prompt } from "@prompts/Prompt";
 
 /**
  * 
 Given the following document, answer the question if you can.
 If you don\'t have enough information, don't return anything.
+
 Document:
 {{document}}
 
@@ -31,6 +32,7 @@ Answer:`.trim(),
  *Use the following portion of a long document to see if any of the text is relevant to answer the question. 
 
 Return any relevant text verbatim.
+
 {{document}}
 
 Question: {{question}}
@@ -107,18 +109,6 @@ QUESTION: {{question}}
 =========
 FINAL ANSWER:`.trim(),
   ["summaries", "question"]
-);
-
-/**
- *  Content: {{content}}
- * 
-  Source: {{source}}
- */
-export const QASourcePrompt = new Prompt(
-  `
-  Content: {{content}}
-  Source: {{source}}`.trim(),
-  ["content", "source"]
 );
 
 /**

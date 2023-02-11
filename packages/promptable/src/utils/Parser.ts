@@ -1,20 +1,27 @@
+import { logger } from "src/internal/Logger";
 import { parse } from "csv-parse/sync";
 
-export abstract class Parser {
-  abstract parse(text: string): any;
+export interface Parser {
+  parse(text: string): any;
 }
 
-export class NoopParser extends Parser {
+export class NoopParser implements Parser {
   parse(text: string) {
     return text;
   }
 }
 
-export class JSONParser extends Parser {
-  constructor() {
-    super();
-  }
-
+export class JSONParser implements Parser {
+  /**
+   * Parses JSON text into an object
+   *
+   * @example
+   * const parser = new JSONParser();
+   * parser.parse('{"a": 1, "b": 2, "c": 3}'); // outputs {a: 1, b: 2, c: 3}
+   *
+   * @param text a string of JSON text
+   * @returns an object
+   */
   parse(text: string) {
     try {
       return JSON.parse(text);
@@ -28,11 +35,17 @@ export class JSONParser extends Parser {
 /**
  * Parser that parses CSV text into an array of objects
  */
-export class CSVParser extends Parser {
-  constructor() {
-    super();
-  }
-
+export class CSVParser implements Parser {
+  /**
+   * Parses CSV text into an array of objects
+   *
+   * @example
+   * const parser = new CSVParser();
+   * parser.parse("a,b,c\n1,2,3"); // outputs [{a: 1, b: 2, c: 3}]
+   *
+   * @param text a string of CSV text
+   * @returns an array of objects
+   */
   parse(text: string) {
     try {
       return parse(text, {
@@ -43,6 +56,28 @@ export class CSVParser extends Parser {
       });
     } catch (e) {
       console.error(e as any);
+      throw e;
+    }
+  }
+}
+
+export class ListParser implements Parser {
+  /**
+   * Parses a list of items separated by a character
+   *
+   * @example
+   * const parser = new ListParser();
+   * parser.parse("a, b, c"); // outputs ["a", "b", "c"]
+   *
+   * @param text a string of items separated by a character
+   * @param char a character to split the text by
+   * @returns an array of items
+   */
+  parse(text: string, char = ",") {
+    try {
+      return text.split(char).map((t) => t.trim());
+    } catch (e) {
+      logger.error(e as any);
       throw e;
     }
   }

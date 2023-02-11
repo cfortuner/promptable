@@ -1,6 +1,6 @@
-import chalk from "chalk";
-import { logger } from "../../internal/Logger";
+import natural from "natural";
 import GPT3Tokenizer from "gpt3-tokenizer";
+import { Document } from "..";
 
 export interface TextSplitterOptions {
   lengthFn?: (text: string) => number;
@@ -33,6 +33,23 @@ export abstract class TextSplitter {
   }
 
   abstract splitText(text: string): string[];
+
+  splitDocuments(documents: Document[]): Document[] {
+    let texts = documents.map((doc) => doc.content);
+    let metas = documents.map((doc) => doc.meta);
+    return this.createDocuments(texts, metas);
+  }
+
+  createDocuments(texts: string[], metas?: Record<string, any>[]): Document[] {
+    let _metas = metas || new Array(texts.length).fill({});
+    let documents: Document[] = [];
+    for (let i = 0; i < texts.length; i++) {
+      for (const chunk of this.splitText(texts[i])) {
+        documents.push({ content: chunk, meta: _metas[i] });
+      }
+    }
+    return documents;
+  }
 
   protected createChunks(texts: string[], separator: string): string[] {
     // build up chunks based on chunk size
@@ -75,8 +92,16 @@ export class CharacterTextSplitter extends TextSplitter {
   }
 
   splitText = (text: string): string[] => {
-    // TODO: Maybe use https://github.com/Tessmore/sbd instead
+    // TODO: Maybe use something like https://github.com/Tessmore/sbd instead
     const texts = text.split(this.character);
     return this.createChunks(texts, this.character);
   };
+}
+
+export class SentenceTextSplitter extends TextSplitter {
+  splitText(text: string): string[] {
+    const tokenizer = new natural.SentenceTokenizer();
+    const texts = tokenizer.tokenize(text);
+    return this.createChunks(texts, " ");
+  }
 }

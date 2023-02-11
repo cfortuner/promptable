@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import chain from "./chain";
+import simplePrompt from "./simple-prompt";
+import multiplePrompts from "./multiple-prompts";
 import parser from "./parser";
 import textSplitter from "./textSplitter";
 import semanticSearch from "./semantic-search";
@@ -19,7 +20,8 @@ import embeddingsQA from "./embeddings-qa";
 // Add examples here!
 
 const examples = {
-  chain,
+  simplePrompt: simplePrompt,
+  multiplePrompts: multiplePrompts,
   parser,
   textSplitter,
   semanticSearch,

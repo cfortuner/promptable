@@ -1,6 +1,4 @@
 import { injectVariables } from "@utils/inject-variables";
-import { logger } from "src/internal/Logger";
-import * as z from "zod";
 import { NoopParser, Parser } from "./Parser";
 export class Prompt<T extends string = string> {
   text: string;

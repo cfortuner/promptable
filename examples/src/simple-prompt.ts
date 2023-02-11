@@ -10,18 +10,10 @@ export default async function run() {
   const writePoemPrompt = new Prompt("Write a poem about {{topic}}:", [
     "topic",
   ]);
-  const evalPoemPrompt = new Prompt(
-    "Rate the following poem on it's creativity\n{{poem}}\nRating",
-    ["poem"]
-  );
 
   const poem = await openai.generate(writePoemPrompt, {
     topic: "hi",
   });
 
-  const evaluation = openai.generate(evalPoemPrompt, {
-    poem,
-  });
-
-  console.log(evaluation);
+  console.log(poem);
 }
