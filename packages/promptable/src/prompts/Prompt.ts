@@ -2,13 +2,13 @@ import { injectVariables } from "@utils/inject-variables";
 import { logger } from "src/internal/Logger";
 import * as z from "zod";
 import { NoopParser, Parser } from "./Parser";
-export class Prompt {
+export class Prompt<T extends string = string> {
   text: string;
-  variableNames: string[];
+  variableNames: T[];
 
   private parser = new NoopParser();
 
-  constructor(text: string, variableNames: string[], parser?: Parser) {
+  constructor(text: string, variableNames: T[], parser?: Parser) {
     this.text = text;
     this.variableNames = variableNames;
 

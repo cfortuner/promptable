@@ -1,18 +1,23 @@
 import { Prompt } from "@prompts/Prompt";
-import { CompletionsModelProvider, ModelProviderType } from "./ModelProvider";
+import {
+  CompletionsModelProvider,
+  EmbeddingsModelProvider,
+  ModelProviderType,
+} from "./ModelProvider";
 import { ModelProvider } from "./ModelProvider";
-import { Configuration, OpenAIApi, CreateEmbeddingRequestInput } from "openai";
+import { Configuration, OpenAIApi } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
-/**
- * OpenAI Model Provider
- */
-export class OpenAI extends ModelProvider implements CompletionsModelProvider {
+export class OpenAI
+  extends ModelProvider
+  implements CompletionsModelProvider, EmbeddingsModelProvider
+{
   apiKey: string;
   api: OpenAIApi;
   config: OpenAIConfig = DEFAULT_OPENAI_MODEL_CONFIG;
-  tokenizer;
+  embeddingsConfig: OpenAIEmbeddingsConfig = DEFAULT_OPENAI_EMBEDDINGS_CONFIG;
+  tokenizer: GPT3Tokenizer;
 
   constructor(apiKey: string, config?: Partial<OpenAIConfig>) {
     super(ModelProviderType.OpenAI);
@@ -32,7 +37,11 @@ export class OpenAI extends ModelProvider implements CompletionsModelProvider {
     }
   }
 
-  generate = async (prompt: Prompt, variables: { [key: string]: any }) => {
+  async generate<T extends string>(
+    prompt: Prompt<T>,
+    variables: Record<T, string>,
+    ...args: any[]
+  ) {
     try {
       if (this.config.stop != null) {
         this.config.stop = unescapeStopTokens(this.config.stop);
@@ -50,6 +59,45 @@ export class OpenAI extends ModelProvider implements CompletionsModelProvider {
       console.log(e);
     }
     return "failed";
+  }
+
+  async embed(texts: string[]): Promise<any>;
+  async embed(text: string): Promise<any>;
+  async embed(textOrTexts: any): Promise<any> {
+    if (Array.isArray(textOrTexts)) {
+      return this.embedMany(textOrTexts);
+    } else {
+      return this.embedOne(textOrTexts);
+    }
+  }
+
+  private embedOne = async (text: string): Promise<any> => {
+    const result = await this.api.createEmbedding({
+      model: this.config.model,
+      input: text.replace(/\n/g, " "),
+    });
+
+    return result?.data;
+  };
+
+  private embedMany = async (
+    texts: string[],
+    chunkSize: number = 1000
+  ): Promise<any> => {
+    const results: any[] = [];
+    for (let i = 0; i < texts.length; i += chunkSize) {
+      const batch = texts.slice(i, i + chunkSize);
+      const batchResults = await Promise.all(
+        batch.map((text) =>
+          this.api.createEmbedding({
+            model: this.config.model,
+            input: text.replace(/\n/g, " "),
+          })
+        )
+      );
+      results.push(...batchResults.map((result) => result?.data));
+    }
+    return results;
   };
 
   /**
@@ -74,6 +122,10 @@ export const DEFAULT_OPENAI_MODEL_CONFIG = {
   stop: null,
 };
 
+export const DEFAULT_OPENAI_EMBEDDINGS_CONFIG = {
+  model: "text-embedding-ada-002",
+};
+
 export const OPENAI_MODEL_SETTINGS: {
   [key: string]: { maxLength: number };
 } = {
@@ -96,4 +148,8 @@ interface OpenAIConfig {
   temperature: number;
   max_tokens: number;
   stop: string[] | string | null;
+}
+
+interface OpenAIEmbeddingsConfig {
+  model: string;
 }

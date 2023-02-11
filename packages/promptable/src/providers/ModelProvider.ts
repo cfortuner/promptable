@@ -13,9 +13,14 @@ export abstract class ModelProvider {
 }
 
 export interface CompletionsModelProvider extends ModelProvider {
-  generate(
-    prompt: Prompt,
-    variables: { [key: string]: any },
+  generate<T extends string>(
+    prompt: Prompt<T>,
+    variables: Record<T, string>,
     ...args: any[]
   ): Promise<string>;
+}
+
+export interface EmbeddingsModelProvider extends ModelProvider {
+  embed(texts: string[]): Promise<any>;
+  embed(text: string): Promise<any>;
 }
