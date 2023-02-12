@@ -50,3 +50,7 @@ export const utils = {
 };
 
 export { Prompt, ModelProvider };
+
+import { scope, setTraceConfig } from "./tracing";
+import type { Trace } from "./tracing";
+export { scope, setTraceConfig, Trace };

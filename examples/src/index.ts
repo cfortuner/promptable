@@ -33,6 +33,8 @@ import chunkSentences from "./chunk-sentences";
 
 import streamCompletions from "./stream-completions";
 
+import tracing from "./tracing";
+
 // Add examples here!
 
 const examples = {
@@ -68,6 +70,8 @@ const examples = {
   "chunk-sentences": chunkSentences,
 
   "stream-completions": streamCompletions,
+
+  tracing,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>
