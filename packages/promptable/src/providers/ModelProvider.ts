@@ -31,6 +31,6 @@ export interface CompletionStreamModelProvider extends ModelProvider {
 }
 
 export interface EmbeddingsModelProvider extends ModelProvider {
-  embed(texts: string[], ...args: any[]): Promise<any>;
-  embed(text: string, ...args: any[]): Promise<any>;
+  embed(texts: string[], ...args: any[]): Promise<number[][]>;
+  embed(text: string, ...args: any[]): Promise<number[]>;
 }

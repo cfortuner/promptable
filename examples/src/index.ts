@@ -4,6 +4,7 @@ import promptSimple from "./prompt-simple";
 import promptSequential from "./prompt-sequential";
 import promptParallel from "./prompt-parallel";
 
+import embeddingsCreate from "./embeddings-create";
 import embeddings from "./embeddings";
 import embeddingsQA from "./embeddings-qa";
 import embeddingsSearch from "./embeddings-search";
@@ -40,6 +41,7 @@ const examples = {
   "prompt-parallel": promptParallel,
 
   embeddings: embeddings,
+  "embeddings-create": embeddingsCreate,
   "embeddings-qa": embeddingsQA,
   "embeddings-search": embeddingsSearch,
 

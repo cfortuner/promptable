@@ -6,6 +6,9 @@ export interface Document {
   meta: Record<string, any>;
 }
 
+import { Index } from "./indexs";
+export { Index };
+
 // Prebuilt prompts
 export * from "@prompts/prompts";
 

@@ -236,11 +236,11 @@ export class OpenAI
   async embed(
     text: string,
     options?: Omit<CreateEmbeddingRequest, "input">
-  ): Promise<CreateEmbeddingResponse>;
+  ): Promise<number[]>;
   async embed(
     texts: string[],
     options?: Omit<CreateEmbeddingRequest, "input">
-  ): Promise<CreateEmbeddingResponse[]>;
+  ): Promise<number[][]>;
   async embed(
     textOrTexts: any,
     options: Omit<
@@ -264,7 +264,7 @@ export class OpenAI
       input: text.replace(/\n/g, " "),
     });
 
-    return result?.data;
+    return result?.data.data[0].embedding;
   };
 
   private embedMany = async (
@@ -280,7 +280,7 @@ export class OpenAI
       )
     );
 
-    return batchResults.map((result) => result?.data);
+    return batchResults.map((result) => result?.data.data[0].embedding);
   };
 }
 
