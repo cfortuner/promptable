@@ -2,7 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, QAExtractPrompt } from "promptable";
+import {
+  CharacterTextSplitter,
+  FileLoader,
+  OpenAI,
+  QAExtractPrompt,
+} from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -23,27 +28,14 @@ const run = async (args: string[]) => {
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
-  let doc = fs.readFileSync(filepath, "utf8");
+  const loader = new FileLoader(filepath);
+  const splitter = new CharacterTextSplitter("\n");
 
-  // Split the doc by the separator
-  const separator = "\n\n";
-  const texts = doc.split(separator);
-
-  const chunkSize = 1000;
-  const chunkOverlap = 100;
-
-  // Create chunks to send to the model
-  const chunks = texts.reduce((chunks: string[], text) => {
-    let chunk = chunks.pop() || "";
-    const chunkLength = openai.countTokens(chunk);
-    if (chunkLength >= chunkSize + chunkOverlap) {
-      chunks.push(chunk);
-      chunk = "";
-    }
-    chunk = chunk === "" ? text : chunk + separator + text;
-    chunks.push(chunk);
-    return chunks;
-  }, []);
+  // load and split the documents
+  let docs = loader.load();
+  docs = splitter.splitDocuments(docs, {
+    chunk: true,
+  });
 
   // The Question to use for extraction
   const question = args[0] || "What is the most common mistake founders make?";
@@ -53,17 +45,10 @@ const run = async (args: string[]) => {
 
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
-    chunks.map((chunk) => {
-      return new Promise(async (r) => {
-        const note = await openai.generate(prompt, {
-          document: chunk,
-          question,
-        });
-
-        r({
-          chunk,
-          note,
-        });
+    docs.map((doc) => {
+      return openai.generate(prompt, {
+        document: doc.content,
+        question,
       });
     })
   );
@@ -73,7 +58,7 @@ const run = async (args: string[]) => {
       `Notes: ${JSON.stringify(
         {
           question,
-          notes: notes.map((n: any) => n.note),
+          notes,
         },
         null,
         4

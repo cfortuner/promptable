@@ -7,7 +7,6 @@ import {
 import { ModelProvider } from "./ModelProvider";
 import { Configuration, CreateEmbeddingResponse, OpenAIApi } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
-import GPT3Tokenizer from "gpt3-tokenizer";
 
 export class OpenAI
   extends ModelProvider
@@ -17,12 +16,10 @@ export class OpenAI
   api: OpenAIApi;
   config: OpenAIConfig = DEFAULT_OPENAI_MODEL_CONFIG;
   embeddingsConfig: OpenAIEmbeddingsConfig = DEFAULT_OPENAI_EMBEDDINGS_CONFIG;
-  tokenizer: GPT3Tokenizer;
 
   constructor(apiKey: string, config?: Partial<OpenAIConfig>) {
     super(ModelProviderType.OpenAI);
     this.apiKey = apiKey;
-    this.tokenizer = new GPT3Tokenizer({ type: "gpt3" });
     this.api = new OpenAIApi(
       new Configuration({
         apiKey: apiKey,
@@ -95,18 +92,6 @@ export class OpenAI
       results.push(...batchResults.map((result) => result?.data));
     }
     return results;
-  };
-
-  /**
-   * Count tokens in text using GPT3-Tokenizer
-   *
-   * @param text
-   * @returns
-   */
-  countTokens = (text: string): number => {
-    const encoded: { bpe: number[]; text: string[] } =
-      this.tokenizer.encode(text);
-    return encoded.bpe.length;
   };
 }
 

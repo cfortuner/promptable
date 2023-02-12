@@ -1,13 +1,15 @@
 import { Prompt } from "@prompts/Prompt";
+import { Tokenizer } from "@utils/Tokenizer";
 
 export enum ModelProviderType {
   OpenAI,
 }
 
-export abstract class ModelProvider {
+export abstract class ModelProvider extends Tokenizer {
   type: ModelProviderType;
 
   constructor(type: ModelProviderType) {
+    super();
     this.type = type;
   }
 }

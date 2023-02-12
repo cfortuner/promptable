@@ -28,8 +28,8 @@ export default async function run(args: string[]) {
   const splitter = new CharacterTextSplitter("\n");
 
   // load and split the documents
-  const docs = loader.load();
-  const chunks = splitter.splitText(docs.map((doc) => doc.content).join("\n"), {
+  let docs = loader.load();
+  docs = splitter.splitDocuments(docs, {
     chunk: true,
   });
 
@@ -39,19 +39,19 @@ export default async function run(args: string[]) {
   console.log(chalk.blue.bold("\nRunning QA Example: startup-mistakes.txt"));
   console.log(chalk.white(`Question: ${question}`));
 
-  for (const chunk of chunks) {
+  for (const doc of docs) {
     const tokensUsed = openai.countTokens(
-      prompt.format({ document: chunk, question })
+      prompt.format({ document: doc.content, question })
     );
 
     console.log(
-      `\n${chunk.substring(0, 100).trim()}...\n\n...${chunk
+      `\n${doc.content.substring(0, 100).trim()}...\n\n...${doc.content
         .slice(-100)
         .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
     );
 
     const answer = await openai.generate(prompt, {
-      document: chunk,
+      document: doc.content,
       question,
     });
 

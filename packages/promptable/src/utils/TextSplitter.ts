@@ -40,6 +40,31 @@ export abstract class TextSplitter {
 
   abstract splitText(text: string, opts?: TextSplitterOptions): string[];
 
+  splitDocuments(docs: Document[], opts?: TextSplitterOptions): Document[] {
+    const texts = docs.map((doc) => doc.content);
+    const metas = docs.map((doc) => doc.meta);
+    return this.createDocuments(texts, metas);
+  }
+
+  createDocuments(
+    texts: string[],
+    metas: Record<string, any>[] = [],
+    opts?: TextSplitterOptions
+  ) {
+    const docs = [];
+    for (let i = 0; i < texts.length; i++) {
+      const text = texts[i];
+      const chunks = this.splitText(text, opts);
+      for (const chunk of chunks) {
+        docs.push({
+          content: chunk,
+          meta: metas[i] || {},
+        });
+      }
+    }
+    return docs;
+  }
+
   protected createChunks(texts: string[], separator: string): string[] {
     // build up chunks based on chunk size
     return texts.reduce((chunks: string[], text) => {

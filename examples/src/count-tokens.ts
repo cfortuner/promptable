@@ -11,12 +11,8 @@ export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
   const prompt = QAPrompt;
 
-  const filepath = "./data/startup-mistakes.txt";
-  const loader = new FileLoader(filepath);
-  let docs = loader.load();
-
+  const docs = new FileLoader("./data/startup-mistakes.txt").load();
   const promptText = prompt.format({ document: docs[0].content, question: "" });
-
   const tokensUsed = openai.countTokens(promptText);
 
   console.log(chalk.white(`Token Count`), chalk.green(tokensUsed));

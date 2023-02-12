@@ -2,7 +2,15 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, QAExtractPrompt, QAPrompt } from "promptable";
+import {
+  CharacterTextSplitter,
+  FileLoader,
+  ListParser,
+  OpenAI,
+  QAExtractPrompt,
+  QAPrompt,
+  SummarizePrompt,
+} from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -20,55 +28,59 @@ const run = async (args: string[]) => {
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
-  let doc = fs.readFileSync(filepath, "utf8");
+  const loader = new FileLoader(filepath);
+  const splitter = new CharacterTextSplitter("\n");
 
-  // Split the doc by the separator
-  const separator = "\n\n";
-  const texts = doc.split(separator);
-
-  const chunkSize = 1000;
-  const chunkOverlap = 100;
-
-  // Create chunks to send to the model
-  const chunks = texts.reduce((chunks: string[], text) => {
-    let chunk = chunks.pop() || "";
-    const chunkLength = openai.countTokens(chunk);
-    if (chunkLength >= chunkSize + chunkOverlap) {
-      chunks.push(chunk);
-      chunk = "";
-    }
-    chunk = chunk === "" ? text : chunk + separator + text;
-    chunks.push(chunk);
-    return chunks;
-  }, []);
+  // load and split the documents
+  let docs = loader.load();
+  docs = splitter.splitDocuments(docs, {
+    chunk: true,
+  });
 
   // The Question to use for extraction
-  const question = args[0] || "What is deadliest mistake founders make?";
+  const question = args[0] || "What is the most common mistake founders make?";
 
-  console.log(chalk.blue.bold("\nRunning QA Extraction: startup-mistakes.txt"));
+  console.log(chalk.blue.bold("\nRunning QA From Notes: startup-mistakes.txt"));
   console.log(chalk.white(`Question: ${question}`));
 
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
-    chunks.map((chunk) => {
-      return new Promise(async (r) => {
-        const note = await openai.generate(extractPrompt, {
-          document: chunk,
-          question,
-        });
-
-        r({
-          chunk,
-          note,
-        });
+    docs.map((doc) => {
+      return openai.generate(extractPrompt, {
+        document: doc.content,
+        question,
       });
     })
   );
 
-  // Run the Question-Answer prompt on the list of notes
+  // note: selecting the most important notes
+  // and summarizing them is really important
+  // how do you avoid the token limit?
+  const noteSummaries = await Promise.all(
+    notes.map((note) => {
+      return openai.generate(SummarizePrompt, {
+        document: note,
+      });
+    })
+  );
+
+  const tokenCount = openai.countTokens(
+    qaPrompt.format({
+      question,
+      document: "NOTES" + noteSummaries.join("\n---\n"),
+    })
+  );
+  console.log("token count ", tokenCount);
+
+  // note: it's difficult to ensure that your prompt doesn't exceed the token limit
+  // note: having openai do the formatting is bad and we should change it
+  // note: joining your notes together is the most basic selector, we should add one
+  // & formatting the notes is very simple. but useful.
+  // generally just making it easy to format prompts.
+
   const answer = await openai.generate(qaPrompt, {
     question,
-    document: "NOTES\n" + notes.map((n: any) => n.note).join("\n---\n"),
+    document: "NOTES" + noteSummaries.join("\n---\n"),
   });
 
   console.log(chalk.greenBright(`Answer: ${answer}`));
