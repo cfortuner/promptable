@@ -1,7 +1,9 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
-const chains: any[] = [];
+// change to get from prisma
+
+const chains: any[] = [{name: "cat"}];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {

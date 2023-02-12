@@ -15,3 +15,10 @@ model Example {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
+
+model Chain {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    scopeId   String
+    trace     String
+}
