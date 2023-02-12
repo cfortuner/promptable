@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { readCSV, toJSON } from "danfojs-node";
-import { OpenAI } from "promptable";
+import { Index, OpenAI } from "promptable";
 import chalk from "chalk";
 
 /**
@@ -23,15 +23,6 @@ import chalk from "chalk";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-function vectorSimilarity(x: number[], y: number[]): number {
-  let sum = 0;
-  for (let i = 0; i < x.length; i++) {
-    sum += x[i] * y[i];
-  }
-
-  return sum;
-}
-
 export default async function run() {
   const openai = new OpenAI(apiKey);
 
@@ -40,29 +31,25 @@ export default async function run() {
     "https://github.com/openai/openai-cookbook/raw/main/examples/data/fine_food_reviews_with_embeddings_1k.csv"
   );
 
+  const documents = df.column("Text").values.map((x: any) => {
+    return {
+      content: x,
+      meta: {},
+    };
+  });
+  const embeddings = df.column("embedding").values.map((x: any) => {
+    return JSON.parse(x);
+  });
+
   const query = "delicious beans";
 
   // todo: build index around this idea
 
-  // embed the input
-  const embeddingResponse = await openai.embed(query);
-  const embedding = embeddingResponse.data[0].embedding;
-
-  // compute similarity
-  df.addColumn(
-    "similarity",
-    df
-      .column("embedding")
-      .apply((x: any) => vectorSimilarity(JSON.parse(x), embedding)),
-    { inplace: true }
-  );
+  const index = new Index("fine-food", openai, documents);
+  await index.index(embeddings);
 
   console.log(chalk.blue("Query: " + query));
-  // sort by similarity
-  const col = df
-    .sortValues("similarity", { ascending: false })
-    .head(1)
-    .column("Text");
+  const result = await index.query(query, 1);
 
-  console.log(chalk.green(JSON.stringify(toJSON(col), undefined, 2)));
+  console.log(chalk.green(JSON.stringify(result[0])));
 }
