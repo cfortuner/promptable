@@ -20,222 +20,77 @@ The steps are:
 
 import dotenv from "dotenv";
 dotenv.config();
-import fs from "fs";
 import * as dfd from "danfojs-node";
-import { cwd } from "process";
-import { DataFrame } from "danfojs-node/dist/danfojs-base";
 import chalk from "chalk";
-import { OpenAI, QAPrompt } from "promptable";
+import { Index, OpenAI, QAPrompt } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
-const EMBEDDING_MODEL = "text-embedding-ada-002";
-const openai = new OpenAI(apiKey);
 
-async function createEmbedding(text: string, model: string = EMBEDDING_MODEL) {
-  const result = await openai.api.createEmbedding({
-    model,
-    input: text,
-  });
-
-  return result?.data;
-}
-
-/**
- * Computes the cosine similarity between two embedding vectors.
- *
- * ## Notes
- *
- * - Since OpenAI embeddings are normalized, the dot product is equivalent to the cosine similarity.
- *
- * @private
- * @param x - first vector
- * @param y - second vector
- * @returns dot product
- */
-export function vectorSimilarity(x: number[], y: number[]): number {
-  let sum = 0;
-  for (let i = 0; i < x.length; i++) {
-    sum += x[i] * y[i];
-  }
-  return sum;
-}
-
-async function readDataset() {
-  if (fs.existsSync(`${cwd()}/data/cache/olympics_sections_text.json`)) {
-    try {
-      const df = await dfd.readJSON(
-        `${cwd()}/data/cache/olympics_sections_text.json`
-      );
-      return df as DataFrame;
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
+// Using Openai cookbook embeddings
+const loadData = async () => {
   const df = await dfd.readCSV(
     "https://cdn.openai.com/API/examples/data/olympics_sections_text.csv",
     {}
   );
-
-  dfd.toJSON(df, {
-    filePath: `${cwd()}/data/cache/olympics_sections_text.json`,
-  });
-
-  return df;
-}
-
-async function loadOpenAIEmbeddings() {
-  if (
-    fs.existsSync(
-      `${cwd()}/data/cache/olympics_sections_document_embeddings.json`
-    )
-  ) {
-    try {
-      const df = await dfd.readJSON(
-        `${cwd()}/data/cache/olympics_sections_document_embeddings.json`
-      );
-      return df as DataFrame;
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  const df = await dfd.readCSV(
+  const embeddings = await dfd.readCSV(
     "https://cdn.openai.com/API/examples/data/olympics_sections_document_embeddings.csv",
     {}
   );
 
-  dfd.toJSON(df, {
-    filePath: `${cwd()}/data/cache/olympics_sections_document_embeddings.json`,
+  // dont need the title and heading columns
+  // embeddings.drop({ columns: ["title", "heading"] });
+  const maxDim = embeddings.shape[1];
+  const embeddingsOnly = embeddings.iloc({
+    columns: [`0:${maxDim - 2}`],
   });
 
-  return df;
-}
-
-const CACHED_EMBEDDINGS_FILEPATH = `${cwd()}/data/cache/olympics_sections_document_embeddings-generated.csv`;
-
-async function loadEmbeddings(
-  path: string = CACHED_EMBEDDINGS_FILEPATH,
-  cache = true
-) {
-  // use caching
-  if (cache) {
-    try {
-      const df = await dfd.readJSON(path);
-
-      // cache locally
-      dfd.toJSON(df as any, {
-        filePath: CACHED_EMBEDDINGS_FILEPATH,
-      });
-
-      return df;
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  return await createEmbeddings();
-}
-
-async function createEmbeddings() {
-  // load the data
-  let df = await readDataset();
-
-  // create the embeddings using the content in the dataframe
-  let i = 0;
-  for (let i = 0; i < df.column("content").values.length; i++) {
+  const documents = df.values.map((row, i) => {
+    const title = df.column("title").values[i];
+    const heading = df.column("heading").values[i];
     const content = df.column("content").values[i] as string;
 
-    // create embedding
-    const embedding = await createEmbedding(content);
-
-    // add each embedding to the dataframe as a separate column
-    const colId = (i + 1).toString();
-    df.addColumn(colId, embedding.data[0].embedding, {
-      inplace: true,
-    });
-    i++;
-  }
-
-  // cache the embeddings
-  dfd.toJSON(df, {
-    filePath: CACHED_EMBEDDINGS_FILEPATH,
+    return {
+      content,
+      meta: {
+        title,
+        heading,
+      } as any,
+    };
   });
 
-  return df;
-}
-
-async function processDocuments() {
-  // read the wikipedia data in from oai
-  const dataDF = await readDataset();
-
-  const embeddingsDF = await loadOpenAIEmbeddings();
-  // uncomment to generate your own embeddings
-  // const embeddingsDF = await loadEmbeddings(undefined, false);
-
   return {
-    dataDF,
-    embeddingsDF,
+    documents,
+    embeddings: embeddingsOnly.values as number[][],
   };
-}
+};
 
-/**
- * Question Answering using Embeddings and QA Prompt
- *
- * @param args
- */
 const run = async (args: string[]) => {
   console.log(
     chalk.blueBright(`Running Embeddings QA: 2020 olympics wikipedia`)
   );
-  console.log(chalk.blue(`Loading Embeddings...`));
-  // EmbeddingsDF is a dataframe with the embeddings for each document as columns
-  const { dataDF, embeddingsDF } = await processDocuments();
 
-  const query = "Who won the men's high jump?";
-  console.log(chalk.blue(`Embedding Question: ${query}`));
-
-  // Create the embedding for the query
-  const queryEmbeddingResponse = await createEmbedding(query, EMBEDDING_MODEL);
-  const queryEmbedding = queryEmbeddingResponse.data[0].embedding;
-
-  // for each embedding in the df, compute the similarity to the query embedding
-  const maxDim = embeddingsDF.shape[1];
-  const embeddingsOnly = embeddingsDF.iloc({
-    columns: [`0:${maxDim - 2}`],
-  });
-
-  // create objects to represent the results
-  const results = embeddingsOnly.values.map((row: any, i) => {
-    const title = embeddingsDF.column("title").values[i];
-    const heading = embeddingsDF.column("heading").values[i];
-    const similarity = vectorSimilarity(row, queryEmbedding);
-    const content = dataDF.column("content").values[i];
-
-    return {
-      title,
-      heading,
-      content,
-      embeddings: row,
-      similarity,
-    };
-  });
-
-  const sorted = results.sort((a, b) => b.similarity - a.similarity);
-
-  // Now, let's try to answer the question using the top 5 results
-
-  const top5Results = sorted.slice(0, 5).reduce((acc, result) => {
-    return acc + `\nDocument:\n${result.content}\n`;
-  }, "");
+  console.log(chalk.white("Loading data..."));
+  const { documents, embeddings } = await loadData();
 
   const openai = new OpenAI(apiKey);
   const prompt = QAPrompt;
 
+  // create your index
+  const index = new Index("olympics", openai, documents);
+  await index.index(embeddings);
+
+  // query your index
+  const query = "Who won the men's high jump?";
+
+  const results = await index.query(query, 5);
+
+  const top5Documents = results.map((r) => r.document.content);
+
+  // results
   console.log(chalk.blue(`Running QA Bot...`));
   console.log(chalk.white(`${prompt.text}`));
   const answer = await openai.generate(prompt, {
-    document: top5Results,
+    document: top5Documents.join("\n---\n"),
     question: query,
   });
   console.log(chalk.greenBright(`${answer}`));
