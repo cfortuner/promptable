@@ -64,10 +64,13 @@ const run = async (args: string[]) => {
     })
   );
 
+  // TODO: Is there a way to handle this for the user?
+  const document = `NOTES:\n${splitter.mergeText(noteSummaries, "\n---\n")}`;
+
   const tokenCount = openai.countTokens(
     qaPrompt.format({
       question,
-      document: "NOTES" + noteSummaries.join("\n---\n"),
+      document,
     })
   );
   console.log("token count ", tokenCount);
@@ -77,10 +80,9 @@ const run = async (args: string[]) => {
   // note: joining your notes together is the most basic selector, we should add one
   // & formatting the notes is very simple. but useful.
   // generally just making it easy to format prompts.
-
   const answer = await openai.generate(qaPrompt, {
     question,
-    document: "NOTES" + noteSummaries.join("\n---\n"),
+    document,
   });
 
   console.log(chalk.greenBright(`Answer: ${answer}`));

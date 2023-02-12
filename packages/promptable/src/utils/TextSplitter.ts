@@ -39,7 +39,13 @@ export abstract class TextSplitter {
   }
 
   abstract splitText(text: string, opts?: TextSplitterOptions): string[];
-
+  mergeText(texts: string[], separator: string = " "): string {
+    return texts.map((text) => text.trim()).join(separator);
+  }
+  mergeDocuments(docs: Document[]): string {
+    const texts = docs.map((doc) => doc.content);
+    return this.mergeText(texts);
+  }
   splitDocuments(docs: Document[], opts?: TextSplitterOptions): Document[] {
     const texts = docs.map((doc) => doc.content);
     const metas = docs.map((doc) => doc.meta);

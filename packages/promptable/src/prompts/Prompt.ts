@@ -1,5 +1,6 @@
 import { injectVariables } from "@utils/inject-variables";
 import { NoopParser, Parser } from "@utils/Parser";
+
 export class Prompt<
   T extends string = string,
   P extends Parser<any> = NoopParser
@@ -50,6 +51,27 @@ export class Prompt<
     };
   }
 }
+
+//TODO: This is very unweildy. I need to figure out a better way to do this.
+// how to handle injecting documents / context into the base prompt.
+// How to select context for the prompt?, Ranking?
+// how to check the token size of the prompt + context?
+
+// Maybe a builder pattern?
+// like this:
+// const prompt = new PromptBuilder()
+//   .text("What is your name?")
+//   .variable("name")
+//   .examples(["John", "Jane", "Joe"])
+//   .build();
+//
+// Instead of a builder pattern, I could use a
+// factory function:
+// const prompt = prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
+//
+// Or I could use a class factory:
+// const prompt = Prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
+//
 
 export const prompt = (
   text: string,

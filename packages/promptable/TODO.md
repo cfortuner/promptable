@@ -1,16 +1,24 @@
 # TODO
 
+Prompts
+
+- Formatters
+
+  - Truncate input by characters
+  - Truncate input by words
+
+- Selectors / Filters
+
+  - Select a random subset of the input
+  - Fuzzy search examples based on input
+  - Regex for filtering input
+
 - Utilities
   - Define dags / workflows
-  - Count tokens
-  - Truncate input by tokens
   - log completions
   - standardize input/output data structures for each Completion call
   - Retry completions (prompt-level)
   - Parallelize completions (with max parallelism dynamically configured by system load)
-  - split text
-  - chunk text
-  - merge text
   - prompt
     - define
     - store

@@ -30,6 +30,8 @@ import splitWords from "./split-words";
 
 import chunkSentences from "./chunk-sentences";
 
+import streamCompletions from "./stream-completions";
+
 // Add examples here!
 
 const examples = {
@@ -62,6 +64,8 @@ const examples = {
   "split-words": splitWords,
 
   "chunk-sentences": chunkSentences,
+
+  "stream-completions": streamCompletions,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>

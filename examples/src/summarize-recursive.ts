@@ -17,6 +17,7 @@ const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey, {
     max_tokens: 1000,
   });
+
   const prompt = SummarizePrompt;
 
   // Load the file

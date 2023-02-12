@@ -22,7 +22,15 @@ export interface CompletionsModelProvider extends ModelProvider {
   ): Promise<string>;
 }
 
+export interface CompletionStreamModelProvider extends ModelProvider {
+  stream<T extends string>(
+    prompt: Prompt<T>,
+    variables: Record<T, string>,
+    ...args: any[]
+  ): Promise<string>;
+}
+
 export interface EmbeddingsModelProvider extends ModelProvider {
-  embed(texts: string[]): Promise<any>;
-  embed(text: string): Promise<any>;
+  embed(texts: string[], ...args: any[]): Promise<any>;
+  embed(text: string, ...args: any[]): Promise<any>;
 }
