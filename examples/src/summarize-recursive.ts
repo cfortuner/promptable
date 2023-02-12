@@ -14,9 +14,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  * @param args
  */
 const run = async (args: string[]) => {
-  const openai = new OpenAI(apiKey, {
-    max_tokens: 1000,
-  });
+  const openai = new OpenAI(apiKey);
 
   const prompt = SummarizePrompt;
 
@@ -51,9 +49,15 @@ const run = async (args: string[]) => {
   // summarize each chunk
   const summaries = await Promise.all(
     chunks.map((chunk) => {
-      return openai.generate(prompt, {
-        document: chunk,
-      });
+      return openai.generate(
+        prompt,
+        {
+          document: chunk,
+        },
+        {
+          max_tokens: 1000,
+        }
+      );
     })
   );
 

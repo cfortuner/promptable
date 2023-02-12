@@ -6,13 +6,14 @@ const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
 
   const prompt = new Prompt("Write a poem about {{topic}}:", ["topic"]);
+
   await openai.stream(
     prompt,
     {
       topic: "dogs",
     },
-    (response) => {
-      console.log(response);
+    (chunk) => {
+      console.log(chunk);
     }
   );
 };

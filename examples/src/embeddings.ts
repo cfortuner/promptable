@@ -34,7 +34,7 @@ const openai = new OpenAI(apiKey);
 async function createEmbedding(text: string, model: string = EMBEDDING_MODEL) {
   const result = await openai.embed(text);
 
-  return result?.data;
+  return result?.data[0];
 }
 
 /**
@@ -148,7 +148,7 @@ async function createEmbeddings() {
 
     // add each embedding to the dataframe as a separate column
     const colId = (i + 1).toString();
-    df.addColumn(colId, embedding.data[0].embedding, {
+    df.addColumn(colId, embedding.embedding, {
       inplace: true,
     });
     i++;
@@ -190,7 +190,7 @@ const run = async (args: string[]) => {
 
   // Create the embedding for the query
   const queryEmbeddingResponse = await createEmbedding(query, EMBEDDING_MODEL);
-  const queryEmbedding = queryEmbeddingResponse.data[0].embedding;
+  const queryEmbedding = queryEmbeddingResponse.embedding;
 
   // for each embedding in the df, compute the similarity to the query embedding
   // Note: right now, embeddings are stored in the dataframe as separate columns
