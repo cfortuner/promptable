@@ -4,7 +4,7 @@ sidebar_label: "Introduction"
 
 # Introduction
 
-Promptable is a Typescript library for building modern, typesafe, fullstack applications with LLMs.
+Promptable is a Typescript library for building fullstack AI applications.
 
 Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
 
@@ -21,7 +21,8 @@ The core features include:
 - Embedding Indexing and Search
 - Documents, Text Splitters and Loaders
 - Parsers for extracting data from text
-- Step Tracing for debugging your applications!
+- Tracing for debugging your applications!
+- A Web UI for visualizing steps in your pipeline
 
 ### Web UI
 
