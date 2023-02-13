@@ -2,12 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import {
-  CharacterTextSplitter,
-  FileLoader,
-  OpenAI,
-  QAExtractPrompt,
-} from "promptable";
+import { CharacterTextSplitter, FileLoader, OpenAI, prompts } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -24,7 +19,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const prompt = QAExtractPrompt;
+  const prompt = prompts.extractText();
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
@@ -46,10 +41,12 @@ const run = async (args: string[]) => {
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
     docs.map((doc) => {
-      return openai.generate(prompt, {
+      const promptText = prompt.format({
         document: doc.content,
         question,
       });
+
+      return openai.generate(promptText);
     })
   );
 

@@ -5,7 +5,7 @@ import chalk from "chalk";
 import {
   OpenAI,
   Prompt,
-  QAPrompt,
+  prompts,
   FileLoader,
   CharacterTextSplitter,
 } from "promptable";
@@ -21,7 +21,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
-  const prompt = QAPrompt;
+  const prompt = prompts.QA();
 
   const filepath = "./data/startup-mistakes.txt";
   const loader = new FileLoader(filepath);
@@ -50,10 +50,12 @@ export default async function run(args: string[]) {
         .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
     );
 
-    const answer = await openai.generate(prompt, {
+    const promptText = prompt.format({
       document: doc.content,
       question,
     });
+
+    const answer = await openai.generate(promptText);
 
     console.log(chalk.greenBright(`Answer: ${answer}`));
   }

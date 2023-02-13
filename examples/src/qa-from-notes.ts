@@ -7,9 +7,7 @@ import {
   FileLoader,
   ListParser,
   OpenAI,
-  QAExtractPrompt,
-  QAPrompt,
-  SummarizePrompt,
+  prompts,
 } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
@@ -23,8 +21,9 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const extractPrompt = QAExtractPrompt;
-  const qaPrompt = QAPrompt;
+  const extractPrompt = prompts.extractText();
+  const qaPrompt = prompts.QA();
+  const summarizePrompt = prompts.summarize();
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
@@ -46,10 +45,12 @@ const run = async (args: string[]) => {
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
     docs.map((doc) => {
-      return openai.generate(extractPrompt, {
+      const promptText = extractPrompt.format({
         document: doc.content,
         question,
       });
+
+      return openai.generate(promptText);
     })
   );
 
@@ -58,9 +59,11 @@ const run = async (args: string[]) => {
   // how do you avoid the token limit?
   const noteSummaries = await Promise.all(
     notes.map((note) => {
-      return openai.generate(SummarizePrompt, {
+      const promptText = summarizePrompt.format({
         document: note,
       });
+
+      return openai.generate(promptText);
     })
   );
 
@@ -80,10 +83,13 @@ const run = async (args: string[]) => {
   // note: joining your notes together is the most basic selector, we should add one
   // & formatting the notes is very simple. but useful.
   // generally just making it easy to format prompts.
-  const answer = await openai.generate(qaPrompt, {
+
+  const qaPromptText = qaPrompt.format({
     question,
     document,
   });
+
+  const answer = await openai.generate(qaPromptText);
 
   console.log(chalk.greenBright(`Answer: ${answer}`));
 };

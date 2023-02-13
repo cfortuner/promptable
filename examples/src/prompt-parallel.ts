@@ -43,9 +43,13 @@ Of more than we know, and`;
   );
 
   const evaluations = await Promise.all(
-    chunks.map((chunk) =>
-      openai.generate(evalPoemChunksPrompt, { poem: chunk })
-    )
+    chunks.map((chunk) => {
+      const promptText = evalPoemChunksPrompt.format({
+        poem: chunk,
+      });
+
+      openai.generate(promptText);
+    })
   );
 
   console.log(evaluations);

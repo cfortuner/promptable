@@ -1,11 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import {
-  ExtractCSVPrompt,
-  FileLoader,
-  OpenAI,
-  CharacterTextSplitter,
-} from "promptable";
+import { prompts, FileLoader, OpenAI, CharacterTextSplitter } from "promptable";
 
 /**
  * Extract CSV from Data
@@ -19,11 +14,9 @@ import {
 export default async function run() {
   const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-  const openai = new OpenAI(apiKey, {
-    max_tokens: 2000,
-  });
+  const openai = new OpenAI(apiKey);
 
-  const prompt = ExtractCSVPrompt;
+  const prompt = prompts.extractCSV();
 
   // Load the file
   const filepath = "./data/bens-bites-email.txt";
@@ -38,10 +31,12 @@ export default async function run() {
 
   const rows = await Promise.all(
     docs.map((docs) => {
-      return openai.generate(prompt, {
+      const promptText = prompt.format({
         data: docs.content,
         headers: headers.join(","),
       });
+
+      return openai.generate(promptText);
     })
   );
 

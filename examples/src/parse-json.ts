@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { OpenAI, ExtractJSONPrompt } from "promptable";
+import { OpenAI, prompts } from "promptable";
 import chalk from "chalk";
 
 /**
@@ -16,7 +16,7 @@ export default async function run() {
   const apiKey = process.env.OPENAI_API_KEY || "missing";
 
   const openai = new OpenAI(apiKey);
-  const prompt = ExtractJSONPrompt;
+  const prompt = prompts.extractJSON();
 
   // Calendly email
   const data = `
@@ -42,7 +42,7 @@ This is a Google Meet web conference. Join now
 Invitee Time Zone:
 Pacific Time - US & Canada`;
 
-  const json = await openai.generate(prompt, {
+  const promptText = prompt.format({
     data,
     type: `{
         meeting_type: string, 
@@ -52,6 +52,8 @@ Pacific Time - US & Canada`;
         invitee_email: string,
     }`,
   });
+
+  const json = await openai.generate(promptText);
 
   const output = prompt.parse(json);
 

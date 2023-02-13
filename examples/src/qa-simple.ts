@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, QAPrompt } from "promptable";
+import { OpenAI, prompts } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -15,7 +15,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const prompt = QAPrompt;
+  const prompt = prompts.QA();
 
   // Load the file
   const filepath = "./data/beyond-smart.txt";
@@ -27,19 +27,19 @@ const run = async (args: string[]) => {
   console.log(chalk.blue.bold("\nRunning Simple QA: beyond-smart.txt"));
   console.log(chalk.white(`Question: ${question}`));
 
-  const tokensUsed = openai.countTokens(
-    prompt.format({ document: doc, question })
-  );
+  const promptText = prompt.format({
+    document: doc,
+    question,
+  });
+
+  const tokensUsed = openai.countTokens(promptText);
 
   console.log(
     `\n${doc.substring(0, 100).trim()}...\n\n...${doc.slice(-100).trim()}\n` +
       chalk.gray(`${"Tokens: " + tokensUsed}`)
   );
 
-  const answer = await openai.generate(prompt, {
-    document: doc,
-    question,
-  });
+  const answer = await openai.generate(promptText);
 
   console.log(chalk.greenBright(`Answer: ${answer}`));
 };

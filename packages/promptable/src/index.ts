@@ -10,7 +10,8 @@ import { Embeddings } from "./embeddings";
 export { Embeddings };
 
 // Prebuilt prompts
-export * from "@prompts/prompts";
+import * as prompts from "@prompts/prompts";
+export { prompts };
 
 // Providers
 import { OpenAI } from "@providers/OpenAI";

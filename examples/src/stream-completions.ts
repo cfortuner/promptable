@@ -7,15 +7,13 @@ const run = async (args: string[]) => {
 
   const prompt = new Prompt("Write a poem about {{topic}}:", ["topic"]);
 
-  await openai.stream(
-    prompt,
-    {
-      topic: "dogs",
-    },
-    (chunk) => {
-      console.log(chunk);
-    }
-  );
+  const promptText = prompt.format({
+    topic: "dogs",
+  });
+
+  await openai.stream(promptText, (chunk) => {
+    console.log(chunk);
+  });
 };
 
 export default run;
