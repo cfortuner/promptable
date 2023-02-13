@@ -1,6 +1,5 @@
-import R, { pipe } from "ramda";
-import { withScope, trace, setTraceConfig } from "promptable";
-import { pipeAsync, traversePromises } from "ramda-async";
+import { withScope, trace } from "promptable";
+import { pipeAsync } from "ramda-async";
 
 /**
  * An example showing how to send traces to the promptable web server.
@@ -8,41 +7,43 @@ import { pipeAsync, traversePromises } from "ramda-async";
  * @param args
  */
 const run = async (args: string[]) => {
-  const step1 = trace(
-    "step1",
-    async (dog: string) => {
-      await new Promise((resolve) => {
-        resolve(1);
-      });
-      return {
-        dog,
-      };
-    },
-    ["example"]
-  );
-  const step2 = trace(
-    "step2",
-    (props: { dog: string }) => {
-      return {
-        dog: {
-          dog: props.dog,
-        },
-      };
-    },
-    ["example"]
-  );
-  const step3 = trace(
-    "step3",
-    (props: { dog: { dog: string } }) => {
-      console.log("Finished!", props);
-    },
-    ["example"]
-  );
+  withScope("tracing-web", async () => {
+    const step1 = trace(
+      "step1",
+      async (dog: string) => {
+        await new Promise((resolve) => {
+          resolve(1);
+        });
+        return {
+          dog,
+        };
+      },
+      ["example"]
+    );
+    const step2 = trace(
+      "step2",
+      (props: { dog: string }) => {
+        return {
+          dog: {
+            dog: props.dog,
+          },
+        };
+      },
+      ["example"]
+    );
+    const step3 = trace(
+      "step3",
+      (props: { dog: { dog: string } }) => {
+        console.log("Finished!", props);
+      },
+      ["example"]
+    );
 
-  // pipe a few functions together
-  const pipeline = pipeAsync(step1, step2, step3);
+    // pipe a few functions together
+    const pipeline = pipeAsync(step1, step2, step3);
 
-  pipeline("dog");
+    await pipeline("dog");
+  });
 };
 
-export default withScope("tracing-example", run);
+export default run;

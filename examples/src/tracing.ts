@@ -9,37 +9,39 @@ const run = async (args: string[]) => {
     },
   });
 
-  const step1 = trace(
-    "step1",
-    async (dog: string) => {
-      return {
-        dog,
-      };
-    },
-    ["example"]
-  );
-  const step2 = trace(
-    "step2",
-    (props: { dog: string }) => {
-      return {
-        dog: {
-          dog: props.dog,
-        },
-      };
-    },
-    ["example"]
-  );
-  const step3 = trace(
-    "step3",
-    (props: { dog: { dog: string } }) => {
-      console.log("Finished!", props);
-    },
-    ["example"]
-  );
+  withScope("tracing", async () => {
+    const step1 = trace(
+      "step1",
+      async (dog: string) => {
+        return {
+          dog,
+        };
+      },
+      ["example"]
+    );
+    const step2 = trace(
+      "step2",
+      (props: { dog: string }) => {
+        return {
+          dog: {
+            dog: props.dog,
+          },
+        };
+      },
+      ["example"]
+    );
+    const step3 = trace(
+      "step3",
+      (props: { dog: { dog: string } }) => {
+        console.log("Finished!", props);
+      },
+      ["example"]
+    );
 
-  // pipe a few functions together
-  const pipeline = pipeAsync(step1, step2, step3);
+    // pipe a few functions together
+    const pipeline = pipeAsync(step1, step2, step3);
 
-  pipeline("dog");
+    pipeline("dog");
+  });
 };
-export default withScope("tracing", run);
+export default run;
