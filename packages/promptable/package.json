@@ -24,11 +24,9 @@
     "dependencies": {
         "axios": "^1.2.4",
         "csv-parse": "^5.3.4",
-        "eventsource-parser": "^0.1.0",
         "gpt3-tokenizer": "^1.1.4",
         "handlebars": "^4.7.7",
         "openai": "^3.1.0",
-        "picocolors": "^1.0.0",
         "sbd": "^1.0.19",
         "typescript": "latest",
         "uuid": "^9.0.0",
