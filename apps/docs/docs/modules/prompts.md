@@ -1,0 +1,3 @@
+---
+sidebar_label: "Prompts"
+---

@@ -1,25 +1,36 @@
 ---
-sidebar_label: 'Introduction'
+sidebar_label: "Introduction"
 ---
 
 # Introduction
 
-Welcome to the Bridge documentation!
+Promptable is a Typescript library for building modern, typesafe, fullstack applications with LLMs.
 
-Bridge is the most straightforward yet powerful framework for creating simple or complex APIs using the full power of TypeScript, even for developers with little experience. Give it a try and see how easy it is to build your dream API!
+Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM provider. It's also designed to be easy to use so that you can get started quickly.
 
-If you have any questions about anything related to Bridge or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/yxjrwm7Bfr)**.
+### Features
 
-## Our Mission
+The core features include:
 
-Our mission at Bridge is to revolutionize the way developers build and integrate APIs. Through our open-source project and SAAS platform, we aim to provide the best developer experience ever by simplifying the process of developing and integrating APIs, and helping developers create value faster. We believe that developers deserve tools that are easy to use, efficient, and powerful, and we are committed to helping our clients achieve their goals and succeed in the digital world by providing innovative solutions that reduce development time and increase value creation.
+TODO: Link to each
 
-## Chat with us!
+- Prompt templating and formatting
+- Model Providers for Text Generation and Embedding Generation
+- Embedding Indexing and Search
+- Documents, Text Splitters and Loaders
+- Parsers for extracting data from text
+- Step Tracing for debugging your applications!
 
-We are dedicated to creating a fantastic project that offers the best developer experience possible, and we would love for you to be a part of it! Please join our **[Discord Community](https://discord.gg/yxjrwm7Bfr)** and chat with us about your thoughts on Bridge and ask us any questions. We are always happy to have a discussion with you!
+### Web UI
 
-<!-- ## Coming soon
+To assist in debugging, we also provide a Tracing UI that helps you visualize the steps taken by the LLM to generate the output.
 
-We are excited to announce that the beta of our platform, which allows you to automatically generate complete documentation for your Bridge project and full typed input/output client code in any language, is launching soon. If you want to be one of the first to try it out, join our **[Discord Community](https://discord.gg/yxjrwm7Bfr)** and sign up for the beta!"
+TODO: link to tracing UI docs
 
- -->
+If you have any questions about anything related to Promptable or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/yxjrwm7Bfr)**.
+
+## Motivation
+
+Large Language models are emerging as a powerful tool to use for variety of tasks. With OpenAI models like GPT-3 only an API call away, it's become possible to build applications that use AI as a core software component for business logic, data processing, content generation and more. Traditionally, AI tooling has only been built in python to power backend systems, but with the success of ChatGPT, we have learned that the UI/UX of an app is just as important as the backend.
+
+This project aims to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications.

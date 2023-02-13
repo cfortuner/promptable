@@ -12,7 +12,7 @@ const config = {
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/favicon.ico",
+  // favicon: "img/favicon.ico",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -35,12 +35,12 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/bridge-codes/bridge/tree/main/www",
-        },
+        // blog: {
+        //   showReadingTime: true,
+        //   // Please change this to your repo.
+        //   // Remove this to remove the "edit this page" links.
+        //   editUrl: "https://github.com/bridge-codes/bridge/tree/main/www",
+        // },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
@@ -89,10 +89,9 @@ const config = {
     navbar: {
       title: "Promptable",
       logo: {
-        alt: "Promptable Logo",
-        src: "img/logo_b.svg",
-        width: 25,
-        srcDark: "img/logo_w.svg",
+        src: "img/promptable-icon.png",
+        width: 32,
+        srcDark: "img/promptable-icon.png",
       },
       items: [
         {
@@ -104,17 +103,13 @@ const config = {
           label: "Quickstart",
         },
         {
-          to: "/studio",
-          label: "Bridge Studio",
-        },
-        {
-          href: "https://github.com/bridge-codes/bridge",
+          href: "https://github.com/cfortuner/promptable",
           position: "right",
           className: "header-social-link header-github-link",
           "aria-label": "GitHub",
         },
         {
-          href: "https://twitter.com/bridge_codes",
+          href: "https://twitter.com/promptableai",
           position: "right",
           className: "header-social-link header-twitter-link",
           "aria-label": "Twitter",
@@ -131,15 +126,6 @@ const config = {
       style: "dark",
       links: [
         {
-          title: "Docs",
-          items: [
-            {
-              label: "Tutorial",
-              to: "/docs/bridge/handler",
-            },
-          ],
-        },
-        {
           title: "Community",
           items: [
             {
@@ -149,7 +135,7 @@ const config = {
             },
             {
               label: "Twitter",
-              href: "https://twitter.com/bridge_codes",
+              href: "https://twitter.com/promptableai",
               className: "flex items-center",
             },
           ],
@@ -157,20 +143,20 @@ const config = {
         {
           title: "More",
           items: [
-            {
-              label: "Blog",
-              to: "/blog",
-              className: "flex items-center",
-            },
+            // {
+            //   label: "Blog",
+            //   to: "/blog",
+            //   className: "flex items-center",
+            // },
             {
               label: "GitHub",
-              href: "https://github.com/bridge-codes/bridge",
+              href: "https://github.com/cfortuner/promptable",
               className: "flex items-center",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Bridge`,
+      copyright: `Copyright © ${new Date().getFullYear()} Colin Fortuner`,
     },
 
     metadata: [

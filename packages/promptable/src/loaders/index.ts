@@ -2,7 +2,7 @@ import fs from "fs";
 import { Document } from "..";
 
 export interface Loader {
-  load(): Document[];
+  load(): Promise<Document[]>;
 }
 
 export class FileLoader implements Loader {
@@ -17,10 +17,10 @@ export class FileLoader implements Loader {
   /**
    * Load a file from the filesystem
    *
-   * @returns {Document[]} An array of documents
+   * @returns {Promise<Document[]>} A promise that resolves to an array of documents
    */
-  load(): Document[] {
-    const content = fs.readFileSync(this.path, "utf-8");
+  async load(): Promise<Document[]> {
+    const content = await fs.promises.readFile(this.path, "utf-8");
     return [
       {
         content,

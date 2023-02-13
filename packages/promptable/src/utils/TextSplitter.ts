@@ -1,4 +1,4 @@
-import natural from "natural";
+import tokenizer from "sbd";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { Document } from "..";
 
@@ -123,11 +123,10 @@ export class CharacterTextSplitter extends TextSplitter {
 
 export class SentenceTextSplitter extends TextSplitter {
   splitText(text: string, opts?: TextSplitterOptions): string[] {
-    const tokenizer = new natural.SentenceTokenizer();
-    const texts = tokenizer.tokenize(text).map((t) => t.trim());
+    var sentences = tokenizer.sentences(text, {});
     return opts?.chunk || this.chunk
-      ? this.createChunks(texts, " ")
-      : texts.filter((t) => t.length);
+      ? this.createChunks(sentences, " ")
+      : sentences.filter((t) => t.length);
   }
 }
 

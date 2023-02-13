@@ -43,7 +43,7 @@ const run = async (args: string[]) => {
   const loader = new FileLoader(filepath);
   const splitter = new SentenceTextSplitter();
 
-  const documents = loader.load();
+  const documents = await loader.load();
 
   // split the documents into sentences
   const sentences = splitter.splitDocuments(documents, {

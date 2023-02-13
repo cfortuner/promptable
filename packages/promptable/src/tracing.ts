@@ -10,7 +10,7 @@ export interface TraceConfig {
 
 const defaultConfig: TraceConfig = {
   serverUrl: "http://localhost:3000/trace",
-  send: sendTraceToServer,
+  send: console.log,
 };
 
 let config: TraceConfig = defaultConfig;

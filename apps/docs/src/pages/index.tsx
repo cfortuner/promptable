@@ -6,13 +6,14 @@ import { Code } from "../components/Code";
 import { NewsLetter } from "../components/Newsletter";
 import { NewCustomCode } from "../components/NewCode";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import { ContinueWithGithubButton } from "./studio";
 import { track } from "../analytics/mixpanel";
+import { Redirect } from "@docusaurus/router";
 
 export default function Home(): JSX.Element {
   return (
-    <div className="overflow-x-hidden static">
-      <Layout>
+    <Redirect to="/docs/introduction" />
+    // <div className="overflow-x-hidden static">
+    /* <Layout>
         <HeroSection />
         <div className="bg-[#010101] pb-32">
           <div className="relative layout">
@@ -30,8 +31,8 @@ export default function Home(): JSX.Element {
         </div>
         <Studio />
         <NewsLetter />
-      </Layout>
-    </div>
+      </Layout> */
+    // </div>
   );
   // return <Redirect to="/docs/introduction" />;
 }
@@ -222,7 +223,7 @@ const HeroSection = () => {
 
           <BridgeStudioBeta />
           <h1 className="mt-8 text-4xl font-semibold text-center text-white md:text-6xl">
-            Create AI <span className="grad">Prompt</span> Apps in{" "}
+            Create <span className="grad">AI</span> Apps in{" "}
             <span className="grad">Typescript</span>
             {/* The <span className='grad'>smart </span> way to develop APIs to boost developer <span className='grad'>productivity</span> */}
           </h1>
