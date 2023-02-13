@@ -1,27 +1,15 @@
 ## Feedback
 
-FileLoader
+- Highlight the Completion Streaming
+- Implementing the different Model Provider APIs is hugely valuable.
 
-- don't use readFileSync
-- use await, not readFileSync
+# Features to add
 
-Natural is a large package, might not want to use it.
+- Validation of Generated Outputs.
+- Retry logic
+- Caching / Fuzzy input matching
+- Transformation of inputs / outputs
 
-- don't pull in the big library for this
+UI Tools
 
-Tokenizing https://www.npmjs.com/package/@stdlib/nlp-tokenize
-
-Highlight the Completion Streaming
-
-Implement the different APIs is hugely valuable.
-
-Compairsion
-
-Validation of Generated Outputs.
-Retry logic
-Caching / Fuzzy input matching
-Transformation of inputs / outputs
-
----
-
-Whole toolset / community building in typescript & javascript
+- Compare prompt / chain across different providers?

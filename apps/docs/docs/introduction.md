@@ -6,13 +6,15 @@ sidebar_label: "Introduction"
 
 Promptable is a Typescript library for building modern, typesafe, fullstack applications with LLMs.
 
-Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM provider. It's also designed to be easy to use so that you can get started quickly.
+Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
+
+<div className="bg-purple-700 rounded-md p-6">
+  <p><strong>Note!</strong> This project is still a work in progress and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.</p>
+</div>
 
 ### Features
 
 The core features include:
-
-TODO: Link to each
 
 - Prompt templating and formatting
 - Model Providers for Text Generation and Embedding Generation
@@ -25,9 +27,7 @@ TODO: Link to each
 
 To assist in debugging, we also provide a Tracing UI that helps you visualize the steps taken by the LLM to generate the output.
 
-TODO: link to tracing UI docs
-
-If you have any questions about anything related to Promptable or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/yxjrwm7Bfr)**.
+If you have any questions about anything related to Promptable or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/SYmACWTf6V)**.
 
 ## Motivation
 

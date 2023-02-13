@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
 import { cwd } from "process";

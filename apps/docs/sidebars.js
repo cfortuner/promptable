@@ -22,12 +22,7 @@ const sidebars = {
     {
       type: "category",
       label: "Modules",
-      items: ["modules/prompts"],
-    },
-    {
-      type: "category",
-      label: "Examples",
-      items: ["examples/example"],
+      items: ["modules/model-providers", "modules/prompts"],
     },
     "contributing",
   ],

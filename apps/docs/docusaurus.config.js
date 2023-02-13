@@ -6,13 +6,13 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Create Prompt App",
+  title: "Promptable.js",
   tagline: "Create AI-first apps in Typescript",
   url: "https://promptable.ai",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  // favicon: "img/favicon.ico",
+  favicon: "img/favicon.ico",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -84,8 +84,8 @@ const config = {
     prism: {
       theme: require("prism-react-renderer/themes/nightOwl"),
     },
-    disableSwitch: false,
-    respectPrefersColorScheme: true,
+    disableSwitch: true,
+    respectPrefersColorScheme: false,
     navbar: {
       title: "Promptable",
       logo: {
@@ -115,7 +115,7 @@ const config = {
           "aria-label": "Twitter",
         },
         {
-          href: "https://discord.gg/yxjrwm7Bfr",
+          href: "https://discord.gg/SYmACWTf6V",
           position: "right",
           className: "header-social-link header-discord-link",
           "aria-label": "Discord",
@@ -130,7 +130,7 @@ const config = {
           items: [
             {
               label: "Discord",
-              href: "https://discord.gg/yxjrwm7Bfr",
+              href: "https://discord.gg/SYmACWTf6V",
               className: "flex items-center",
             },
             {

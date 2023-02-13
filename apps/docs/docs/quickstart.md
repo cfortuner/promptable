@@ -26,12 +26,48 @@ OPENAI_API_KEY=<your api key>
 
 ## Usage
 
-- Run `cd ./your_project_name`
-- Run `npm i` or `pnpm i` or `yarn install`
-- Run `npm run dev` or `pnpm dev` or `yarn dev` to start the development server on `http://localhost:8080`
-- Edit `index.ts` to start developing your server
+## Generating Text
 
-For more information on how to use create-bridge-app, you can review the create-bridge-app [documentation](https://www.npmjs.com/package/create-bridge-app).
+```ts
+import * as p from "promptable";
+
+// Create a model provider!
+const provider = new p.OpenAI(apiKey);
+
+// Load documents
+const filepath = "./data/startup-mistakes.txt";
+const loader = new p.FileLoader(filepath);
+let docs = await loader.load();
+
+// Split documents into chunks
+const splitter = new p.CharacterTextSplitter("\n");
+docs = splitter.splitDocuments(docs, {
+  chunk: true,
+  chunkSize: 1000, // tokens :)
+});
+
+// Create a prompt
+const writePoemPrompt = new p.Prompt(
+  // your instructions go here
+  "Write a poem about {{topic}}:".trim(),
+  [
+    // variable names go here
+    "topic",
+  ]
+);
+
+const text = "This is a test";
+// count tokens
+const tokensUsed = openai.countTokens(text);
+
+// Generate text completions!
+const response = await openai.generate(text);
+
+// Or stream the response!
+await openai.stream(promptText, (chunk: string) => {
+  console.log(chunk);
+});
+```
 
 ## Contributing
 
