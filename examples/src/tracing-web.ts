@@ -2,16 +2,18 @@ import R, { pipe } from "ramda";
 import { withScope, trace, setTraceConfig } from "promptable";
 import { pipeAsync, traversePromises } from "ramda-async";
 
+/**
+ * An example showing how to send traces to the promptable web server.
+ *
+ * @param args
+ */
 const run = async (args: string[]) => {
-  setTraceConfig({
-    send: (trace) => {
-      console.log("Received Trace", trace);
-    },
-  });
-
   const step1 = trace(
     "step1",
     async (dog: string) => {
+      await new Promise((resolve) => {
+        resolve(1);
+      });
       return {
         dog,
       };
@@ -42,4 +44,5 @@ const run = async (args: string[]) => {
 
   pipeline("dog");
 };
-export default withScope("tracing", run);
+
+export default withScope("tracing-example", run);

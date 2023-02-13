@@ -1,7 +1,6 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler } from "next";
 import { NextRequest, NextResponse } from "next/server";
-
-const chains: any[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
