@@ -1,4 +1,4 @@
-import { withScope, trace } from "promptable";
+import { trace } from "promptable";
 import { pipeAsync } from "ramda-async";
 
 /**
@@ -7,7 +7,7 @@ import { pipeAsync } from "ramda-async";
  * @param args
  */
 const run = async (args: string[]) => {
-  withScope("tracing-web", async () => {
+  trace("tracing-web", async () => {
     const step1 = trace(
       "step1",
       async (dog: string) => {

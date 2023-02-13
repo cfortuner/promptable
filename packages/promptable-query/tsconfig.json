@@ -16,23 +16,7 @@
         "noEmit": true,
         "strict": true,
         "baseUrl": ".",
-        "paths": {
-            "@steps/*": [
-                "src/steps/*"
-            ],
-            "@utils/*": [
-                "src/utils/*"
-            ],
-            "@prompts/*": [
-                "src/prompts/*"
-            ],
-            "@chains/*": [
-                "src/chains/*"
-            ],
-            "@model-providers/*": [
-                "src/model-providers/*"
-            ]
-        },
+        "paths": {},
     },
     "exclude": [
         "node_modules"

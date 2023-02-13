@@ -263,6 +263,25 @@ importers:
       ts-jest: 29.0.5_xvkg46limlf5bbm7x5z7xzp47q
       tsup: 6.5.0_typescript@4.9.5
 
+  packages/promptable-query:
+    specifiers:
+      promptable: workspace*
+      react: ^18.2.0
+      react-query: ^3.39.3
+      tsup: ^6.5.0
+      typescript: latest
+      zod: ^3.20.2
+      zod-to-ts: ^1.1.2
+    dependencies:
+      promptable: link:../promptable
+      react: 18.2.0
+      react-query: 3.39.3_react@18.2.0
+      typescript: 4.9.5
+      zod: 3.20.2
+      zod-to-ts: 1.1.2_p5jgycp7euppyerdfacwyih2x4
+    devDependencies:
+      tsup: 6.5.0_typescript@4.9.5
+
   packages/tsconfig:
     specifiers: {}
 
@@ -11998,6 +12017,24 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
+  /react-query/3.39.3_react@18.2.0:
+    resolution: {integrity: sha512-nLfLz7GiohKTJDuT4us4X3h/8unOh+00MLb2yJoGTPjxKs2bc1iDhkNx2bd5MKklXnOD3NrVZ+J2UXujA5In4g==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.13
+      broadcast-channel: 3.7.0
+      match-sorter: 6.3.1
+      react: 18.2.0
+    dev: false
+
   /react-router-config/5.1.1_2dl5roaqnyqqppnjni7uetnb3a:
     resolution: {integrity: sha512-DuanZjaD8mQp1ppHjgnnUnyOlqYXZVjnov/JzFhjLEwd3Z4dYjMSnqrEzzGThH47vpCOqPPwJM2FtthLeJ8Pbg==}
     peerDependencies:
@@ -14823,6 +14860,16 @@ packages:
       nanoclone: 0.2.1
       property-expr: 2.0.5
       toposort: 2.0.2
+
+  /zod-to-ts/1.1.2_p5jgycp7euppyerdfacwyih2x4:
+    resolution: {integrity: sha512-IZdM0Ga1l/vQnrNy63aV3qsLNchD0aUYZEtXcyt8A3xA7+erFO0zeImEcUH5qNLA6tXDTjRpcWp0paoVoH/D0A==}
+    peerDependencies:
+      typescript: ^4.9.4
+      zod: ^3
+    dependencies:
+      typescript: 4.9.5
+      zod: 3.20.2
+    dev: false
 
   /zod/3.20.2:
     resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}

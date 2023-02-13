@@ -3,16 +3,17 @@ import classnames from "classnames";
 import { useState } from "react";
 
 export const tabs = {
-  Chains: "chains",
-  Index: "index",
-  Documents: "documents",
+  Traces: "traces",
+  // Chains: "chains",
+  // Index: "index",
+  // Documents: "documents",
   // Agents: "agents",
   // Policies: "policies",
   // Events: "events",
   // Settings: "settings",
 };
 
-export const tabAtom = atom(tabs.Chains);
+export const tabAtom = atom(tabs.Traces);
 
 export const Tabs = () => {
   const [activeTab, setActiveTab] = useAtom(tabAtom);

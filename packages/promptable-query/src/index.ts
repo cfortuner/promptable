@@ -1,6 +1,6 @@
 import { printNode, zodToTs } from "zod-to-ts";
 import z from "zod";
-import promptable, { PromptStep } from "promptable";
+import promptable from "promptable";
 import {
   FetchQueryOptions,
   QueryClient,
@@ -8,15 +8,44 @@ import {
   QueryKey,
 } from "react-query";
 
-promptable.utils.logger.setLevel("info");
-
 // Possibly swap zod for https://github.com/sinclairzx81/typebox
 
+/**
+ * GPTQueryClient
+ * 
+ * @description
+ * A wrapper around react-query's QueryClient that allows 
+ * for the use of zod to define the types of the query's
+ * inputs and outputs, and to automatically generate the
+ * data using the openai GPT-3 API via Promptable.
+ * 
+ * Usage:
+ * 
+ * @example
+ * const c = new GPTQueryClient();
+
+ * const run = async () => {
+ *   const { data } = await c.fetchQuery<any>("fetchTodos", {
+ *     meta: {
+ *       type: z.object({
+ *         name: z.string(),
+ *         date: z.date(),
+ *         score: z.optional(z.number()),
+ *         players: z.array(z.string()),
+ *         team: z.union([z.string(), z.null()]),
+ *       }),
+ *     },
+ *   });
+
+ *   console.log(JSON.stringify(data, undefined, 2));
+ * };
+
+ * run();
+
+ * */
 class GPTQueryClient extends QueryClient {
   apiKey: string;
-  constructor(
-    apiKey: string = "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"
-  ) {
+  constructor(apiKey: string) {
     super();
     this.apiKey = apiKey;
   }
@@ -56,7 +85,6 @@ class GPTQueryClient extends QueryClient {
     queryKey: unknown,
     options?: unknown
   ): Promise<TData> | Promise<TData> | Promise<TData> {
-    //@ts-ignore
     const prompt = new promptable.Prompt(
       `Given this typescript type return a valid, stringified JSON Object representing an instance of the type.
       Make sure the response is JUST the object. Not a variable or anything else.
@@ -85,49 +113,29 @@ class GPTQueryClient extends QueryClient {
       ["type"],
       new promptable.JSONParser()
     );
-    const provider = new promptable.OpenAI(this.apiKey, {
-      temperature: 1,
-    });
+    // const provider = new promptable.OpenAI(this.apiKey, {
+    //   temperature: 1,
+    // });
 
-    const step = new PromptStep({
-      name: "get data",
-      prompt,
-      provider,
-      inputNames: ["type"],
-      outputNames: ["data"],
-    });
+    // const step = new PromptStep({
+    //   name: "get data",
+    //   prompt,
+    //   provider,
+    //   inputNames: ["type"],
+    //   outputNames: ["data"],
+    // });
 
     //@ts-ignore
     const node = printNode(zodToTs(options.meta.type).node);
 
-    const { data } = await step.run({
-      steps: [step],
-      inputs: {
-        //@ts-ignore
-        type: node,
-      },
-    });
+    // const { data } = await step.run({
+    //   steps: [step],
+    //   inputs: {
+    //     //@ts-ignore
+    //     type: node,
+    //   },
+    // });
 
-    return { data } as unknown as TData;
+    return null as unknown as TData;
   }
 }
-
-const c = new GPTQueryClient();
-
-const run = async () => {
-  const { data } = await c.fetchQuery<any>("fetchTodos", {
-    meta: {
-      type: z.object({
-        name: z.string(),
-        date: z.date(),
-        score: z.optional(z.number()),
-        players: z.array(z.string()),
-        team: z.union([z.string(), z.null()]),
-      }),
-    },
-  });
-
-  console.log(JSON.stringify(data, undefined, 2));
-};
-
-run();

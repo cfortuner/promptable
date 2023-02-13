@@ -1,15 +1,18 @@
 import R, { pipe } from "ramda";
-import { withScope, trace, setTraceConfig } from "promptable";
+import { trace, setTraceConfig, Trace, graphTraces } from "promptable";
 import { pipeAsync, traversePromises } from "ramda-async";
 
 const run = async (args: string[]) => {
+  const traces: Trace[] = [];
+
   setTraceConfig({
     send: (trace) => {
       console.log("Received Trace", trace);
+      traces.push(trace);
     },
   });
 
-  withScope("tracing", async () => {
+  const scopedFns = async () => {
     const step1 = trace(
       "step1",
       async (dog: string) => {
@@ -34,14 +37,27 @@ const run = async (args: string[]) => {
       "step3",
       (props: { dog: { dog: string } }) => {
         console.log("Finished!", props);
+        return props;
       },
       ["example"]
     );
 
     // pipe a few functions together
-    const pipeline = pipeAsync(step1, step2, step3);
+    const pipeline = pipeAsync(
+      step1,
+      trace("substep", pipeAsync(step2, step3)),
+      step3
+    );
 
-    pipeline("dog");
-  });
+    await pipeline("dog");
+  };
+
+  await Promise.all([
+    trace("first", scopedFns)(),
+    trace("second", scopedFns)(),
+  ]);
+
+  // create a graph of the traces
+  graphTraces(traces);
 };
 export default run;

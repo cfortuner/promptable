@@ -51,6 +51,6 @@ export const utils = {
 
 export { Prompt, ModelProvider };
 
-import { withScope, trace, setTraceConfig } from "./tracing";
+import { graphTraces, trace, setTraceConfig } from "./tracing";
 import type { Trace } from "./tracing";
-export { withScope, trace, setTraceConfig, Trace };
+export { graphTraces, trace, setTraceConfig, Trace };
