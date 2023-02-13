@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { useAtom } from "jotai";
 import { tabAtom } from "./Tabs";
 import dynamic from "next/dynamic";
+import { api } from "src/utils/api";
 
 const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
@@ -20,9 +21,8 @@ export const Content = () => {
   // todo: tabs
   const [activeTab, setActiveTab] = useAtom(tabAtom);
 
-  const { data: chains } = useQuery<any[]>("chains", getChains, {
-    refetchInterval: 2000,
-  });
+  const chains = api.chain.getTraces.useQuery(undefined,
+    {refetchInterval: 2000}).data;
 
   return (
     <div className="flex h-[1px] w-full flex-grow justify-center overflow-y-auto">

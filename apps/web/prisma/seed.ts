@@ -4,7 +4,7 @@ async function main() {
   const seedChain = await prisma.chain.create({
     data: {
         scopeId: 'seedScope',
-        trace: '{name:"hello"}',
+        trace: `{"name":"hello ${Math.random()}"}`,
     },
   })
   console.log({ seedChain })
