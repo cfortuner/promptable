@@ -44,10 +44,14 @@
     "prettier-plugin-tailwindcss": "^0.2.1",
     "prisma": "^4.8.0",
     "tailwindcss": "^3.2.0",
+    "ts-node": "^10.9.1",
     "tsconfig": "workspace:*",
     "typescript": "^4.9.4"
   },
   "ct3aMetadata": {
     "initVersion": "7.3.2"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }

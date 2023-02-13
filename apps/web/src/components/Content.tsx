@@ -2,7 +2,8 @@ import { useQuery } from "react-query";
 import { useAtom } from "jotai";
 import { tabAtom } from "./Tabs";
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { api } from "src/utils/api";
+import { useEffect, useRef, useState } from "react";
 
 const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 

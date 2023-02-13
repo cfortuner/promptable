@@ -1,3 +1,11 @@
+# setup
+
+run "npx prisma db push"
+
+# Chains
+
+add a chain with "npx prisma db seed"
+
 # Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
