@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { readCSV, toJSON } from "danfojs-node";
-import { Index, OpenAI } from "promptable";
+import { Embeddings, OpenAI } from "promptable";
 import chalk from "chalk";
 
 /**
@@ -37,7 +37,7 @@ export default async function run() {
       meta: {},
     };
   });
-  const embeddings = df.column("embedding").values.map((x: any) => {
+  const embeddingsVector = df.column("embedding").values.map((x: any) => {
     return JSON.parse(x);
   });
 
@@ -45,11 +45,11 @@ export default async function run() {
 
   // todo: build index around this idea
 
-  const index = new Index("fine-food", openai, documents);
-  await index.index(embeddings);
+  const embeddings = new Embeddings("fine-food", openai, documents);
+  await embeddings.index(embeddingsVector);
 
   console.log(chalk.blue("Query: " + query));
-  const result = await index.query(query, 1);
+  const result = await embeddings.query(query, 1);
 
   console.log(chalk.green(JSON.stringify(result[0])));
 }

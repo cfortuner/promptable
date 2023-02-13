@@ -22,7 +22,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import * as dfd from "danfojs-node";
 import chalk from "chalk";
-import { Index, OpenAI, QAPrompt } from "promptable";
+import { Embeddings, OpenAI, QAPrompt } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -70,21 +70,21 @@ const run = async (args: string[]) => {
   );
 
   console.log(chalk.white("Loading data..."));
-  const { documents, embeddings } = await loadData();
+  const { documents, embeddings: embeddingsVector } = await loadData();
 
   const openai = new OpenAI(apiKey);
   const prompt = QAPrompt;
 
   // create your index
-  const index = new Index("olympics", openai, documents);
-  await index.index(embeddings);
+  const embeddings = new Embeddings("olympics", openai, documents);
+  await embeddings.index(embeddingsVector);
 
   // query your index
   const query = "Who won the men's high jump?";
 
-  const results = await index.query(query, 5);
+  const results = await embeddings.query(query, 5);
 
-  const top5Documents = results.map((r) => r.document.content);
+  const top5Documents = results.map((r: any) => r.document.content);
 
   // results
   console.log(chalk.blue(`Running QA Bot...`));

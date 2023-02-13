@@ -20,7 +20,7 @@ The steps are:
 
 import {
   FileLoader,
-  Index,
+  Embeddings,
   OpenAI,
   SentenceTextSplitter,
   TextSplitter,
@@ -51,13 +51,13 @@ const run = async (args: string[]) => {
   console.log(sentences);
 
   // create your index
-  const index = new Index("startup-mistakes", openai, sentences);
-  await index.index();
+  const embeddings = new Embeddings("startup-mistakes", openai, sentences);
+  await embeddings.index();
 
   // query your index
   const query = "What is the worst mistake a startup can make?";
 
-  const results = await index.query(query, 1);
+  const results = await embeddings.query(query, 1);
 
   // results
   console.log(chalk.green("Results:"));

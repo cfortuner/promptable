@@ -1,26 +1,13 @@
-import { Readable } from "stream";
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval,
-} from "eventsource-parser";
-import { Prompt } from "@prompts/Prompt";
 import {
   CompletionsModelProvider,
   EmbeddingsModelProvider,
   ModelProviderType,
 } from "./ModelProvider";
-import { ModelProvider } from "./ModelProvider";
-import {
-  Configuration,
-  CreateEmbeddingResponse,
-  OpenAIApi,
-  CreateCompletionRequest,
-  CreateEmbeddingRequest,
-} from "openai";
-import axios, { AxiosResponse } from "axios";
+import { ModelProvider, Tokenizer } from "./ModelProvider";
+import { Configuration, OpenAIApi, CreateEmbeddingRequest } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
-import { parseJsonSSE } from "@utils/parse-json-sse";
+import { Document } from "src";
+import GPT3Tokenizer from "gpt3-tokenizer";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -116,6 +103,7 @@ type GenerateCompletionOptions = {
    */
   user?: string;
 };
+
 export class OpenAI
   extends ModelProvider
   implements CompletionsModelProvider, EmbeddingsModelProvider
@@ -125,6 +113,7 @@ export class OpenAI
   api: OpenAIApi;
   completionsConfig = DEFAULT_COMPLETION_OPTIONS;
   embeddingsConfig: OpenAIEmbeddingsConfig = DEFAULT_OPENAI_EMBEDDINGS_CONFIG;
+  tokenizer: OpenAITokenizer = new OpenAITokenizer();
 
   constructor(apiKey: string) {
     super(ModelProviderType.OpenAI);
@@ -139,17 +128,18 @@ export class OpenAI
     this.api = new OpenAIApi(config);
   }
 
-  async generate<T extends string>(
-    prompt: Prompt<T>,
-    variables: Record<T, string>,
+  countTokens(text: string) {
+    return this.tokenizer.countTokens(text);
+  }
+
+  async generate(
+    promptText: string,
     options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
   ) {
     try {
       if (options.stop != null) {
         options.stop = unescapeStopTokens(options.stop);
       }
-
-      const promptText = prompt.format(variables);
 
       const res = await this.api.createCompletion({
         prompt: promptText,
@@ -164,17 +154,14 @@ export class OpenAI
     return "failed";
   }
 
-  async stream<T extends string>(
-    prompt: Prompt<T>,
-    variables: Record<T, string>,
+  async stream(
+    promptText: string,
     onChunk: (chunk: string) => void,
     options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
   ) {
     if (options.stop != null) {
       options.stop = unescapeStopTokens(options.stop);
     }
-
-    const promptText = prompt.format(variables);
 
     const payload = {
       prompt: promptText,
@@ -291,19 +278,6 @@ const DEFAULT_COMPLETION_OPTIONS = {
   stop: null,
 };
 
-/** Configs */
-
-// const configuration = new Configuration({
-//     apiKey?: string | Promise<string> | ((name: string) => string) | ((name: string) => Promise<string>);
-//     organization?: string;
-//     username?: string;
-//     password?: string;
-//     accessToken?: string | Promise<string> | ((name?: string, scopes?: string[]) => string) | ((name?: string, scopes?: string[]) => Promise<string>);
-//     basePath?: string;
-//     baseOptions?: any;
-//     formDataCtor?: new () => any;
-// });
-
 export const DEFAULT_OPENAI_EMBEDDINGS_CONFIG = {
   model: "text-embedding-ada-002",
 };
@@ -331,4 +305,44 @@ export const OPENAI_MODEL_SETTINGS = {
 
 interface OpenAIEmbeddingsConfig {
   model: string;
+}
+
+export class OpenAITokenizer implements Tokenizer {
+  private tokenizer: GPT3Tokenizer;
+
+  constructor(type: "gpt3" | "codex" = "gpt3") {
+    this.tokenizer = new GPT3Tokenizer({ type: type });
+  }
+
+  encode(text: string) {
+    const { bpe, text: texts } = this.tokenizer.encode(text);
+
+    return {
+      tokens: bpe,
+      texts: texts,
+    };
+  }
+
+  decode(tokens: number[]) {
+    return this.tokenizer.decode(tokens);
+  }
+
+  truncate(text: string, maxTokens: number) {
+    const { tokens } = this.encode(text);
+
+    if (tokens.length > maxTokens) {
+      return this.decode(tokens.slice(0, maxTokens));
+    }
+
+    return text;
+  }
+
+  countTokens(text: string) {
+    const { tokens } = this.encode(text);
+    return tokens.length;
+  }
+
+  countDocumentTokens(doc: Document) {
+    return this.countTokens(doc.content);
+  }
 }

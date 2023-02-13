@@ -40,7 +40,7 @@ interface QueryResult {
   similarity: number;
 }
 
-export class Index {
+export class Embeddings {
   key: string;
   cacheDir: string;
   provider: EmbeddingsModelProvider;
@@ -217,7 +217,7 @@ export class Index {
  * using a Prompt
  */
 interface Extractor {
-  new (index: Index, provider: CompletionsModelProvider): Extractor;
+  new (index: Embeddings, provider: CompletionsModelProvider): Extractor;
 
   extract<T extends string>(
     query: string,

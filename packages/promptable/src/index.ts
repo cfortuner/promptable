@@ -6,8 +6,8 @@ export interface Document {
   meta: Record<string, any>;
 }
 
-import { Index } from "./indexs";
-export { Index };
+import { Embeddings } from "./embeddings";
+export { Embeddings };
 
 // Prebuilt prompts
 export * from "@prompts/prompts";
@@ -22,7 +22,7 @@ export type { Loader };
 export { FileLoader };
 
 // Parsing
-import { JSONParser, CSVParser, Parser, ListParser } from "@utils/Parser";
+import { JSONParser, CSVParser, Parser, ListParser } from "@prompts/Parser";
 export type { Parser };
 export { JSONParser, CSVParser, ListParser };
 

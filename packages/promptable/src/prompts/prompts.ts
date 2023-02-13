@@ -1,4 +1,4 @@
-import { CSVParser, JSONParser } from "@utils/Parser";
+import { CSVParser, JSONParser } from "@prompts/Parser";
 import { Prompt } from "@prompts/Prompt";
 
 /**

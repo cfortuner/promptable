@@ -18,7 +18,7 @@ The steps are:
     4. Submit the question along with the most relevant context to GPT, and receive an answer which makes use of the provided contextual information.
 **/
 
-import { Index, OpenAI } from "promptable";
+import { Embeddings, OpenAI } from "promptable";
 import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
@@ -76,16 +76,16 @@ const run = async (args: string[]) => {
   console.log(chalk.blue.bold("\nRunning Example: Embeddings Olympic Games"));
 
   console.log(chalk.white("Loading data..."));
-  const { documents, embeddings } = await loadData();
+  const { documents, embeddings: embeddingsVector } = await loadData();
 
   // create your index
-  const index = new Index("olympics", openai, documents);
-  await index.index(embeddings);
+  const embeddings = new Embeddings("olympics", openai, documents);
+  await embeddings.index(embeddingsVector);
 
   // query your index
   const query = "Who won the men's high jump?";
 
-  const results = await index.query(query, 1);
+  const results = await embeddings.query(query, 1);
 
   // results
   console.log(chalk.green("Results:"));

@@ -1,5 +1,5 @@
 import { injectVariables } from "@utils/inject-variables";
-import { NoopParser, Parser } from "@utils/Parser";
+import { NoopParser, Parser } from "@prompts/Parser";
 
 export class Prompt<
   T extends string = string,
