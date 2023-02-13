@@ -11,5 +11,5 @@ export default async function run(args: string[]) {
 
   const paragraphs = splitter.splitText(text);
   console.log(chalk.bold.black(`paragraphs:`));
-  console.log(chalk.green(paragraphs, undefined, 4));
+  console.log(chalk.green(JSON.stringify(paragraphs, undefined, 4)));
 }

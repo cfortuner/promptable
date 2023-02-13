@@ -57,5 +57,5 @@ Pacific Time - US & Canada`;
 
   const output = prompt.parse(json);
 
-  console.log(chalk.greenBright(`JSON`, output));
+  console.log(chalk.greenBright(`JSON`, JSON.stringify(output, undefined, 4)));
 }

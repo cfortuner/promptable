@@ -22,7 +22,7 @@ export default async function run() {
     poem,
   });
 
-  const evaluation = openai.generate(evalPoemPromptText);
+  const evaluation = await openai.generate(evalPoemPromptText);
 
   console.log(evaluation);
 }

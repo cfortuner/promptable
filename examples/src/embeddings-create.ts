@@ -23,16 +23,19 @@ import {
   Embeddings,
   OpenAI,
   SentenceTextSplitter,
-  TextSplitter,
 } from "promptable";
 import dotenv from "dotenv";
 dotenv.config();
 import chalk from "chalk";
-import * as dfd from "danfojs-node";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 const openai = new OpenAI(apiKey);
 
+/**
+ * A simple example of creating embeddings.
+ *
+ * @param args
+ */
 const run = async (args: string[]) => {
   console.log(chalk.blue.bold("\nRunning Example: Create embeddings"));
 

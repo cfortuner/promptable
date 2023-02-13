@@ -19,7 +19,7 @@ import summarizeChunks from "./summarize-chunks";
 import summarizeRecursive from "./summarize-recursive";
 
 import parseJson from "./parse-json";
-import parseCSV from "./parse-csv";
+// import parseCSV from "./parse-csv";
 
 import countTokens from "./count-tokens";
 
@@ -34,6 +34,7 @@ import chunkSentences from "./chunk-sentences";
 import streamCompletions from "./stream-completions";
 
 import tracing from "./tracing";
+import tracingWeb from "./tracing-web";
 
 // Add examples here!
 
@@ -57,7 +58,8 @@ const examples = {
   "summarize-recursive": summarizeRecursive,
 
   "parse-json": parseJson,
-  "parse-csv": parseCSV,
+  // disabled until we can figure out how to get the CSV parser to work
+  // "parse-csv": parseCSV,
 
   "count-tokens": countTokens,
 
@@ -72,6 +74,7 @@ const examples = {
   "stream-completions": streamCompletions,
 
   tracing,
+  "tracing-web": tracingWeb,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>

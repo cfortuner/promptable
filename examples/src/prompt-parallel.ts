@@ -10,24 +10,7 @@ export default async function run() {
 
   const openai = new OpenAI(apiKey);
 
-  const text = `
-Sports, what a way to have some fun
-Competing in a game or two
-The thrill of victory, or the agony of defeat
-It all comes down to what you do
-
-The camaraderie shared by teammates
-The drive to work to be the best
-Cheering crowds, a stadium alive
-What an amazing way to test
-
-Your will, your strength, your skill
-The drive for greatness, it's all there
-The thrill of running, jumping, and throwing
-Athletes everywhere at their share
-
-A reminder that we're all capable
-Of more than we know, and`;
+  const text = `Sports, what a way to have some fun\nCompeting in a game or two\nThe thrill of victory, or the agony of defeat\nIt all comes down to what you do\n\nThe camaraderie shared by teammates\nThe drive to work to be the best\nCheering crowds, a stadium alive\nWhat an amazing way to test\n\nYour will, your strength, your skill\nThe drive for greatness, it's all there\nThe thrill of running, jumping, and throwing\nAthletes everywhere at their share\n\nA reminder that we're all capable\nOf more than we know, and`;
 
   const splitter = new CharacterTextSplitter("\n\n", {
     overlap: 0,
@@ -35,7 +18,7 @@ Of more than we know, and`;
 
   const chunks = splitter.splitText(text);
 
-  console.log("Chunks");
+  console.log("Chunks", chunks);
 
   const evalPoemChunksPrompt = new Prompt(
     `Rate the following poem phrase on it's creativity:\n\nPoem:{{poem}}\n\n\nRating: Give the phrase a rating (1-5) and an explaination:`,
@@ -48,7 +31,7 @@ Of more than we know, and`;
         poem: chunk,
       });
 
-      openai.generate(promptText);
+      return openai.generate(promptText);
     })
   );
 

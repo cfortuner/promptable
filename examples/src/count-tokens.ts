@@ -1,6 +1,6 @@
 import fs from "fs";
 import chalk from "chalk";
-import { FileLoader, OpenAI, QAPrompt } from "promptable";
+import { FileLoader, OpenAI, prompts } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -9,7 +9,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
-  const prompt = QAPrompt;
+  const prompt = prompts.QA();
 
   const docs = new FileLoader("./data/startup-mistakes.txt").load();
   const promptText = prompt.format({ document: docs[0].content, question: "" });
