@@ -59,5 +59,7 @@ const run = async (args: string[]) => {
 
   // create a graph of the traces
   graphTraces(traces);
+
+  console.log(JSON.stringify(traces, null, 2));
 };
 export default run;
