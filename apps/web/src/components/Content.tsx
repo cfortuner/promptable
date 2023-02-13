@@ -3,27 +3,27 @@ import { useAtom } from "jotai";
 import { tabAtom } from "./Tabs";
 import dynamic from "next/dynamic";
 import { api } from "src/utils/api";
+import { useEffect } from "react";
 
 const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
-
-const getChains = async () => {
-  const r = await fetch("/api/chains");
-  const data = await r.json();
-
-  return data.chains.concat([
-    {
-      name: "dog",
-    },
-  ]);
-};
 
 export const Content = () => {
   // todo: tabs
   const [activeTab, setActiveTab] = useAtom(tabAtom);
 
-  const chains = api.chain.getTraces.useQuery(undefined,
-    {refetchInterval: 2000}).data;
+  const chains = api.chain.getTraces.useQuery(undefined, {refetchInterval: 1000}).data;
+  const addChain = api.chain.add.useMutation();
 
+  useEffect(() => {
+    const addData = async () => {
+      addChain.mutateAsync({
+        scopeId: "qwerty",
+        trace:`{"name":"this trace was created in Context.tsx ${Math.random()}"}`
+      })
+    }
+    addData();
+  }, [])
+  
   return (
     <div className="flex h-[1px] w-full flex-grow justify-center overflow-y-auto">
       <div className="container h-full w-full py-4">
