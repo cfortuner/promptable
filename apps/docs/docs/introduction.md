@@ -33,7 +33,7 @@ The goal of this library is to provide a set of general tools for Typescript and
 - [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
 - [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
 - [Tracing](./modules/tracing.md) for debugging your applications!
-- [Utilities](./modules/utilities.md) for working with text and data.
+- Utilities for working with text and data.
 - Web UI
 
 To assist in debugging, we also provide a Tracing UI that helps you visualize the steps taken by the LLM to generate the output.
