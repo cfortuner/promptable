@@ -12,6 +12,10 @@ Promptable consists of a collection of utilities and interfaces that help you bu
   <p><strong>Note!</strong> This project is still a work in progress and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.</p>
 </div>
 
+[Github Repo](https://github.com/cfortuner/promptable).
+[Discord](https://discord.gg/SYmACWTf6V).
+[Twitter](https://twitter.com/promptableai).
+
 ### Features
 
 - [Prompts](./modules/prompts.md) for templating and formatting

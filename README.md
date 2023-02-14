@@ -1,10 +1,14 @@
 # Promptable (Langchain + GPT Index for Typescript)
 
-⚡ Build fullstack AI apps in Typescript/Javascript. ⚡
+Build fullstack AI apps in Typescript/Javascript.
 
 ## What is this?
 
-A simple, lightweight, and flexible library for building prompt engineering pipelines in Typescript/Javascript.
+This library provides simple interfaces and prebuilt components for building applications using LLMs and Embeddings. It is designed to be flexible and extensible so that you can use it with any Model Provider.
+
+The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
+
+> ! Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
 
 ## Install Library
 
@@ -12,7 +16,8 @@ A simple, lightweight, and flexible library for building prompt engineering pipe
 
 ## Usage
 
-TODO!
+See our docs for more info on how to use the library.
+documentation: https://docs.promptable.ai
 
 ### Examples
 
