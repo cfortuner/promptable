@@ -45,10 +45,12 @@ export {
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
+import { retry } from "@utils/retry";
 export const utils = {
   unescapeStopTokens,
   injectVariables,
   parseJsonSSE,
+  retry,
 };
 
 export { Prompt, ModelProvider };
