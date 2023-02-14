@@ -10,7 +10,7 @@ With Promptable, you can combine LLMs with other powerful tools and data sources
 
 **What is LLM?**
 
-An LLM is a Language Language Model. It is a model that can generate text given a prompt. It is a type of AI that can be used to generate text, answer questions, and more.
+An LLM is a Large Language Model. It is a model that can generate text given a prompt. It is a type of AI that can be used to generate text, answer questions, and more.
 
 **What is an Embedding?**
 
