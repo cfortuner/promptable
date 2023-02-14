@@ -32,6 +32,7 @@ The goal of this library is to provide a set of general tools for Typescript and
 - [Prompts](./modules/prompts.md) for templating and formatting
 - [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
 - [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
+- [Chains](./modules/chains.md) for composing LLMs and Embeddings with data and other tools.
 - [Tracing](./modules/tracing.md) for debugging your applications!
 - Utilities for working with text and data.
 - Web UI

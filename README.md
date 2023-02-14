@@ -34,12 +34,12 @@ An Embedding is a vector representation of a piece of text. It is a type of AI t
 
 ### Features
 
-- [Prompts](./modules/prompts.md) for templating and formatting
-- [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
-- [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
-- [Tracing](./modules/tracing.md) for debugging your applications!
-- [Chains] (./modules/chains.md) for composing LLMs and Embeddings with data and other tools.
-- [Utilities](./modules/utilities.md) for working with text and data.
+- [Prompts](./apps/docs/docs/modules/prompts.md) for templating and formatting
+- [Model Providers](./apps/docs/docs/modules/model-providers.md) for Text Generation and Embedding Generation
+- [Embeddings](./apps/docs/docs/modules/embeddings.md) for creating Embeddings, Indexing and Search
+- [Tracing](./apps/docs/docs/modules/tracing.md) for debugging your applications!
+- [Chains](./apps/docs/docs/modules/chains.md) for composing LLMs and Embeddings with data and other tools.
+- Utilities for working with text and data.
 - More Coming Soon :)
 
 ## Install Library
