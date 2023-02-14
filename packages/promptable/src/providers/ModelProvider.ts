@@ -14,18 +14,12 @@ export abstract class ModelProvider {
 }
 
 export interface CompletionsModelProvider extends ModelProvider {
-  generate<T extends string>(
-    promptText: string,
-    ...args: any[]
-  ): Promise<string>;
+  generate(promptText: string, ...args: any[]): Promise<string>;
 }
 
-export interface CompletionStreamModelProvider extends ModelProvider {
-  stream<T extends string>(
-    prompt: Prompt<T>,
-    variables: Record<T, string>,
-    ...args: any[]
-  ): Promise<string>;
+export interface CompletionStreamModelProvider
+  extends CompletionsModelProvider {
+  stream(promptText: string, ...args: any[]): Promise<string>;
 }
 
 export interface EmbeddingsModelProvider extends ModelProvider {

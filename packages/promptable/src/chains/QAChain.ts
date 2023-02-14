@@ -1,23 +1,32 @@
 import { NoopParser, Parser } from "@prompts/Parser";
 import { Prompt } from "@prompts/Prompt";
 import { CompletionsModelProvider } from "@providers/ModelProvider";
-import { Embeddings, LLMChain } from "dist";
+import { LLMChain } from "./LLMChain";
 import { Document } from "src";
 import { trace } from "../tracing";
 import { Chain } from "./Chain";
+import { CombineDocumentsChain } from "./CombineDocumentsChain";
+import { extractText, QA } from "@prompts/prompts";
 
-export class QAChain<
-  T extends string = string,
-  P extends string = string
-> extends Chain {
+export class QAChain<T extends "documents" | "question"> extends LLMChain {
+  combineDocumentsChain: CombineDocumentsChain<T>;
+
   constructor(
     public docs: Document[],
-    public instruction: LLMChain<"document", any>
+    public provider: CompletionsModelProvider,
+    prompt?: Prompt<T, any>,
+    combineDocumentsChain?: CombineDocumentsChain<T, any>
   ) {
-    super();
+    super(QA(), provider);
+    this.prompt = prompt || super.prompt;
+    this.combineDocumentsChain =
+      combineDocumentsChain ||
+      new CombineDocumentsChain(extractText(), provider);
   }
 
-  protected async _run(question: string) {
+  protected async _run(documents: string[], question: string);
+  protected async _run(documents: Document[], question: string);
+  protected async _run(documents: string[] | Document[], question: string) {
     const notes = await Promise.all(
       this.docs.map((doc) => {
         this.instruction.run({
