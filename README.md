@@ -1,4 +1,5 @@
 # Promptable
+<img width="273" alt="icon" src="https://user-images.githubusercontent.com/5430709/218618356-36ae8fa0-1551-497d-aad5-cab1dcf55999.png">
 
 Build fullstack AI apps in Typescript/Javascript.
 
