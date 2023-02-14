@@ -1,12 +1,20 @@
-# Promptable 
+# Promptable
 
-Build fullstack AI apps in Typescript/Javascript. 
+Build fullstack AI apps in Typescript/Javascript.
 
 ## What is this?
 
-Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
+Promptable is library that enables you to build powerful AI applications with LLMs and Embeddings providers such as OpenAI, Hugging Face, Cohere and Anthropic. It provides a flexible and extensible API that makes it easy to compose LLMs with data and tools to build complex applications quickly and easily.
 
-The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
+With Promptable, you can combine LLMs with other powerful tools and data sources, such as databases and APIs, to create a wide range of AI applications.
+
+**What is LLM?**
+
+An LLM is a Language Language Model. It is a model that can generate text given a prompt. It is a type of AI that can be used to generate text, answer questions, and more.
+
+**What is an Embedding?**
+
+An Embedding is a vector representation of a piece of text. It is a type of AI that can be used to find similar pieces of text, search for text, and more.
 
 > ! Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
 
@@ -30,7 +38,9 @@ The goal of this library is to provide a set of general tools for Typescript and
 - [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
 - [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
 - [Tracing](./modules/tracing.md) for debugging your applications!
+- [Chains] (./modules/chains.md) for composing LLMs and Embeddings with data and other tools.
 - [Utilities](./modules/utilities.md) for working with text and data.
+- More Coming Soon :)
 
 ## Install Library
 
