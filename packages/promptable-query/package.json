@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "node dist/index.mjs",
     "dev": "rm -rf dist && tsup ./src/index.ts --format=esm --watch --dts --external react",
