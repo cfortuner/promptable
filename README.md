@@ -1,7 +1,6 @@
-# Promptable
+# Promptable ![icon (5)](https://user-images.githubusercontent.com/5430709/218619064-c1fcdf0e-5e65-4230-b06a-a2ecc1350ed9.png)
 
 Build fullstack AI apps in Typescript/Javascript.
-![icon (5)](https://user-images.githubusercontent.com/5430709/218619064-c1fcdf0e-5e65-4230-b06a-a2ecc1350ed9.png)
 
 ## What is this?
 
