@@ -22,13 +22,13 @@
         "tsup": "^6.5.0"
     },
     "dependencies": {
+        "@stdlib/nlp-sentencize": "^0.0.1",
         "axios": "^1.2.4",
         "chalk": "^4.1.2",
         "csv-parse": "^5.3.4",
         "gpt3-tokenizer": "^1.1.4",
         "handlebars": "^4.7.7",
         "openai": "^3.1.0",
-        "sbd": "^1.0.19",
         "typescript": "latest",
         "uuid": "^9.0.0",
         "zod": "^3.20.2"
