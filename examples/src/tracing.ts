@@ -50,7 +50,7 @@ const run = async (args: string[]) => {
       step3
     );
 
-    await pipeline("dog");
+    return await pipeline("dog");
   };
 
   await Promise.all([

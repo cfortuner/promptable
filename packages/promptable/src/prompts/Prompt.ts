@@ -22,21 +22,11 @@ export class Prompt<
   }
 
   parse(completion: string): any;
-  parse(completions: string[]): any[];
-  parse(completions: string | string[]) {
-    if (typeof completions === "string") {
-      return this.parser.parse(completions);
-    }
-
-    if (completions.length === 0) {
-      return;
-    }
-
-    if (completions.length === 1) {
-      return this.parser.parse(completions[0]);
-    }
-
-    return completions.map((completion) => this.parser.parse(completion));
+  parse(completions: string) {
+    return this.parser.parse(completions);
+  }
+  parseMany(completions: string[]) {
+    return completions.map((completion) => this.parse(completion));
   }
 
   format(variables: Record<T, string>) {
