@@ -22,3 +22,33 @@ model Chain {
     scopeId   String
     trace     String
 }
+
+model Trace {
+    id    String @id @default(cuid())
+    trace String
+}
+
+// model Trace {
+//     id       String  @id
+//     name     String
+//     inputs   String // json string
+//     outputs  String? // json string
+//     tags     String // json string
+//     parentId String
+//     // parent   Trace?  @relation("parentChild", fields: [parentId], references: [id])
+//     // children Trace[] @relation("parentChild")
+//     error    String?
+//     timestamp BigInt // unix time
+// }
+
+// export type Trace = {
+//   name: string;
+//   inputs: any[];
+//   outputs?: any;
+//   tags: string[];
+//   id: string;
+//   parentId?: string;
+//   children: Trace[];
+//   error?: any;
+//   timestamp: number;
+// };

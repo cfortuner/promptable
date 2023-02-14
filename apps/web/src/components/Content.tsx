@@ -487,6 +487,25 @@ export const Content = () => {
   };
 
   const parent = parentId && traces.find((t) => t.id === parentId);
+  
+  const myTrace = {
+    name: "step1",
+    inputs: ["dog"],
+    outputs: {
+      dog: "dog",
+    },
+    tags: ["example"],
+    id: "bf6059cb-a119-44a6-aa34-79eeb0ac211c",
+    parentId: "6102c965-1939-495d-bacd-320bc04b2751",
+    children: [],
+    timestamp: 1676299968397,
+  }
+
+  const a = api.trace.add.useMutation();
+
+  useEffect(() => {
+    a.mutate({trace: myTrace})
+  }, [])
 
   return (
     <>
