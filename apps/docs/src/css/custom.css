@@ -154,10 +154,10 @@ aside.theme-doc-sidebar-container {
     margin-top: 0px;
 }
 
-.sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-styles-module {
+/* .sidebar_node_modules-\@docusaurus-theme-classic-lib-theme-DocSidebar-Desktop-styles-module {
     padding-top: 0px !important;
     top: 60px !important;
-}
+} */
 
 nav.menu.thin-scrollbar {
     border-right: solid 1px #272727 !important;

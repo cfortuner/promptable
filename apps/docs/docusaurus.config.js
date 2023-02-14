@@ -160,8 +160,6 @@ const config = {
     },
 
     metadata: [
-      { content: "https://bridge.codes/twitter.png", name: "twitter:image" },
-      { content: "https://bridge.codes/twitter.png", property: "og:image" },
       {
         content:
           "The Typescript API framework that enhances developer productivity",
@@ -179,7 +177,7 @@ const config = {
       },
       { content: "width=device-width, initial-scale=1.0", name: "viewport" },
       { content: "@vercel", name: "twitter:site" },
-      { content: "Bridge", name: "apple-mobile-web-app-title" },
+      { content: "Promptable", name: "apple-mobile-web-app-title" },
       { content: "var(--geist-background)", name: "theme-color" },
       { content: "#000000", name: "msapplication-TileColor" },
     ],
