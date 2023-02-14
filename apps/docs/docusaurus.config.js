@@ -26,7 +26,7 @@ const config = {
     defaultLocale: "en",
     locales: ["en"],
   },
-  clientModules: [require.resolve("./docusaurus.preferredTheme.js")],
+  // clientModules: [require.resolve("./docusaurus.preferredTheme.js")],
 
   presets: [
     [
@@ -41,28 +41,28 @@ const config = {
         //   // Remove this to remove the "edit this page" links.
         //   editUrl: "https://github.com/bridge-codes/bridge/tree/main/www",
         // },
-        theme: {
-          customCss: require.resolve("./src/css/custom.css"),
-        },
+        // theme: {
+        // customCss: require.resolve("./src/css/custom.css"),
+        // },
       },
     ],
-    [
-      "docusaurus-preset-shiki-twoslash",
-      {
-        // Not sure how reliable this path is (it's relative from the preset package)?
-        // None of the light themes had good support for `diff` mode, so had to patch my own theme
-        themes: ["nord"],
-      },
-    ],
+    // [
+    //   "docusaurus-preset-shiki-twoslash",
+    //   {
+    //     // Not sure how reliable this path is (it's relative from the preset package)?
+    //     // None of the light themes had good support for `diff` mode, so had to patch my own theme
+    //     themes: ["nord"],
+    //   },
+    // ],
   ],
   plugins: [
-    [
-      "@docusaurus/plugin-google-analytics",
-      {
-        trackingID: "UA-141789564-1",
-        anonymizeIP: true,
-      },
-    ],
+    // [
+    // "@docusaurus/plugin-google-analytics",
+    // {
+    //   trackingID: "UA-141789564-1",
+    //   anonymizeIP: true,
+    // },
+    // ],
 
     async function myPlugin() {
       return {
@@ -81,11 +81,11 @@ const config = {
     },
   ],
   themeConfig: {
-    prism: {
-      theme: require("prism-react-renderer/themes/nightOwl"),
-    },
-    disableSwitch: true,
-    respectPrefersColorScheme: false,
+    // prism: {
+    // theme: require("prism-react-renderer/themes/nightOwl"),
+    // },
+    // disableSwitch: true,
+    // respectPrefersColorScheme: false,
     navbar: {
       title: "Promptable",
       logo: {
@@ -161,13 +161,11 @@ const config = {
 
     metadata: [
       {
-        content:
-          "The Typescript API framework that enhances developer productivity",
+        content: "Build AI-first apps in Typescript with Promptable.js",
         name: "description",
       },
       {
-        content:
-          "The Typescript API framework that enhances developer productivity",
+        content: "Build AI-first apps in Typescript with Promptable.js",
         property: "og:description",
       },
       {
