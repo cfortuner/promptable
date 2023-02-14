@@ -18,8 +18,6 @@ export default async function run() {
 
   const chunks = splitter.splitText(text);
 
-  console.log("Chunks", chunks);
-
   const evalPoemChunksPrompt = new Prompt(
     `Rate the following poem phrase on it's creativity:\n\nPoem:{{poem}}\n\n\nRating: Give the phrase a rating (1-5) and an explaination:`,
     ["poem"]

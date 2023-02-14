@@ -39,7 +39,7 @@ export class Prompt<
     return completions.map((completion) => this.parser.parse(completion));
   }
 
-  format(variables: { [name: string]: any }) {
+  format(variables: Record<T, string>) {
     const formattedPrompt = injectVariables(this.text, variables);
     return formattedPrompt;
   }

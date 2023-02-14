@@ -13,7 +13,7 @@ export default async function run(args: string[]) {
   const loader = new FileLoader(filepath);
 
   // load doc
-  let docs = loader.load();
+  let docs = await loader.load();
 
   const splitter = new TokenSplitter();
 

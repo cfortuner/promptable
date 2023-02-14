@@ -1,25 +1,52 @@
 ---
-sidebar_label: 'Introduction'
+sidebar_label: "Introduction"
 ---
 
 # Introduction
 
-Welcome to the Bridge documentation!
+Promptable is a Typescript library for building fullstack AI applications.
 
-Bridge is the most straightforward yet powerful framework for creating simple or complex APIs using the full power of TypeScript, even for developers with little experience. Give it a try and see how easy it is to build your dream API!
+Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
 
-If you have any questions about anything related to Bridge or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/yxjrwm7Bfr)**.
+The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
 
-## Our Mission
+> Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
+> 💻
 
-Our mission at Bridge is to revolutionize the way developers build and integrate APIs. Through our open-source project and SAAS platform, we aim to provide the best developer experience ever by simplifying the process of developing and integrating APIs, and helping developers create value faster. We believe that developers deserve tools that are easy to use, efficient, and powerful, and we are committed to helping our clients achieve their goals and succeed in the digital world by providing innovative solutions that reduce development time and increase value creation.
+[Github Repo](https://github.com/cfortuner/promptable).
+[Discord](https://discord.gg/SYmACWTf6V).
+[Twitter](https://twitter.com/promptableai).
 
-## Chat with us!
+## Use Cases:
 
-We are dedicated to creating a fantastic project that offers the best developer experience possible, and we would love for you to be a part of it! Please join our **[Discord Community](https://discord.gg/yxjrwm7Bfr)** and chat with us about your thoughts on Bridge and ask us any questions. We are always happy to have a discussion with you!
+- 💬 Chatbots & Conversational AI
+- ❓ Question Answering Bots
+- ✍️ Writing Apps
+- 🧑‍✈️ Copilot apps built with Chrome Extensions, VSCode Extensions, and more!
+- 🔍 AI Semantic Search apps
+- 🛠️ AI first Automations, Workflows and Tools
+- 🤖 Autonomous Agents & Personal Assistants
 
-<!-- ## Coming soon
+## Features
 
-We are excited to announce that the beta of our platform, which allows you to automatically generate complete documentation for your Bridge project and full typed input/output client code in any language, is launching soon. If you want to be one of the first to try it out, join our **[Discord Community](https://discord.gg/yxjrwm7Bfr)** and sign up for the beta!"
+- [Prompts](./modules/prompts.md) for templating and formatting
+- [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
+- [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
+- [Chains](./modules/chains.md) for composing LLMs and Embeddings with data and other tools.
+- [Tracing](./modules/tracing.md) for debugging your applications!
+- Utilities for working with text and data.
+- Web UI
 
- -->
+To assist in debugging, we also provide a Tracing UI that helps you visualize the steps taken by the LLM to generate the output.
+
+<img src="/img/tracing.png" className="mt-12 rounded-md" />
+
+## Motivation
+
+Large Language models are emerging as a powerful tool to use for variety of tasks. With OpenAI models like GPT-3 only an API call away, it's become possible to build applications that use AI as a core software component for business logic, data processing, content generation and more. Traditionally, AI tooling has only been built in python to power backend systems, but with the success of ChatGPT, we have learned that the UI/UX of an app is just as important as the backend.
+
+This project aims to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications.
+
+## Community
+
+If you have any questions about anything related to Promptable or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/SYmACWTf6V)**.

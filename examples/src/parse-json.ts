@@ -55,6 +55,7 @@ Pacific Time - US & Canada`;
 
   const json = await openai.generate(promptText);
 
+  // Consider creating a zod -> typed object parser
   const output = prompt.parse(json);
 
   console.log(chalk.greenBright(`JSON`, JSON.stringify(output, undefined, 4)));

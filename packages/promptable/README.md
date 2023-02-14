@@ -1,54 +1,67 @@
-# Promptable.js
+# Promptable
 
-⚡ Build fullstack AI apps in Typescript/Javascript. ⚡
+Promptable is a Typescript library for building fullstack AI applications.
 
-# What is this?
+Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
 
-A simple, lightweight, and flexible library for building prompt engineering pipelines in Typescript/Javascript.
+The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
 
-# Quickstart
+> Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
+> 💻
 
-```
-npm i promptable
-```
+[Github Repo](https://github.com/cfortuner/promptable).
+[Discord](https://discord.gg/SYmACWTf6V).
+[Twitter](https://twitter.com/promptableai).
 
-# Usage
+## Use Cases:
 
-TODO
+- 💬 Chatbots & Conversational AI
+- ❓ Question Answering Bots
+- ✍️ Writing Apps
+- 🧑‍✈️ Copilot apps built with Chrome Extensions, VSCode Extensions, and more!
+- 🔍 AI Semantic Search apps
+- 🛠️ AI first Automations, Workflows and Tools
+- 🤖 Autonomous Agents & Personal Assistants
 
-# Contributing
+### Features
 
-Install deps and run
+- [Prompts](./modules/prompts.md) for templating and formatting
+- [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
+- [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
+- [Tracing](./modules/tracing.md) for debugging your applications!
+- [Utilities](./modules/utilities.md) for working with text and data.
+
+## Install Library
+
+`npm i promptable`
+
+## Usage
+
+See our docs for more info on how to use the library.
+(Documentation)[https://docs-promptable.vercel.app/]
+
+### Run the Examples
+
+To run an example, clone the repo and run the following commands
 
 ```
 pnpm i
 pnpm dev
+pnpm run example <example name>
 ```
 
-Folder structure
+### Web UI
 
-This project is a monorepo (Turborepo) and contains the following:
+To assist in debugging, we also provide a Tracing UI that helps you visualize the steps taken by the LLM to generate the output.
 
-Apps
+See our (Docs)[https://docs-promptable.vercel.app/docs/modules/tracing#tracing-ui]
 
-- Examples
-- Web - The visualizer for promptable.js
+## Motivation
 
-Packages
+Large Language models are emerging as a powerful tool to use for variety of tasks. With OpenAI models like GPT-3 only an API call away, it's become possible to build applications that use AI as a core software component for business logic, data processing, content generation and more. Traditionally, AI tooling has only been built in python to power backend systems, but with the success of ChatGPT, we have learned that the UI/UX of an app is just as important as the backend.
 
-- promptable.js - The Library for building LLM Apps in Typescript/Javascript
+This project aims to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications.
 
-## Run an Example
+## Community
 
-Examples are located in `apps/examples`
-
-From the root dir, run:
-
-```
-pnpm run start --filter examples -- chain
-```
-
-# Motivation
-
-Large Language Models like OpenAI's GPT-3, can be used to complete tasks that involve understanding or generating natural language or code.
-State of the art Large Language Models are now only an API call away. Which means, you don't need python to build a advanced AI app.
+If you have any questions about anything related to Promptable or if you want to discuss with us and the community, you are welcome to join our **[discord](https://discord.gg/SYmACWTf6V)**.

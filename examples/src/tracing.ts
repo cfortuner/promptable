@@ -45,7 +45,8 @@ const run = async (args: string[]) => {
     // pipe a few functions together
     const pipeline = pipeAsync(
       step1,
-      trace("substep", pipeAsync(step2, step3)),
+      step2,
+      // trace("substep", pipeAsync(step2, step3)),
       step3
     );
 

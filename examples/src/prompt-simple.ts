@@ -7,13 +7,15 @@ const apiKey = process.env.OPENAI_API_KEY || "missing";
 export default async function run() {
   const openai = new OpenAI(apiKey);
 
-  const writePoemPromptText = new Prompt("Write a poem about {{topic}}:", [
+  const writePoemPrompt = new Prompt("Write a poem about {{topic}}:", [
     "topic",
-  ]).format({
+  ]);
+
+  const promptText = writePoemPrompt.format({
     topic: "hi",
   });
 
-  const poem = await openai.generate(writePoemPromptText);
+  const poem = await openai.generate(promptText);
 
   console.log(poem);
 }

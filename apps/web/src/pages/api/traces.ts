@@ -11,7 +11,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   //   return;
   // }
 
-  const query = api.chain.getTraces.getQueryKey()
+  const query = api.chain.getTraces.getQueryKey();
+  //@ts-ignore
   const data = query.data ?? [];
   const chains: any[] = [];
   for (const d of data) {

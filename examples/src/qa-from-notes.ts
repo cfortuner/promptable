@@ -31,7 +31,7 @@ const run = async (args: string[]) => {
   const splitter = new CharacterTextSplitter("\n");
 
   // load and split the documents
-  let docs = loader.load();
+  let docs = await loader.load();
   docs = splitter.splitDocuments(docs, {
     chunk: true,
   });

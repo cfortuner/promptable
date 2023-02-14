@@ -157,6 +157,7 @@ export class OpenAI
   async stream(
     promptText: string,
     onChunk: (chunk: string) => void,
+    onFinish: () => void,
     options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
   ) {
     if (options.stop != null) {
@@ -185,6 +186,7 @@ export class OpenAI
         for (const line of lines) {
           const message = line.replace(/^data: /, "");
           if (message === "[DONE]") {
+            onFinish();
             return; // Stream finished
           }
           try {

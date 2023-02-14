@@ -11,9 +11,15 @@ const run = async (args: string[]) => {
     topic: "dogs",
   });
 
-  await openai.stream(promptText, (chunk) => {
-    console.log(chunk);
-  });
+  await openai.stream(
+    promptText,
+    (chunk) => {
+      console.log(chunk);
+    },
+    () => {
+      console.log("done");
+    }
+  );
 };
 
 export default run;

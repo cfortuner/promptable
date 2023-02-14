@@ -1,131 +1,109 @@
 ---
-sidebar_label: 'Quickstart'
+sidebar_label: "Quickstart"
 ---
 
 # Quickstart
 
-## Automatic Setup
-
-We recommend creating a new Bridge app using `create-bridge-app`, which sets up everything automatically for you. (You don't need to create an empty directory, `create-bridge-app` will make one for you.) To create a project, run:
+## Installation
 
 ```bash title='terminal'
-npx create-bridge-app@latest
-# or
-pnpm create bridge-app
-# or
-yarn create bridge-app
+npm i promptable
 ```
 
-After the installation is complete:
+## Provider Setup
 
-- Run `cd ./your_project_name`
-- Run `npm i` or `pnpm i` or `yarn install`
-- Run `npm run dev` or `pnpm dev` or `yarn dev` to start the development server on `http://localhost:8080`
-- Edit `index.ts` to start developing your server
+If you want to use a Model Provider like OpenAI, you must first create an api key.
 
-For more information on how to use create-bridge-app, you can review the create-bridge-app [documentation](https://www.npmjs.com/package/create-bridge-app).
+Create your api key:
 
-## Manual Setup
+[Create a OpenAI API Key](https://platform.openai.com/account/api-keys)
 
-### Installations
+Once you have it, you can configure promptable by creating a `.env` file in the root of your project and adding your provider's API key to it.
 
-Install `bridge` and `zod` in your project:
-
-```bash title='terminal'
-npm install bridge zod
-# or
-yarn add bridge zod
-# or
-pnpm add bridge zod
+```bash title='.env'
+OPENAI_API_KEY=<your api key>
 ```
 
-### Create an index.ts file
+## Basics
 
-**Complete Bridge App with HTTP**
+Importing the library:
 
-```ts twoslash title='server.ts' showLineNumbers
-import { handler, initBridge } from 'bridge';
+```ts
+import * as p from "promptable";
+```
 
-// A handler can set an endpoint and validate user data such as the body, files,
-// request parameters or headers sent.
-const helloEndpoint = handler({
-  resolve: () => 'Hello World',
-});
+Create a model provider
 
-// To define the routes for our project, we can create a routes object and place
-// our handlers inside. The keys of the object correspond to the path.
-const routes = {
-  hello: helloEndpoint,
-};
+```ts
+const provider = new p.OpenAI(apiKey);
+```
 
-const port = 8080;
+Create a prompt
 
-const bridge = initBridge({ routes });
-const httpServer = bridge.HTTPServer();
+```ts
+const writePoemPrompt = new p.Prompt(
+  // your instructions go here
+  "Write a poem about {{topic}}:".trim(),
+  [
+    // variable names go here
+    "topic",
+  ]
+);
+```
 
-httpServer.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+Format the prompt with your variables
+
+```ts
+const text = writePoemPrompt.format({
+  topic: "hi",
 });
 ```
 
-**Complete Bridge App with Express**
+Count tokens in text
 
-```ts twoslash title='server.ts' showLineNumbers
-import { handler, initBridge } from 'bridge';
-import express from 'express';
+```ts
+const tokensUsed = provider.countTokens(text);
+```
 
-const routes = {
-  hello: handler({
-    resolve: () => 'Hello World',
-  }),
-};
+Generate text completions!
 
-const port = 8080;
-const app = express();
-const bridge = initBridge({ routes });
+```ts
+const response = await provider.generate(text);
 
-app.use('', bridge.expressMiddleware());
-
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+// Or stream the response!
+await provider.stream(promptText, (chunk: string) => {
+  console.log(chunk);
 });
 ```
 
+## Using Embeddings
 
-You can test your endpoint by making an http call to `POST http://localhost:8080/hello`. Refer to the [route documentation](bridge/routes.md) for instructions on customizing the HTTP method.
+```ts
+import * as p from "promptable";
 
-Congratulations, you just launched your first Bridge server! 🥳
+// Create a model provider!
+const provider = new p.OpenAI(apiKey);
 
-:::tip
-To get the most out of Bridge in your project, we recommend taking some time to read the documentation on [handlers](bridge/handler) and check out our [example](examples/example) for inspiration and guidance.
-:::
+// Load documents
+const filepath = "./data/startup-mistakes.txt";
+const loader = new p.FileLoader(filepath);
+let docs = await loader.load();
 
-## Client code generation and documentation
+// Split documents into chunks
+const splitter = new p.CharacterTextSplitter("\n");
+docs = splitter.splitDocuments(docs, {
+  chunk: true,
+  chunkSize: 1000, // tokens :)
+});
 
-![Bridge Studio Schema](../static/studio/studio-header.svg)
+// Create embeddings
+const embeddings = new p.Embeddings(provider, documents);
+await embeddings.index();
 
-### Connect your Bridge API to Bridge Studio
-
-**With the CLI**
-
-```bash title='terminal'
-npx bridge-studio@latest
-# or
-pnpx bridge-studio@latest
+// Query embeddings
+embeddings.query("startup mistakes");
 ```
 
-**With the plateform:** https://studio.bridge.codes
+## Contributing
 
-
-### Fetch your client SDK
-
-```bash title='terminal'
-npx fetch-bridge-sdk@latest {username}/{projectName}
-```
-
-
-### Access your generated documentation
-
-You'll be able to access your complete generated documentation on https://studio.bridge.codes soon.
-
-Please visit https://bridge.codes/studio for more information.
+See the [contributing guide](./contributing.md) to learn how to contribute to the repository and the development workflow.
