@@ -463,7 +463,6 @@ async function main() {
     })
     console.log({ seedTrace })
   }
-
 }
 main()
   .then(async () => {
