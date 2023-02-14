@@ -123,15 +123,9 @@ export class Embeddings {
     console.log(chalk.white(`Creating Embeddings: ${this.documents.length}`));
 
     // create the embeddings
-    for (let i = 0; i < this.documents.length; i++) {
-      const embedding =
-        // use the provided embeddings if they exist
-        this.embeddings?.[i] ||
-        // otherwise, create the embedding
-        (await this.provider.embed(this.documents[i].content));
-
-      this.embeddings.push(embedding);
-    }
+    this.embeddings = await this.provider.embed(
+      this.documents.map((d) => d.content)
+    );
 
     this.save();
   }

@@ -8,6 +8,7 @@ import { Configuration, OpenAIApi, CreateEmbeddingRequest } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
+import { retry } from "@utils/retry";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -132,6 +133,7 @@ export class OpenAI
     return this.tokenizer.countTokens(text);
   }
 
+  @retry(3)
   async generate(
     promptText: string,
     options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
@@ -154,6 +156,7 @@ export class OpenAI
     return "failed";
   }
 
+  @retry(3)
   async stream(
     promptText: string,
     onChunk: (chunk: string) => void,
@@ -238,39 +241,29 @@ export class OpenAI
     > = DEFAULT_OPENAI_EMBEDDINGS_CONFIG
   ) {
     if (Array.isArray(textOrTexts)) {
-      return this.embedMany(textOrTexts, options);
+      return await this.embedMany(textOrTexts, options);
     } else {
-      return this.embedOne(textOrTexts, options);
+      return await this.embedOne(textOrTexts, options);
     }
   }
 
-  private embedOne = async (
-    text: string,
-    options: Omit<CreateEmbeddingRequest, "input">
-  ) => {
+  @retry(3)
+  async embedOne(text: string, options: Omit<CreateEmbeddingRequest, "input">) {
     const result = await this.api.createEmbedding({
       ...options,
       input: text.replace(/\n/g, " "),
     });
 
     return result?.data.data[0].embedding;
-  };
+  }
 
-  private embedMany = async (
+  private async embedMany(
     texts: string[],
     options: Omit<CreateEmbeddingRequest, "input">
-  ) => {
-    const batchResults = await Promise.all(
-      texts.map((text) =>
-        this.api.createEmbedding({
-          ...options,
-          input: text.replace(/\n/g, " "),
-        })
-      )
-    );
-
-    return batchResults.map((result) => result?.data.data[0].embedding);
-  };
+  ) {
+    console.log("embed many");
+    return await Promise.all(texts.map((text) => this.embedOne(text, options)));
+  }
 }
 
 const DEFAULT_COMPLETION_OPTIONS = {
