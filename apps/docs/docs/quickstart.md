@@ -62,16 +62,16 @@ const text = writePoemPrompt.format({
 Count tokens in text
 
 ```ts
-const tokensUsed = openai.countTokens(text);
+const tokensUsed = provider.countTokens(text);
 ```
 
 Generate text completions!
 
 ```ts
-const response = await openai.generate(text);
+const response = await provider.generate(text);
 
 // Or stream the response!
-await openai.stream(promptText, (chunk: string) => {
+await provider.stream(promptText, (chunk: string) => {
   console.log(chunk);
 });
 ```
