@@ -106,4 +106,4 @@ This will start watching the files for changes.
 
 ### UI
 
-See our (Docs)[https://docs-promptable.vercel.app/docs/modules/tracing#tracing-ui]
+See our [Docs](https://docs-promptable.vercel.app/docs/modules/tracing#tracing-ui).
