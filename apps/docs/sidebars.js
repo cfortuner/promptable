@@ -26,6 +26,7 @@ const sidebars = {
         "modules/model-providers",
         "modules/prompts",
         "modules/embeddings",
+        "modules/chains",
         "modules/tracing",
         {
           type: "category",
