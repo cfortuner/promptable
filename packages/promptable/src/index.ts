@@ -1,3 +1,4 @@
+export { LLMChain } from "./chains";
 import { Prompt } from "@prompts/Prompt";
 import { ModelProvider } from "@providers/ModelProvider";
 
