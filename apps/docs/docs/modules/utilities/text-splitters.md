@@ -10,6 +10,13 @@ TextSplitter is an abstract class that provides a base implementation for splitt
 
 TextSplitter is an abstract class and cannot be instantiated directly. Instead, it should be extended to implement the splitText method.
 
+You can configure the TextSplitter by passing in an options object when instantiating it. The following options are available:
+
+- `chunk`: a boolean indicating whether to split text into chunks. Default is false.
+- `chunkSize`: a number indicating the maximum size of each chunk. Default is 1000.
+- `overlap`: a number indicating the amount of overlap between chunks. Default is 200.
+- `lengthFn`: a function that returns the length of a text chunk. Default is based on the tokenizer used.
+
 ## Splitter Types
 
 The following subclasses are provided:

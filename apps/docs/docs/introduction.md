@@ -14,15 +14,11 @@ Promptable consists of a collection of utilities and interfaces that help you bu
 
 ### Features
 
-The core features include:
-
-- Prompt templating and formatting
-- Model Providers for Text Generation and Embedding Generation
-- Embedding Indexing and Search
-- Documents, Text Splitters and Loaders
-- Parsers for extracting data from text
-- Tracing for debugging your applications!
-- A Web UI for visualizing steps in your pipeline
+- [Prompts](./modules/prompts.md) for templating and formatting
+- [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
+- [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
+- [Tracing](./modules/tracing.md) for debugging your applications!
+- [Utilities](./modules/utilities.md) for working with text and data.
 
 ### Web UI
 

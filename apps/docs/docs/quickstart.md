@@ -24,9 +24,59 @@ Once you have it, you can configure promptable by creating a `.env` file in the 
 OPENAI_API_KEY=<your api key>
 ```
 
-## Usage
+## Basics
 
-## Generating Text
+Importing the library:
+
+```ts
+import * as p from "promptable";
+```
+
+Create a model provider
+
+```ts
+const provider = new p.OpenAI(apiKey);
+```
+
+Create a prompt
+
+```ts
+const writePoemPrompt = new p.Prompt(
+  // your instructions go here
+  "Write a poem about {{topic}}:".trim(),
+  [
+    // variable names go here
+    "topic",
+  ]
+);
+```
+
+Format the prompt with your variables
+
+```ts
+const text = writePoemPrompt.format({
+  topic: "hi",
+});
+```
+
+Count tokens in text
+
+```ts
+const tokensUsed = openai.countTokens(text);
+```
+
+Generate text completions!
+
+```ts
+const response = await openai.generate(text);
+
+// Or stream the response!
+await openai.stream(promptText, (chunk: string) => {
+  console.log(chunk);
+});
+```
+
+## Using Embeddings
 
 ```ts
 import * as p from "promptable";
@@ -46,27 +96,12 @@ docs = splitter.splitDocuments(docs, {
   chunkSize: 1000, // tokens :)
 });
 
-// Create a prompt
-const writePoemPrompt = new p.Prompt(
-  // your instructions go here
-  "Write a poem about {{topic}}:".trim(),
-  [
-    // variable names go here
-    "topic",
-  ]
-);
+// Create embeddings
+const embeddings = new p.Embeddings(provider, documents);
+await embeddings.index();
 
-const text = "This is a test";
-// count tokens
-const tokensUsed = openai.countTokens(text);
-
-// Generate text completions!
-const response = await openai.generate(text);
-
-// Or stream the response!
-await openai.stream(promptText, (chunk: string) => {
-  console.log(chunk);
-});
+// Query embeddings
+embeddings.query("startup mistakes");
 ```
 
 ## Contributing

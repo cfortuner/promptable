@@ -30,7 +30,10 @@ const sidebars = {
         {
           type: "category",
           label: "Utilities",
-          items: ["modules/utilities/text-splitters"],
+          items: [
+            "modules/utilities/text-splitters",
+            "modules/utilities/loaders",
+          ],
         },
       ],
     },
