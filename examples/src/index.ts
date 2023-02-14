@@ -36,6 +36,8 @@ import streamCompletions from "./stream-completions";
 import tracing from "./tracing";
 import tracingWeb from "./tracing-web";
 
+import chainSimple from "./chain-simple";
+
 // Add examples here!
 
 const examples = {
@@ -75,6 +77,8 @@ const examples = {
 
   tracing,
   "tracing-web": tracingWeb,
+
+  "chain-simple": chainSimple
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>
@@ -94,4 +98,4 @@ async function run(args: string[]) {
 
 run(process.argv.slice(2));
 
-export {};
+export { };
