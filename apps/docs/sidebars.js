@@ -26,8 +26,12 @@ const sidebars = {
         "modules/model-providers",
         "modules/prompts",
         "modules/embeddings",
-        "modules/utilities",
         "modules/tracing",
+        {
+          type: "category",
+          label: "Utilities",
+          items: ["modules/utilities/text-splitters"],
+        },
       ],
     },
     "contributing",
