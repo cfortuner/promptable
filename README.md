@@ -1,7 +1,6 @@
-# Promptable
+# Promptable 
 
-
-Build fullstack AI apps in Typescript/Javascript.
+📎 Build fullstack AI apps in Typescript/Javascript. 📎 
 
 ## What is this?
 
