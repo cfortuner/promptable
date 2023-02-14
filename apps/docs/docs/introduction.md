@@ -10,7 +10,7 @@ Promptable consists of a collection of utilities and interfaces that help you bu
 
 The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
 
-> ! Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
+> Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
 > 💻
 
 [Github Repo](https://github.com/cfortuner/promptable).

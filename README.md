@@ -14,6 +14,16 @@ The goal of this library is to provide a set of general tools for Typescript and
 [Discord](https://discord.gg/SYmACWTf6V).
 [Twitter](https://twitter.com/promptableai).
 
+## Use Cases:
+
+- 💬 Chatbots & Conversational AI
+- ❓ Question Answering Bots
+- ✍️ Writing Apps
+- 🧑‍✈️ Copilot apps built with Chrome Extensions, VSCode Extensions, and more!
+- 🔍 AI Semantic Search apps
+- 🛠️ AI first Automations, Workflows and Tools
+- 🤖 Autonomous Agents & Personal Assistants
+
 ### Features
 
 - [Prompts](./modules/prompts.md) for templating and formatting
