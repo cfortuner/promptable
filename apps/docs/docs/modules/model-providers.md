@@ -45,7 +45,13 @@ import { OpenAI } from "promptable";
 
 const text = "This is a test";
 const tokensUsed = openai.countTokens(text);
-await openai.stream(promptText, (chunk: string) => {
-  console.log(chunk);
-});
+await openai.stream(
+  promptText,
+  (chunk: string) => {
+    console.log(chunk);
+  },
+  () => {
+    console.log("Done");
+  }
+);
 ```
