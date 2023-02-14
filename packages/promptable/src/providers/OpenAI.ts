@@ -257,12 +257,18 @@ export class OpenAI
     return result?.data.data[0].embedding;
   }
 
+  @retry(3)
   private async embedMany(
     texts: string[],
     options: Omit<CreateEmbeddingRequest, "input">
   ) {
     console.log("embed many");
-    return await Promise.all(texts.map((text) => this.embedOne(text, options)));
+    const result = await this.api.createEmbedding({
+      ...options,
+      input: texts.map((text) => text.replace(/\n/g, " ")),
+    });
+
+    return result.data.data.map((d) => d.embedding);
   }
 }
 
