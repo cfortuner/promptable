@@ -8,23 +8,33 @@ Promptable is a Typescript library for building fullstack AI applications.
 
 Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
 
-<div className="bg-purple-700 rounded-md p-6">
-  <p><strong>Note!</strong> This project is still a work in progress and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.</p>
-</div>
+The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
+
+> ! Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
+> 💻
 
 [Github Repo](https://github.com/cfortuner/promptable).
 [Discord](https://discord.gg/SYmACWTf6V).
 [Twitter](https://twitter.com/promptableai).
 
-### Features
+## Use Cases:
+
+- 💬 Chatbots & Conversational AI
+- ❓ Question Answering Bots
+- ✍️ Writing Apps
+- 🧑‍✈️ Copilot apps built with Chrome Extensions, VSCode Extensions, and more!
+- 🔍 AI Semantic Search apps
+- 🛠️ AI first Automations, Workflows and Tools
+- 🤖 Autonomous Agents & Personal Assistants
+
+## Features
 
 - [Prompts](./modules/prompts.md) for templating and formatting
 - [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
 - [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
 - [Tracing](./modules/tracing.md) for debugging your applications!
 - [Utilities](./modules/utilities.md) for working with text and data.
-
-### Web UI
+- Web UI
 
 To assist in debugging, we also provide a Tracing UI that helps you visualize the steps taken by the LLM to generate the output.
 

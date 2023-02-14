@@ -4,11 +4,23 @@ Build fullstack AI apps in Typescript/Javascript.
 
 ## What is this?
 
-This library provides simple interfaces and prebuilt components for building applications using LLMs and Embeddings. It is designed to be flexible and extensible so that you can use it with any Model Provider.
+Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
 
 The goal of this library is to provide a set of general tools for Typescript and Javascript developers to help them build fullstack AI first applications quickly and easily.
 
 > ! Right now the library is in early development and is very much experimental. Don't use this in production yet! The API is subject to change as we get feedback.
+
+[Github Repo](https://github.com/cfortuner/promptable).
+[Discord](https://discord.gg/SYmACWTf6V).
+[Twitter](https://twitter.com/promptableai).
+
+### Features
+
+- [Prompts](./modules/prompts.md) for templating and formatting
+- [Model Providers](./modules/model-providers.md) for Text Generation and Embedding Generation
+- [Embeddings](./modules/embeddings.md) for creating Embeddings, Indexing and Search
+- [Tracing](./modules/tracing.md) for debugging your applications!
+- [Utilities](./modules/utilities.md) for working with text and data.
 
 ## Install Library
 
@@ -17,13 +29,15 @@ The goal of this library is to provide a set of general tools for Typescript and
 ## Usage
 
 See our docs for more info on how to use the library.
-documentation: https://docs.promptable.ai
+(Documentation)[https://docs-promptable.vercel.app/]
 
 ### Examples
 
-See `examples/README.md` for more info on running examples.
+To run an example, clone the repo and run the following commands
 
 ```
+pnpm i
+pnpm dev
 pnpm run example <example name>
 ```
 
@@ -72,4 +86,4 @@ This will start watching the files for changes.
 
 ### UI
 
-todo
+See our (Docs)[https://docs-promptable.vercel.app/docs/modules/tracing#tracing-ui]
