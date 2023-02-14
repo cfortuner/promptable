@@ -2,6 +2,9 @@
 
 Build fullstack AI apps in Typescript/Javascript.
 
+![favicon](https://user-images.githubusercontent.com/5430709/218618803-7140b526-c6bd-4267-9ebe-ab20a1edcdd3.png)
+
+
 ## What is this?
 
 Promptable consists of a collection of utilities and interfaces that help you build applications with LLMs. It is designed to be flexible and extensible so that you can use it with any LLM or Embeddings provider.
