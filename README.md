@@ -3,6 +3,7 @@
 Build fullstack AI apps in Typescript/Javascript. 
 
 ![icon (6)](https://user-images.githubusercontent.com/5430709/218619828-067806c7-7975-4c4d-81bc-52e30ed895d9.png)
+![icon (4)](https://user-images.githubusercontent.com/5430709/218619856-7f0193ee-332a-470f-a18c-1ffeb21aa4fe.png)
 
 
 ## What is this?
