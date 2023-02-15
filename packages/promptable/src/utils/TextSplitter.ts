@@ -123,7 +123,7 @@ export class CharacterTextSplitter extends TextSplitter {
 
 export class SentenceTextSplitter extends TextSplitter {
   splitText(text: string, opts?: TextSplitterOptions): string[] {
-    const sentences = sentencize( text );
+    const sentences = sentencize(text);
     return opts?.chunk || this.chunk
       ? this.createChunks(sentences, " ")
       : sentences.filter((t) => t.length);
