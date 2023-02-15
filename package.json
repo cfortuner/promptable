@@ -14,7 +14,7 @@
     "test": "FORCE_COLOR=1 turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "publish-packages": "FORCE_COLOR=1 turbo run build lint test && changeset version && changeset publish",
-    "example": "FORCE_COLOR=1  turbo run start --filter examples --"
+    "example": "FORCE_COLOR=1 pnpm --filter examples run start"
   },
   "engines": {
     "node": ">=14.0.0"

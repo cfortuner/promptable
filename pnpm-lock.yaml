@@ -204,6 +204,7 @@ importers:
       csv-parse: ^5.3.4
       danfojs-node: ^1.1.2
       dotenv: ^16.0.3
+      enquirer: ^2.3.6
       eslint: 7.32.0
       gpt3-tokenizer: ^1.1.5
       handlebars: ^4.7.7
@@ -222,6 +223,7 @@ importers:
       csv-parse: 5.3.4
       danfojs-node: 1.1.2_seedrandom@3.0.5
       dotenv: 16.0.3
+      enquirer: 2.3.6
       gpt3-tokenizer: 1.1.5
       handlebars: 4.7.7
       openai: 3.1.0
