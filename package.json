@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": [
     "apps/*",
+    "starter-kits/*",
     "packages/*",
     "examples"
   ],
