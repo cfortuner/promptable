@@ -55,6 +55,6 @@ export const utils = {
 
 export { Prompt, ModelProvider };
 
-import { graphTraces, trace, setTraceConfig } from "./tracing";
+import { graphTraces, trace, setTraceConfig, sendTraceToServer } from "./tracing";
 import type { Trace } from "./tracing";
-export { graphTraces, trace, setTraceConfig, Trace };
+export { graphTraces, trace, setTraceConfig, Trace, sendTraceToServer };

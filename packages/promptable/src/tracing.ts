@@ -9,7 +9,8 @@ export interface TraceConfig {
 }
 
 const defaultConfig: TraceConfig = {
-  serverUrl: "http://localhost:3000/trace",
+  // TODO: what if localhost:3000 is not the port where promptable visualizer is, i.e. another app uses localhost:3000?
+  serverUrl: "http://localhost:3000/api/traces",
   send: () => {},
 };
 
@@ -28,7 +29,7 @@ export const setTraceConfig = (newConfig: Partial<TraceConfig>) => {
 };
 
 // Log the trace on the server
-async function sendTraceToServer(trace: Trace) {
+export async function sendTraceToServer(trace: Trace) {
   try {
     await axios.post(config.serverUrl, {
       ...trace,

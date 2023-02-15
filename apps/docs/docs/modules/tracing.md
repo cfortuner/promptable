@@ -13,7 +13,7 @@ Tracing is a utility provided by this library to help diagnose and debug applica
 To use Tracing, you can import the trace function from the tracing module:
 
 ```ts
-import { trace, setTraceConfig, graphTraces } from "promptable";
+import { trace, setTraceConfig, graphTraces, sendTraceToServer } from "promptable";
 ```
 
 To trace a function, simply wrap it with the trace function:
@@ -58,7 +58,7 @@ To configure a different trace server, you can set the serverUrl property of the
 
 ```ts
 setTraceConfig({
-  serverUrl: "https://localhost:3000/traces",
+  serverUrl: "https://localhost:3000/api/traces",
   send: sendTraceToServer,
 });
 ```
