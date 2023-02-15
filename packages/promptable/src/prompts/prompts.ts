@@ -69,6 +69,23 @@ Summary:`.trim(),
   );
 
 /**
+You are Assistant. Help the user as much as possible.
+
+{{memory}}
+User: {{userInput}}
+Assistant:
+*/
+export const chatbot = () =>
+  new Prompt(
+    `You are Assistant. Help the user as much as possible.
+
+{{memory}}
+User: {{userInput}}
+Assistant:`.trim(),
+    ["memory", "userInput"]
+  );
+
+/**
   Given this typescript type return a valid, stringified JSON Object representing an instance of the type.
   Make sure the response is JUST the object. Not a variable or anything else.
   Examples:

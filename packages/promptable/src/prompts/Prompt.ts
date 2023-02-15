@@ -21,12 +21,8 @@ export class Prompt<
     }
   }
 
-  parse(completion: string): any;
-  parse(completions: string) {
-    return this.parser.parse(completions);
-  }
-  parseMany(completions: string[]) {
-    return completions.map((completion) => this.parse(completion));
+  parse(completion: string) {
+    return this.parser.parse(completion);
   }
 
   format(variables: Record<T, string>) {

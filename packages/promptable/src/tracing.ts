@@ -10,7 +10,7 @@ export interface TraceConfig {
 
 const defaultConfig: TraceConfig = {
   serverUrl: "http://localhost:3000/trace",
-  send: console.log,
+  send: () => {},
 };
 
 let config: TraceConfig = defaultConfig;
@@ -54,11 +54,11 @@ export type Trace = {
 // needs to be passed to child traces
 const traceContext = new AsyncLocalStorage<Trace>();
 
-export function trace<T extends any[], R extends any>(
+export const trace = <T extends any[], R extends any>(
   name: string,
-  fn: (...args: T) => R | Promise<R>,
+  fn: (this: any, ...args: T) => R | Promise<R>,
   tags?: string[]
-) {
+) => {
   return async (...args: T) => {
     // Get the parent trace context
     const parent = traceContext.getStore();
@@ -76,10 +76,8 @@ export function trace<T extends any[], R extends any>(
     };
 
     return await traceContext.run(trace, async () => {
-      console.log(`Step: ${name} - Inputs:`, args);
       try {
         const result = await Promise.resolve(fn(...args));
-        console.log(`Step: ${name} - Outputs:`, result);
         trace.outputs = result;
         return result;
       } catch (error) {
@@ -96,7 +94,7 @@ export function trace<T extends any[], R extends any>(
       }
     });
   };
-}
+};
 
 /**
  * Record a trace to the server.

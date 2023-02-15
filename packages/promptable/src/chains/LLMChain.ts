@@ -7,13 +7,11 @@ import { Chain } from "./Chain";
 export class LLMChain<
   T extends string = string,
   P extends Parser<any> = NoopParser
-> extends Chain {
+> {
   constructor(
     public prompt: Prompt<T, P>,
     public provider: CompletionsModelProvider
-  ) {
-    super();
-  }
+  ) {}
 
   protected async _run(variables: Record<T, string>) {
     // TODO: fix trace so that the anonymous function isn't needed
@@ -30,6 +28,8 @@ export class LLMChain<
   }
 
   async run(variables: Record<T, string>) {
-    return await trace("llmchain.run", this._run)(variables);
+    return trace("llmchain.run", (variables) => this._run(variables))(
+      variables
+    );
   }
 }

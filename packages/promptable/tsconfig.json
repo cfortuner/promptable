@@ -18,6 +18,12 @@
         "strict": true,
         "baseUrl": ".",
         "paths": {
+            "@memory/*": [
+                "src/memories/*"
+            ],
+            "@chains/*": [
+                "src/chains/*"
+            ],
             "@steps/*": [
                 "src/steps/*"
             ],
