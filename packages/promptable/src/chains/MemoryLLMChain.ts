@@ -2,24 +2,46 @@ import { NoopParser, Parser } from "@prompts/Parser";
 import { Prompt } from "@prompts/Prompt";
 import { CompletionsModelProvider } from "@providers/ModelProvider";
 import { trace } from "../tracing";
-import { Memory } from "../memories";
+import { Memory } from "src/memories/index";
+import { LLMChain } from "@chains/LLMChain";
 
-// TODO: type safety so MemoryLLMChain requires "memory" in the variables
-// TODO: make this inherit from LLMChain since the only thing that's different is the run method
+// TODO: Trace currently requires an anonymous function to be passed in
+// to the trace function. There is some issue with the binding of this
 
-export class MemoryLLMChain<T extends string = string, P extends Parser<any> = NoopParser> {
-    constructor(public prompt: Prompt<T, P>, public provider: CompletionsModelProvider, public memory: Memory) { }
+export class MemoryLLMChain<
+  T extends "memory" | "userInput",
+  P extends Parser<any> = NoopParser
+> extends LLMChain<T, P> {
+  constructor(
+    public prompt: Prompt<T, P>,
+    public provider: CompletionsModelProvider,
+    public memory: Memory
+  ) {
+    super(prompt, provider);
+    this.prompt = prompt;
+  }
 
-    private async _run(variables: Record<T, string>) {
-        const formattedPrompt = await trace("prompt.format", (variables) => this.prompt.format(variables))(variables);
-        const completion = await trace("provider.complete",
-            (prompt) => (this.provider as CompletionsModelProvider).generate(prompt))(formattedPrompt);
-        const parsed = await trace("prompt.parse", (completion) => this.prompt.parse(completion))(completion);
-        return parsed;
-    }
+  protected async _run(variables: Record<T, string>) {
+    const formattedPrompt = await trace("prompt.format", (vars) =>
+      this.prompt.format(vars)
+    )(variables);
 
-    async run(variables: Omit<Record<T, string>, "memory">) {
-        const vars = { ...variables, memory: this.memory.get() };
-        return trace("llmchain.run", (variables) => this._run(variables))(vars);
-    }
+    const completion = await trace("provider.complete", (p) =>
+      this.provider.generate(p)
+    )(formattedPrompt);
+
+    const parsed = await trace("prompt.parse", (c) => this.prompt.parse(c))(
+      completion
+    );
+    return parsed;
+  }
+
+  async run(variables: Omit<Record<T, string>, "memory">) {
+    const vars = { ...variables, memory: this.memory.get() } as Record<
+      T,
+      string
+    >;
+
+    return await trace("llmchain.run", (v) => this._run(v))(vars);
+  }
 }

@@ -16,7 +16,15 @@ cd into the examples directory and run `npm start chain-memory`
 **/
 import dotenv from "dotenv";
 dotenv.config();
-import { OpenAI, MemoryLLMChain, setTraceConfig, Trace, graphTraces, prompts, BufferedChatInteractionMemory } from "promptable";
+import {
+  OpenAI,
+  MemoryLLMChain,
+  setTraceConfig,
+  Trace,
+  graphTraces,
+  prompts,
+  BufferedChatMemory,
+} from "promptable";
 import chalk from "chalk";
 import enquirer from "enquirer";
 
@@ -25,27 +33,25 @@ const { prompt: query } = enquirer;
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
 export default async function run() {
-    const traces: Trace[] = [];
-    setTraceConfig({
-        send: (trace) => {
-            console.log("Received Trace", trace);
-            traces.push(trace);
-        },
-    });
+  const openai = new OpenAI(apiKey);
+  const memory = new BufferedChatMemory();
+  const memoryChain = new MemoryLLMChain(prompts.chatbot(), openai, memory);
 
-    const openai = new OpenAI(apiKey);
-    const memory = new BufferedChatInteractionMemory();
-    const memoryChain = new MemoryLLMChain(prompts.chatbot(), openai, memory);
-    while (true) {
-        // @ts-expect-error:
-        const { userInput } = await query({ type: 'input', name: 'userInput', message: 'User: ' });
-        if (userInput) {
-            if (userInput === "exit") break;
-            memory.addUserMessage(userInput);
-            const botOutput = await memoryChain.run({ userInput });
-            memory.addBotMessage(botOutput);
-            console.log(chalk.yellow("Assisant:", botOutput));
-        }
+  while (true) {
+    const { userInput } = (await query({
+      type: "input",
+      name: "userInput",
+      message: "User: ",
+    })) as {
+      userInput: string;
+    };
+
+    if (userInput) {
+      if (userInput === "exit") break;
+      memory.addUserMessage(userInput);
+      const botOutput = await memoryChain.run({ userInput });
+      memory.addBotMessage(botOutput);
+      console.log(chalk.yellow("Assisant:", botOutput));
     }
-    graphTraces(traces);
+  }
 }

@@ -1,4 +1,5 @@
-export { BufferedChatInteractionMemory } from "./BufferedChatInteractionMemory";
+export { BufferedChatMemory } from "./BufferedChatMemory";
+
 export interface Memory {
-    get: () => string
+  get: () => string;
 }
