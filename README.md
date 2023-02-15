@@ -61,7 +61,7 @@ To run an example, clone the repo and follow these steps
 pnpm i
 pnpm dev
 ```
-4. Run the following command in a different terminal instance:
+4. Run the following command in a different terminal window/tab:
    *NOTE: example names found in [/examples/src](https://github.com/cfortuner/promptable/tree/main/examples/src)
 ```
 pnpm run example <example name>
