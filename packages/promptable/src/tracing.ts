@@ -28,7 +28,7 @@ export const setTraceConfig = (newConfig: Partial<TraceConfig>) => {
 };
 
 // Log the trace on the server
-async function sendTraceToServer(trace: Trace) {
+export async function sendTraceToServer(trace: Trace) {
   try {
     await axios.post(config.serverUrl, {
       ...trace,

@@ -8,7 +8,6 @@ const run = async (args: string[]) => {
   setTraceConfig({
     send: (trace) => {
       console.log("Received Trace", trace);
-      traces.push(trace);
     },
   });
 
