@@ -2,7 +2,7 @@ import { logger } from "src/internal/Logger";
 import { parse } from "csv-parse/sync";
 
 export interface Parser<T extends any> {
-  parse(iterable: Iterable<string>): T;
+  parse(text: string): T;
 }
 
 export class NoopParser implements Parser<string> {
