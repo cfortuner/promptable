@@ -35,6 +35,7 @@ import streamCompletions from "./stream-completions";
 
 import tracing from "./tracing";
 import tracingWeb from "./tracing-web";
+import tracingWebPrompt from "./tracing-web-prompt"
 
 import chainSimple from "./chain-simple";
 import chainMemory from "./chain-memory";
@@ -78,6 +79,7 @@ const examples = {
 
   tracing,
   "tracing-web": tracingWeb,
+  "tracing-web-prompt": tracingWebPrompt,
 
   "chain-simple": chainSimple,
   "chain-memory": chainMemory,
