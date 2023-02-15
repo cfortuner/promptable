@@ -10,16 +10,21 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const prisma = new PrismaClient()
     const trace = req.body;
     console.log("adding trace:", trace)
-    async function addTrace() {
-      await prisma.trace.create({
-        data: {
-          trace: JSON.stringify(trace)
-        }
-      })
+    try {
+      async function addTrace() {
+        await prisma.trace.create({
+          data: {
+            trace: JSON.stringify(trace)
+          }
+        })
+      }
+      addTrace();
+      res.status(200).send(null);
+    } catch (error) {
+      console.error(`Error adding traces to server: ${(error as Error).message}`);
+
     }
-    addTrace();
-    res.status(200).send(null);
-    return;
+    
   }
 
   // GET
