@@ -37,6 +37,7 @@ import tracing from "./tracing";
 import tracingWeb from "./tracing-web";
 
 import chainSimple from "./chain-simple";
+import chainMemory from "./chain-memory";
 
 // Add examples here!
 
@@ -78,7 +79,8 @@ const examples = {
   tracing,
   "tracing-web": tracingWeb,
 
-  "chain-simple": chainSimple
+  "chain-simple": chainSimple,
+  "chain-memory": chainMemory,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>

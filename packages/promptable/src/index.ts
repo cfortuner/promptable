@@ -1,4 +1,5 @@
-export { LLMChain } from "./chains";
+export { LLMChain, MemoryLLMChain } from "./chains";
+export { BufferedChatInteractionMemory } from "./memories";
 import { Prompt } from "@prompts/Prompt";
 import { ModelProvider } from "@providers/ModelProvider";
 
