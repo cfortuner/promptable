@@ -53,11 +53,17 @@ See our docs for more info on how to use the library.
 
 ### Examples
 
-To run an example, clone the repo and run the following commands
-
+To run an example, clone the repo and follow these steps
+1. Copy contents of `/apps/web/.env.example` into a new file, `/apps/web/.env`
+2. Copy contents of `/examples/.env.example` into a new file, `/examples/.env.example` and add your [OpenAI API Key](https://openai.com/api/) to the `OPENAI_API_KEY` field
+3. Run the following commands:
 ```
 pnpm i
 pnpm dev
+```
+4. Run the following command in a different terminal instance:
+   *NOTE: example names found in [/examples/src](https://github.com/cfortuner/promptable/tree/main/examples/src)
+```
 pnpm run example <example name>
 ```
 
