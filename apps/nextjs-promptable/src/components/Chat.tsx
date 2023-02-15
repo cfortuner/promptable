@@ -101,6 +101,39 @@ export default function Chat() {
     });
   };
 
+  const stream = async () => {
+    const response = await fetch("/api/stream", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userInput: "HI",
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    // This data is a ReadableStream
+    const data = response.body;
+    if (!data) {
+      return;
+    }
+
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      console.log(chunkValue);
+    }
+  };
+
   return (
     <div className="flex h-[100vh] flex-grow flex-col justify-between">
       <div className="bg-black p-8">
@@ -150,6 +183,12 @@ export default function Chat() {
           className="rounded bg-purple-700 p-2 text-white"
         >
           Run
+        </button>
+        <button
+          onClick={() => stream()}
+          className="rounded bg-purple-700 p-2 text-white"
+        >
+          stream
         </button>
         <button
           disabled={!messages.length}

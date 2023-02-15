@@ -131,6 +131,7 @@ importers:
       classnames: ^2.3.2
       eslint: ^8.30.0
       eslint-config-next: 13.1.6
+      eventsource-parser: ^0.1.0
       next: 13.1.6
       postcss: ^8.4.14
       prettier: ^2.8.1
@@ -145,6 +146,7 @@ importers:
       zod: ^3.20.2
     dependencies:
       classnames: 2.3.2
+      eventsource-parser: 0.1.0
       next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       promptable: link:../../packages/promptable
       react: 18.2.0
