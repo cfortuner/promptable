@@ -19,9 +19,6 @@ dotenv.config();
 import {
   OpenAI,
   MemoryLLMChain,
-  setTraceConfig,
-  Trace,
-  graphTraces,
   prompts,
   BufferedChatMemory,
 } from "promptable";

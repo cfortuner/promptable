@@ -22,22 +22,27 @@ const poem = await llmChain.run({ topic: "the moon" });
 The `run` method executes the chain and returns the parsed result.
 
 ## MemoryLLMChain
+
 The MemoryLLMChain combines a prompt, a model provider, and memory. Memory is a way to store and retrieve data between chain runs. This chain is useful for building custom chatbots and other conversational AI applications.
 
-The following example uses MemoryLLMChain to create a simple chatbot based on a prompt. BufferedChatInteractionMemory is a memory which stores the user and bot messages in a buffer, up to a maximum number of interactions (defaulted at Infinity). MemoryLLMChain will automatically extract the memory from the BufferedChatInteractionMemory and pass it to the prompt.
+The following example uses MemoryLLMChain to create a simple chatbot based on a prompt. BufferedChatMemory is a memory which stores the user and bot messages in a buffer, up to a maximum number of interactions (defaulted at Infinity). MemoryLLMChain will automatically extract the memory from the BufferedChatMemory and pass it to the prompt.
 
 ```typescript
-const memory = new BufferedChatInteractionMemory();
+const memory = new BufferedChatMemory();
 const memoryChain = new MemoryLLMChain(prompts.chatbot(), openai, memory);
 while (true) {
-    const { userInput } = await query({ type: 'input', name: 'userInput', message: 'User: ' });
-    if (userInput) {
-        if (userInput === "exit") break;
-        memory.addUserMessage(userInput);
-        const botOutput = await memoryChain.run({ userInput });
-        memory.addBotMessage(botOutput);
-        console.log(chalk.yellow("Assistant:", botOutput));
-    }
+  const { userInput } = await query({
+    type: "input",
+    name: "userInput",
+    message: "User: ",
+  });
+  if (userInput) {
+    if (userInput === "exit") break;
+    memory.addUserMessage(userInput);
+    const botOutput = await memoryChain.run({ userInput });
+    memory.addBotMessage(botOutput);
+    console.log(chalk.yellow("Assistant:", botOutput));
+  }
 }
 ```
 
