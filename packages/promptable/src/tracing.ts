@@ -9,6 +9,7 @@ export interface TraceConfig {
 }
 
 const defaultConfig: TraceConfig = {
+  // TODO: what if localhost:3000 is not the port where promptable visualizer is, i.e. another app uses localhost:3000?
   serverUrl: "http://localhost:3000/api/traces",
   send: console.log,
 };
