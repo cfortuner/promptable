@@ -211,3 +211,22 @@ export const extractCSV = () =>
     ["data", "headers"],
     new CSVParser()
   );
+
+export const fixMarkup = () =>
+  new Prompt(
+    `
+    The following is supposed to be a {{markupLanguage}} {{documentType}} which is not parsing correctly.
+    Ensure the data is a valid {{markupLanguage}} {{documentType}}.
+    Note: if there are newlines in strings in the {{documentType}}, they must be replaced with \n
+    Return the updated {{markupLanguage}} {{documentType}}.
+
+    Input Data:
+    {{markup}}
+    Response:
+    `.trim(),
+    [
+      "markupLanguage",
+      "documentType",
+      "markup"
+    ]
+);
