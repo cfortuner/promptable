@@ -7,7 +7,7 @@ import { CharacterTextSplitter, FileLoader, OpenAI, prompts } from "promptable";
 const apiKey = process.env.OPENAI_API_KEY || "";
 
 /**
- * Run Prompt Document to Extract notes relavant to a Question.
+ * Run Prompt Document to Extract notes relevant to a Question.
  *
  * First, chunks the document into smaller chunks.
  *
