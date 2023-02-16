@@ -39,24 +39,45 @@ const Home: NextPage = () => {
             height={100}
           />
         </div>
-        <div className="grid w-full grid-cols-4 gap-8">
+        <div className="grid w-full grid-cols-2 gap-x-32 gap-y-8">
           <a
             href="https://docs-promptable.vercel.app/"
-            className="rounded border p-2"
             target="_blank"
             rel="noopener noreferrer"
+            className="borderp-2 purp flex h-[120px] w-full flex-col items-center justify-center rounded border"
           >
             <h2 className="text-2xl font-semibold">
               Docs <span>-&gt;</span>
             </h2>
             <p className="text-xl">Read the Promptable Docs!</p>
           </a>
-          <Link href="/chat" className="rounded border p-2">
-            <h2 className="text-2xl font-semibold">
+          <Link
+            href="/chat"
+            className="flex h-[120px] w-full flex-col items-center justify-center rounded border p-2"
+          >
+            <h2 className="text-start text-2xl font-semibold">
               Chat Bot<span>-&gt;</span>
             </h2>
-            <p className="text-xl">Read the Promptable Docs!</p>
+            <p className="max-w-[300px] text-xl">Prebuilt Chat Bot UI & API.</p>
           </Link>
+          <button
+            disabled
+            className="flex h-[120px] w-full flex-col items-center justify-center rounded border bg-gray-100 p-2 text-gray-400"
+          >
+            <h2 className="text-xl font-semibold">
+              Question Answer Bot <span>-&gt;</span>
+            </h2>
+            <p className="text-xl">Prebuilt Question Answer Next.js API</p>
+          </button>
+          <button
+            disabled
+            className="flex h-[120px] w-full flex-col items-center justify-center rounded border bg-gray-100 p-2 text-gray-400"
+          >
+            <h2 className="text-xl font-semibold">
+              Agents (Coming Soon!)<span>-&gt;</span>
+            </h2>
+            <p className="text-xl">Prebuilt Agent API</p>
+          </button>
         </div>
       </main>
     </>

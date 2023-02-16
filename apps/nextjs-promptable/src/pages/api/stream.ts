@@ -1,81 +1,63 @@
-import fs from "fs";
-import { Readable } from "stream";
-import * as p from "promptable";
-import { createParser } from "eventsource-parser";
-import type { NextApiRequest, NextApiResponse } from "next";
+import axios from "axios";
+import * as promptable from "promptable";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export const config = {
-  api: {
-    bodyParser: false,
-    responseLimit: false,
-  },
-};
+// Note: this only works for one client at a time.
+const chatHistory = new promptable.BufferedChatMemory();
+
+interface Message {
+  isUserMessage: boolean;
+  text: string;
+  id: string;
+}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiRequest
+  res: NextApiResponse
 ) {
-  const openai = new p.OpenAI(process.env.OPENAI_API_KEY || "");
+  console.log("req.body", req.body);
+  const { userInput, clear, prevMessages } = req.body;
 
-  const oaiRes: any = await openai.api.createCompletion(
+  // clear the chat history
+  if (clear) {
+    chatHistory.clear();
+    return res.status(200).json({});
+  }
+
+  const messages = prevMessages as Message[];
+
+  // We don't know what the last message was b/c we streamed it to the client.
+  // so we need to find it in the list of previous messages.
+  const lastBotMessage = messages.reverse().find((m) => !m.isUserMessage);
+  console.log("The last bot message was:", lastBotMessage);
+  chatHistory.addBotMessage(lastBotMessage?.text ?? "");
+
+  // then add the user message
+  chatHistory.addUserMessage(userInput);
+
+  const chatbotPrompt = promptable.prompts.chatbot();
+
+  const promptText = chatbotPrompt.format({
+    memory: chatHistory.get(),
+    userInput,
+  });
+
+  const oaiRes = await axios.post(
+    "https://api.openai.com/v1/completions",
     {
-      prompt: "Write a poem about dogs",
+      prompt: promptText,
       model: "text-davinci-003",
-      max_tokens: 128,
+      max_tokens: 1000,
       stream: true,
     },
-    { responseType: "stream" }
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ""}`,
+      },
+      responseType: "stream",
+    }
   );
 
-  console.log(oaiRes);
-
-  const encoder = new TextEncoder();
-  const decoder = new TextDecoder();
-
-  let counter = 0;
-  const stream = new ReadableStream({
-    async start(controller) {
-      // callback
-      function onParse(event: any) {
-        if (event.type === "event") {
-          const data = event.data;
-          // https://beta.openai.com/docs/api-reference/completions/create#completions/create-stream
-          if (data === "[DONE]") {
-            controller.close();
-            return;
-          }
-          try {
-            const json = JSON.parse(data);
-            const text = json.choices[0].text;
-            if (counter < 2 && (text.match(/\n/) || []).length) {
-              // this is a prefix character (i.e., "\n\n"), do nothing
-              return;
-            }
-            const queue = encoder.encode(text);
-            controller.enqueue(queue);
-            counter++;
-          } catch (e) {
-            // maybe parse error
-            controller.error(e);
-          }
-        }
-      }
-
-      // stream response (SSE) from OpenAI may be fragmented into multiple chunks
-      // this ensures we properly read chunks and invoke an event for each SSE event stream
-      const parser = createParser(onParse);
-      // https://web.dev/streams/#asynchronous-iteration
-      for await (const chunk of oaiRes.body as any) {
-        parser.feed(decoder.decode(chunk));
-      }
-    },
-  });
-
-  return new Response(stream, {
-    status: 200,
-    headers: {
-      "content-type": "text/plain",
-      "Cache-Control": "no-cache",
-    },
-  });
+  oaiRes.data.pipe(res);
 }

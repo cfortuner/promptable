@@ -43,6 +43,11 @@ export default function Chat() {
   }, []);
 
   const [messages, setMessages] = useState<Message[]>([]);
+  const [streaming, setStreaming] = useState(true);
+  const toggleStreaming = () => {
+    handleClear();
+    setStreaming((p) => !p);
+  };
 
   useEffect(() => {
     handleScroll();
@@ -73,6 +78,13 @@ export default function Chat() {
 
     const textInput = input;
     setInput("");
+
+    // streaming
+    if (streaming) {
+      await stream(input);
+      return;
+    }
+
     const response = await getChat(textInput);
 
     handleScroll();
@@ -93,6 +105,14 @@ export default function Chat() {
   const handleClear = async () => {
     setMessages([]);
 
+    if (streaming) {
+      await fetch("/api/stream", {
+        method: "POST",
+        body: JSON.stringify({
+          clear: true,
+        }),
+      });
+    }
     await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
@@ -101,14 +121,15 @@ export default function Chat() {
     });
   };
 
-  const stream = async () => {
+  const stream = async (input: string) => {
     const response = await fetch("/api/stream", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userInput: "HI",
+        prevMessages: messages,
+        userInput: input,
       }),
     });
 
@@ -130,13 +151,40 @@ export default function Chat() {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
-      console.log(chunkValue);
+
+      const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
+
+      if (jsn === "[DONE]") {
+        break;
+      }
+
+      try {
+        const data = JSON.parse(jsn);
+        console.log(data);
+
+        const text = data.choices[0].text;
+
+        setMessages((prevMessages) => {
+          const last =
+            prevMessages[prevMessages.length - 1] || createMessage("", false);
+          return [
+            ...prevMessages.slice(0, -1),
+            { ...last, text: last.text + text },
+          ];
+        });
+
+        handleScroll();
+      } catch (e) {
+        console.log(chunkValue);
+        console.log(jsn);
+        console.log(e);
+      }
     }
   };
 
   return (
     <div className="flex h-[100vh] flex-grow flex-col justify-between">
-      <div className="bg-black p-8">
+      <div className="flex space-x-4 bg-black p-8">
         <Link
           href="/"
           className="bold border-[1px] border-white p-2 text-xl text-white"
@@ -185,10 +233,10 @@ export default function Chat() {
           Run
         </button>
         <button
-          onClick={() => stream()}
-          className="rounded bg-purple-700 p-2 text-white"
+          onClick={() => toggleStreaming()}
+          className="rounded bg-green-500 p-2 text-white"
         >
-          stream
+          Streaming {streaming ? "On" : "Off"}
         </button>
         <button
           disabled={!messages.length}
