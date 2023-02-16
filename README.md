@@ -49,7 +49,7 @@ An Embedding is a vector representation of a piece of text. It is a type of AI t
 ## Usage
 
 See our docs for more info on how to use the library.
-(Documentation)[https://docs-promptable.vercel.app/]
+[Documentation](https://docs-promptable.vercel.app/)
 
 ### Examples
 
