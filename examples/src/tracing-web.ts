@@ -1,4 +1,4 @@
-import { trace } from "promptable";
+import { trace, setTraceConfig, sendTraceToServer } from "promptable";
 import { pipeAsync } from "ramda-async";
 
 /**
@@ -7,7 +7,14 @@ import { pipeAsync } from "ramda-async";
  * @param args
  */
 const run = async (args: string[]) => {
-  trace("tracing-web", async () => {
+  setTraceConfig({
+    send: (trace) => {
+      console.log("Received Trace", trace);
+      sendTraceToServer(trace);
+    },
+  });
+
+  const t = trace("tracing-web", async () => {
     const step1 = trace(
       "step1",
       async (dog: string) => {
@@ -44,6 +51,11 @@ const run = async (args: string[]) => {
 
     await pipeline("dog");
   });
+
+  await Promise.all([
+    t(),
+  ]);
+
 };
 
 export default run;

@@ -16,9 +16,7 @@ model Example {
     updatedAt DateTime @updatedAt
 }
 
-model Chain {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    scopeId   String
-    trace     String
+model Trace {
+    id    String @id @default(cuid())
+    trace String
 }
