@@ -62,18 +62,18 @@ const Home: NextPage = () => {
           </Link>
           <button
             disabled
-            className="flex h-[120px] w-full flex-col items-center justify-center rounded border bg-gray-100 p-2 text-gray-400"
+            className="flex h-[120px] w-full flex-col items-center justify-center rounded bg-gray-100 p-2 text-gray-400"
           >
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-2xl font-semibold">
               Question Answer Bot <span>-&gt;</span>
             </h2>
             <p className="text-xl">Prebuilt Question Answer Next.js API</p>
           </button>
           <button
             disabled
-            className="flex h-[120px] w-full flex-col items-center justify-center rounded border bg-gray-100 p-2 text-gray-400"
+            className="flex h-[120px] w-full flex-col items-center justify-center rounded bg-gray-100 p-2 text-gray-400"
           >
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-2xl font-semibold">
               Agents (Coming Soon!)<span>-&gt;</span>
             </h2>
             <p className="text-xl">Prebuilt Agent API</p>
