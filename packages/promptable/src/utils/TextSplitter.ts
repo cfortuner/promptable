@@ -1,4 +1,4 @@
-import tokenizer from "sbd";
+import sentencize from "@stdlib/nlp-sentencize";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { Document } from "..";
 
@@ -123,7 +123,7 @@ export class CharacterTextSplitter extends TextSplitter {
 
 export class SentenceTextSplitter extends TextSplitter {
   splitText(text: string, opts?: TextSplitterOptions): string[] {
-    var sentences = tokenizer.sentences(text, {});
+    const sentences = sentencize(text);
     return opts?.chunk || this.chunk
       ? this.createChunks(sentences, " ")
       : sentences.filter((t) => t.length);
