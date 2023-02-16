@@ -77,7 +77,7 @@ It uses [pnpm](https://pnpm.io) as a package manager and includes the following 
 - `examples`: Examples using the Promptable.js library!
 - `apps/docs`: The Promptable.js Docs
 - `apps/web`: A nextjs app for visualizing Promptable.js steps.
-
+- `apps/nextjs-promptable`: A nextjs app starter kit with prebuilt features (ChatBot with Streaming, QA Bot etc.)
 ## Contributing
 
 ## Install and Run
