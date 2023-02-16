@@ -55,7 +55,7 @@ See our docs for more info on how to use the library.
 
 To run an example, clone the repo and follow these steps
 1. Copy contents of `/apps/web/.env.example` into a new file, `/apps/web/.env`
-2. Copy contents of `/examples/.env.example` into a new file, `/examples/.env.example` and add your [OpenAI API Key](https://openai.com/api/) to the `OPENAI_API_KEY` field
+2. Copy contents of `/examples/.env.example` into a new file, `/examples/.env` and add your [OpenAI API Key](https://openai.com/api/) to the `OPENAI_API_KEY` field
 3. Run the following commands:
 ```
 pnpm i
