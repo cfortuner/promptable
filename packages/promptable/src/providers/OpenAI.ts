@@ -8,11 +8,6 @@ import { Configuration, OpenAIApi, CreateEmbeddingRequest } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval,
-} from "eventsource-parser";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -160,6 +155,8 @@ export class OpenAI
   }
 
   /**
+   * NOTE: DISABLED until we can figure out how to stream the response.
+   *
    * Use this on your server to stream completions from the OpenAI API.
    *
    * @param promptText
@@ -173,58 +170,24 @@ export class OpenAI
       "stream"
     > = DEFAULT_COMPLETION_OPTIONS
   ) {
-    try {
-      if (options.stop != null) {
-        options.stop = unescapeStopTokens(options.stop);
-      }
+    throw "not implemented";
+    // try {
+    //   if (options.stop != null) {
+    //     options.stop = unescapeStopTokens(options.stop);
+    //   }
 
-      const stream = await OpenAIStream({
-        prompt: promptText,
-        ...options,
-        model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
-        stream: true,
-      });
+    //   // const stream = await OpenAIStream({
+    //   //   prompt: promptText,
+    //   //   ...options,
+    //   //   model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
+    //   //   stream: true,
+    //   // });
 
-      return new Response(stream);
-    } catch (e) {
-      console.log(e);
-    }
-    return "failed";
-  }
-
-  /**
-   * Read a stream of completions from the OpenAI API.
-   *
-   * @param response Response The response from the OpenAI API
-   * @param onChunk
-   * @param onFinish
-   * @param options
-   */
-  async readStream(
-    response: Response,
-    onChunk: (chunk: string) => void,
-    onFinish: () => void
-  ) {
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    const data = response.body;
-    if (!data) {
-      return;
-    }
-    const reader = data.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
-
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-      onChunk(chunkValue);
-    }
-
-    onFinish();
+    //   return new Response(stream);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    // return "failed";
   }
 
   async embed(
@@ -352,53 +315,4 @@ export class OpenAITokenizer implements Tokenizer {
   countDocumentTokens(doc: Document) {
     return this.countTokens(doc.content);
   }
-}
-
-export async function OpenAIStream(payload: any) {
-  const encoder = new TextEncoder();
-  const decoder = new TextDecoder();
-
-  let counter = 0;
-
-  const res = await fetch("https://api.openai.com/v1/completions", {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ""}`,
-    },
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-
-  const stream = new ReadableStream({
-    async start(controller) {
-      function onParse(event: ParsedEvent | ReconnectInterval) {
-        if (event.type === "event") {
-          const data = event.data;
-          if (data === "[DONE]") {
-            controller.close();
-            return;
-          }
-          try {
-            const json = JSON.parse(data);
-            const text = json.choices[0].text;
-            if (counter < 2 && (text.match(/\n/) || []).length) {
-              return;
-            }
-            const queue = encoder.encode(text);
-            controller.enqueue(queue);
-            counter++;
-          } catch (e) {
-            controller.error(e);
-          }
-        }
-      }
-
-      const parser = createParser(onParse);
-      for await (const chunk of res.body as any) {
-        parser.feed(decoder.decode(chunk));
-      }
-    },
-  });
-
-  return stream;
 }
