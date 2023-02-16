@@ -8,6 +8,11 @@ import { Configuration, OpenAIApi, CreateEmbeddingRequest } from "openai";
 import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
+import {
+  createParser,
+  ParsedEvent,
+  ReconnectInterval,
+} from "eventsource-parser";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -154,72 +159,72 @@ export class OpenAI
     return "failed";
   }
 
+  /**
+   * Use this on your server to stream completions from the OpenAI API.
+   *
+   * @param promptText
+   * @param options
+   * @returns
+   */
   async stream(
     promptText: string,
-    onChunk: (chunk: string) => void,
-    onFinish: () => void,
-    options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
+    options: Omit<
+      GenerateCompletionOptions,
+      "stream"
+    > = DEFAULT_COMPLETION_OPTIONS
   ) {
-    if (options.stop != null) {
-      options.stop = unescapeStopTokens(options.stop);
-    }
-
-    const payload = {
-      prompt: promptText,
-      ...options,
-      model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
-      stream: true,
-    };
-
     try {
-      const res = await this.api.createCompletion(payload, {
-        responseType: "stream",
+      if (options.stop != null) {
+        options.stop = unescapeStopTokens(options.stop);
+      }
+
+      const stream = await OpenAIStream({
+        prompt: promptText,
+        ...options,
+        model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
+        stream: true,
       });
 
-      //@ts-ignore
-      res.data.on("data", (data) => {
-        const lines = data
-          .toString()
-          .split("\n")
-          //@ts-ignore
-          .filter((line) => line.trim() !== "");
-        for (const line of lines) {
-          const message = line.replace(/^data: /, "");
-          if (message === "[DONE]") {
-            onFinish();
-            return; // Stream finished
-          }
-          try {
-            const parsed = JSON.parse(message);
-            onChunk(parsed.choices[0].text);
-          } catch (error) {
-            console.error(
-              "Could not JSON parse stream message",
-              message,
-              error
-            );
-          }
-        }
-      });
-    } catch (error) {
-      //@ts-ignore
-      if (error.response?.status) {
-        //@ts-ignore
-        console.error(error.response.status, error.message);
-        //@ts-ignore
-        error.response.data.on("data", (data) => {
-          const message = data.toString();
-          try {
-            const parsed = JSON.parse(message);
-            console.error("An error occurred during OpenAI request: ", parsed);
-          } catch (error) {
-            console.error("An error occurred during OpenAI request: ", message);
-          }
-        });
-      } else {
-        console.error("An error occurred during OpenAI request", error);
-      }
+      return new Response(stream);
+    } catch (e) {
+      console.log(e);
     }
+    return "failed";
+  }
+
+  /**
+   * Read a stream of completions from the OpenAI API.
+   *
+   * @param response Response The response from the OpenAI API
+   * @param onChunk
+   * @param onFinish
+   * @param options
+   */
+  async readStream(
+    response: Response,
+    onChunk: (chunk: string) => void,
+    onFinish: () => void
+  ) {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const data = response.body;
+    if (!data) {
+      return;
+    }
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      onChunk(chunkValue);
+    }
+
+    onFinish();
   }
 
   async embed(
@@ -347,4 +352,53 @@ export class OpenAITokenizer implements Tokenizer {
   countDocumentTokens(doc: Document) {
     return this.countTokens(doc.content);
   }
+}
+
+export async function OpenAIStream(payload: any) {
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+
+  let counter = 0;
+
+  const res = await fetch("https://api.openai.com/v1/completions", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ""}`,
+    },
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+
+  const stream = new ReadableStream({
+    async start(controller) {
+      function onParse(event: ParsedEvent | ReconnectInterval) {
+        if (event.type === "event") {
+          const data = event.data;
+          if (data === "[DONE]") {
+            controller.close();
+            return;
+          }
+          try {
+            const json = JSON.parse(data);
+            const text = json.choices[0].text;
+            if (counter < 2 && (text.match(/\n/) || []).length) {
+              return;
+            }
+            const queue = encoder.encode(text);
+            controller.enqueue(queue);
+            counter++;
+          } catch (e) {
+            controller.error(e);
+          }
+        }
+      }
+
+      const parser = createParser(onParse);
+      for await (const chunk of res.body as any) {
+        parser.feed(decoder.decode(chunk));
+      }
+    },
+  });
+
+  return stream;
 }

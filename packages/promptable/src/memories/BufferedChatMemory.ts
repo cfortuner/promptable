@@ -4,6 +4,11 @@ export class BufferedChatMemory implements Memory {
   botMessages: string[] = [];
   userMessages: string[] = [];
 
+  clear() {
+    this.botMessages = [];
+    this.userMessages = [];
+  }
+
   constructor(
     protected botName = "Assistant",
     protected userName = "User",
