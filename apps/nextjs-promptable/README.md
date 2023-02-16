@@ -1,6 +1,6 @@
 # Promptable + NextJS!
 
-COLIN TODO: Move this into it's own repo and set up 1 click deploy
+<img width="1237" alt="Screen Shot 2023-02-15 at 11 18 59 AM" src="https://user-images.githubusercontent.com/5430709/219256567-11e5b6ec-1f81-4387-b1ef-ae7bb803665c.png">
 
 ## One-Click Deploy
 
