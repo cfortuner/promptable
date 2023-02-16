@@ -33,7 +33,7 @@ An Embedding is a vector representation of a piece of text. It is a type of AI t
 - 🤖 Autonomous Agents & Personal Assistants
 
 ### Features
-
+- [StarterKits](https://twitter.com/colinfortuner/status/1626063002683207681?s=20) ex. NextJS <-> Promptable Starter kit with Streaming Chat Bot! 
 - [Prompts](./apps/docs/docs/modules/prompts.md) for templating and formatting
 - [Model Providers](./apps/docs/docs/modules/model-providers.md) for Text Generation and Embedding Generation
 - [Embeddings](./apps/docs/docs/modules/embeddings.md) for creating Embeddings, Indexing and Search
@@ -78,6 +78,8 @@ It uses [pnpm](https://pnpm.io) as a package manager and includes the following 
 - `apps/docs`: The Promptable.js Docs
 - `apps/web`: A nextjs app for visualizing Promptable.js steps.
 - `apps/nextjs-promptable`: A nextjs app starter kit with prebuilt features (ChatBot with Streaming, QA Bot etc.)
+
+
 ## Contributing
 
 ## Install and Run
