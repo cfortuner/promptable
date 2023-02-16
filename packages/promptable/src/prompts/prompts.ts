@@ -143,7 +143,8 @@ export const extractJSON = () =>
   Type:
   {{type}}
 
-  const VALID_STRINGIFIED_JSON=`.trim(),
+  Stringified JSON:
+  `.trim(),
     ["data", "type"],
     new JSONParser()
   );
