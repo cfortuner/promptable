@@ -211,3 +211,30 @@ export const extractCSV = () =>
     ["data", "headers"],
     new CSVParser()
   );
+
+/**
+  Use this prompt to fix a markup language document that is not parsing correctly.
+
+  Set the markupLanguage to the markup language that is being used. (ex. JSON, yaml, markdown, etc.)
+  Set the documentType to the type of document that is being parsed. (ex. object, array, string, document, etc.)
+  Set the markup to the markup that is not parsing correctly.
+**/
+
+export const fixMarkup = () =>
+  new Prompt(
+    `
+    The following is supposed to be a {{markupLanguage}} {{documentType}} which is not parsing correctly.
+    Ensure the data is a valid {{markupLanguage}} {{documentType}}.
+    Note: if there are newlines in strings in the {{documentType}}, they must be replaced with \n
+    Return the updated {{markupLanguage}} {{documentType}}.
+
+    Input Data:
+    {{markup}}
+    Response:
+    `.trim(),
+    [
+      "markupLanguage",
+      "documentType",
+      "markup"
+    ]
+);
