@@ -1,3 +1,4 @@
+import { RateLimiter } from "limiter";
 import {
   CompletionsModelProvider,
   EmbeddingsModelProvider,
@@ -9,7 +10,7 @@ import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
-class OpenAIConfiguration extends Configuration {}
+class OpenAIConfiguration extends Configuration { }
 
 type GenerateCompletionOptions = {
   /**
@@ -104,32 +105,65 @@ type GenerateCompletionOptions = {
   user?: string;
 };
 
+
+type RateLimitConfig = { requestsPerMinute: number, tokensPerMinute: number } | null;
+
+export type OpenAIProviderConfig = {
+  rateLimitConfig?: RateLimitConfig
+};
+
+function normalizeRequestLimits(perMinute: number) {
+  let perMillisecond = perMinute / 60000;
+  let interval = 1; // ms
+  if (perMillisecond < 1) {
+    interval = 1 / perMillisecond;
+    perMillisecond = 1;
+  }
+  return [perMillisecond, interval];
+}
+
 export class OpenAI
   extends ModelProvider
-  implements CompletionsModelProvider, EmbeddingsModelProvider
-{
+  implements CompletionsModelProvider, EmbeddingsModelProvider {
   apiKey: string;
-  config: OpenAIConfiguration;
+  openAIConfig: OpenAIConfiguration;
   api: OpenAIApi;
   completionsConfig = DEFAULT_COMPLETION_OPTIONS;
   embeddingsConfig: OpenAIEmbeddingsConfig = DEFAULT_OPENAI_EMBEDDINGS_CONFIG;
   tokenizer: OpenAITokenizer = new OpenAITokenizer();
+  tokenRateLimiter: RateLimiter | null = null;
+  requestRateLimiter: RateLimiter | null = null;
 
-  constructor(apiKey: string) {
+
+  constructor(apiKey: string, { rateLimitConfig }: OpenAIProviderConfig = {}) {
     super(ModelProviderType.OpenAI);
     this.apiKey = apiKey;
+    rateLimitConfig = rateLimitConfig === undefined ? OPENAI_DEFAULT_RATE_LIMITS : rateLimitConfig;
+    if (rateLimitConfig) {
+      const [requestsPerInterval, rpmInterval] = normalizeRequestLimits(rateLimitConfig.requestsPerMinute);
+      // NOTE: the token rate limiter is hard to test properly
+      this.tokenRateLimiter = new RateLimiter({ tokensPerInterval: rateLimitConfig.tokensPerMinute, interval: 'minute' });
+      this.requestRateLimiter = new RateLimiter({ tokensPerInterval: requestsPerInterval, interval: rpmInterval });
+    }
 
-    const config = new OpenAIConfiguration({
+    this.openAIConfig = new OpenAIConfiguration({
       apiKey,
     });
 
-    this.config = config;
-
-    this.api = new OpenAIApi(config);
+    this.api = new OpenAIApi(this.openAIConfig);
   }
 
   countTokens(text: string) {
     return this.tokenizer.countTokens(text);
+  }
+
+  protected async enforceRateLimit(promptText: string, options: { max_tokens?: number | null }) {
+    if (this.tokenRateLimiter) {
+      await this.tokenRateLimiter.removeTokens(this.countTokens(promptText) + (options.max_tokens || 0));
+    }
+    if (this.requestRateLimiter) {
+      await this.requestRateLimiter.removeTokens(1);
+    }
   }
 
   async generate(
@@ -141,15 +175,24 @@ export class OpenAI
         options.stop = unescapeStopTokens(options.stop);
       }
 
+      await this.enforceRateLimit(promptText, options);
+
       const res = await this.api.createCompletion({
         prompt: promptText,
         ...options,
         model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
       });
-
       return res.data.choices[0]?.text || "";
     } catch (e) {
-      console.log(e);
+      // @ts-expect-error
+      if (e.response) {
+        // @ts-expect-error
+        console.error(`Status code: ${e.response.status}. Data: ${JSON.stringify(e.response.data, null, 2)}`);
+
+      } else {
+        // @ts-expect-error
+        console.error(e.message);
+      }
     }
     return "failed";
   }
@@ -216,6 +259,7 @@ export class OpenAI
     text: string,
     options: Omit<CreateEmbeddingRequest, "input">
   ) => {
+    await this.enforceRateLimit(text, {});
     const result = await this.api.createEmbedding({
       ...options,
       input: text.replace(/\n/g, " "),
@@ -229,11 +273,13 @@ export class OpenAI
     options: Omit<CreateEmbeddingRequest, "input">
   ) => {
     const batchResults = await Promise.all(
-      texts.map((text) =>
-        this.api.createEmbedding({
+      texts.map(async (text) => {
+        await this.enforceRateLimit(text, {});
+        return await this.api.createEmbedding({
           ...options,
           input: text.replace(/\n/g, " "),
         })
+      }
       )
     );
 
@@ -272,6 +318,11 @@ export const OPENAI_MODEL_SETTINGS = {
     maxLength: 2000,
   },
 };
+
+/* Taken from: https://platform.openai.com/docs/guides/rate-limits/overview
+By default we'll use the rate limits for pay-as-you-go (after 48 hours) users for text-davinci-003.
+*/
+export const OPENAI_DEFAULT_RATE_LIMITS = { requestsPerMinute: 3000, tokensPerMinute: 250000 };
 
 interface OpenAIEmbeddingsConfig {
   model: string;

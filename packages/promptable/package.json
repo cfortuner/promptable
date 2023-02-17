@@ -26,6 +26,7 @@
         "chalk": "^4.1.2",
         "csv-parse": "^5.3.4",
         "gpt3-tokenizer": "^1.1.4",
+        "limiter": "^2.1.0",
         "openai": "^3.1.0",
         "typescript": "latest",
         "uuid": "^9.0.0",

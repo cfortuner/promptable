@@ -40,6 +40,8 @@ import tracingWebPrompt from "./tracing-web-prompt"
 import chainSimple from "./chain-simple";
 import chainMemory from "./chain-memory";
 
+import rateLimit from "./rate-limit-example";
+
 // Add examples here!
 
 const examples = {
@@ -83,6 +85,8 @@ const examples = {
 
   "chain-simple": chainSimple,
   "chain-memory": chainMemory,
+
+  "rate-limit": rateLimit,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>
