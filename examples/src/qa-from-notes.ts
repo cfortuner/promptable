@@ -8,7 +8,7 @@ import {
   ListParser,
   OpenAI,
   prompts,
-} from "promptable";
+} from "@promptable/server";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 

@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { OpenAI, Prompt, CharacterTextSplitter } from "promptable";
+import { OpenAI, Prompt, CharacterTextSplitter } from "@promptable/server";
 
 /**
  * Evaluate a poem on each paragraph

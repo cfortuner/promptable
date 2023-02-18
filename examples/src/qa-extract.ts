@@ -2,7 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { CharacterTextSplitter, FileLoader, OpenAI, prompts } from "promptable";
+import {
+  CharacterTextSplitter,
+  FileLoader,
+  OpenAI,
+  prompts,
+} from "@promptable/server";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 

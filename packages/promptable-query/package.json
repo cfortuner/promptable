@@ -1,5 +1,5 @@
 {
-  "name": "gpt-react-query",
+  "name": "promptable-query",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,7 +16,7 @@
   "author": "Colin Fortuner",
   "license": "ISC",
   "dependencies": {
-    "promptable": "workspace*",
+    "@promptable/server": "workspace*",
     "react": "^18.2.0",
     "react-query": "^3.39.3",
     "typescript": "latest",

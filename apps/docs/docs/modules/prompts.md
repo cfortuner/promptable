@@ -58,7 +58,7 @@ const output = prompt.parse(json);
 Promptable comes with a few prebuilt prompts that you can use.
 
 ```ts
-import { prompts } from "promptable";
+import { prompts } from "@promptable/server";
 
 const qaPrompt = prompts.QA();
 const extractTextPrompt = prompts.extractText();

@@ -29,7 +29,7 @@ OPENAI_API_KEY=<your api key>
 Importing the library:
 
 ```ts
-import * as p from "promptable";
+import * as p from "@promptable/server";
 ```
 
 Create a model provider
@@ -79,7 +79,7 @@ await provider.stream(promptText, (chunk: string) => {
 ## Using Embeddings
 
 ```ts
-import * as p from "promptable";
+import * as p from "@promptable/server";
 
 // Create a model provider!
 const provider = new p.OpenAI(apiKey);

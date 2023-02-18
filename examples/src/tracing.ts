@@ -1,5 +1,5 @@
 import R, { pipe } from "ramda";
-import { trace, setTraceConfig, Trace, graphTraces } from "promptable";
+import { trace, setTraceConfig, Trace, graphTraces } from "@promptable/server";
 import { pipeAsync, traversePromises } from "ramda-async";
 
 const run = async (args: string[]) => {

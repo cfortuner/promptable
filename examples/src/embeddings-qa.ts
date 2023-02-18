@@ -22,7 +22,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import * as dfd from "danfojs-node";
 import chalk from "chalk";
-import { Embeddings, OpenAI, prompts } from "promptable";
+import { Embeddings, OpenAI, prompts } from "@promptable/server";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
