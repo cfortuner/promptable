@@ -5,6 +5,7 @@
     "apps/*",
     "starter-kits/*",
     "packages/*",
+    "packages/promptable/*",
     "examples"
   ],
   "scripts": {

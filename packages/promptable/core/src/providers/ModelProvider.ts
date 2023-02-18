@@ -13,11 +13,17 @@ export abstract class ModelProvider {
   }
 }
 
+export interface CompletionRequest<T extends string> {
+  prompt: Prompt<T, any>;
+  variables: Record<T, string>;
+  topP?: number;
+  n?: number;
+  maxTokens?: number;
+  stop?: string[] | string;
+}
+
 export interface CompletionsModelProvider extends ModelProvider {
-  generate<T extends string>(
-    promptText: string,
-    ...args: any[]
-  ): Promise<string>;
+  generate(req: CompletionRequest<any>): Promise<string>;
 }
 
 export interface CompletionStreamModelProvider extends ModelProvider {

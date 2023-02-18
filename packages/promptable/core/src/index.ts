@@ -2,7 +2,24 @@ export { LLMChain, MemoryLLMChain } from "@chains/index";
 export { BufferedChatMemory } from "src/memories/BufferedChatMemory";
 
 import { Prompt } from "@prompts/Prompt";
-import { ModelProvider } from "@providers/ModelProvider";
+export { Prompt };
+
+import {
+  ModelProvider,
+  CompletionRequest,
+  CompletionsModelProvider,
+  EmbeddingsModelProvider,
+  ModelProviderType,
+  Tokenizer,
+} from "@providers/ModelProvider";
+export type {
+  Tokenizer,
+  ModelProvider,
+  ModelProviderType,
+  CompletionRequest,
+  CompletionsModelProvider,
+  EmbeddingsModelProvider,
+};
 
 export interface Document {
   content: string;
@@ -15,10 +32,6 @@ export { Embeddings };
 // Prebuilt prompts
 import * as prompts from "@prompts/prompts";
 export { prompts };
-
-// Providers
-import { OpenAI } from "@providers/OpenAI";
-export { OpenAI };
 
 // Loaders
 import { Loader, FileLoader } from "@loaders/index";
@@ -52,9 +65,3 @@ export const utils = {
   injectVariables,
   parseJsonSSE,
 };
-
-export { Prompt, ModelProvider };
-
-import { graphTraces, trace, setTraceConfig, sendTraceToServer } from "./tracing";
-import type { Trace } from "./tracing";
-export { graphTraces, trace, setTraceConfig, Trace, sendTraceToServer };

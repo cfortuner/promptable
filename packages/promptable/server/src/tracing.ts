@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { AsyncLocalStorage } from "node:async_hooks";
+import { AsyncLocalStorage } from "async_hooks";
 import { v4 } from "uuid";
 import axios, { AxiosError } from "axios";
 
