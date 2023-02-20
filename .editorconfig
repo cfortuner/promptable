@@ -1,0 +1,20 @@
+# http://editorconfig.org
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{ts,tsx}]
+indent_style = space
+indent_size = 2
+
+[*.{json,json.txt}]
+indent_style = space
+indent_size = 2
+
+[*.{yml,yml.txt}]
+indent_style = space
+indent_size = 2
