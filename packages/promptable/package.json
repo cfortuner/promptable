@@ -27,6 +27,7 @@
         "csv-parse": "^5.3.4",
         "gpt3-tokenizer": "^1.1.4",
         "openai": "^3.1.0",
+        "ts-toolbelt": "^9.6.0",
         "typescript": "latest",
         "uuid": "^9.0.0",
         "zod": "^3.20.2"

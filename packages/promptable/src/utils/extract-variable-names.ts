@@ -1,10 +1,12 @@
+import { ExtractVariableNames } from '@utils/type-utils';
+
 /**
  * Extracts *unique* {{variables}} from a string
  *
  * @param text
  * @returns
  */
-export const extractVariableNames = (text: string) => {
+export const extractVariableNames = <T extends string>(text: T) => {
   const matches = text.match(/{{(.*?)}}/g);
   const inputsFound = new Set<string>();
 
@@ -21,5 +23,5 @@ export const extractVariableNames = (text: string) => {
         return true;
       })
       .map((s) => s) || []
-  );
+  ) as Array<keyof ExtractVariableNames<T>>;
 };

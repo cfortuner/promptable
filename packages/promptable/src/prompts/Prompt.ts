@@ -1,4 +1,5 @@
 import { injectVariables } from "@utils/inject-variables";
+import { ExtractVariableNames, ExtractFormatObject } from "@utils/type-utils";
 import { NoopParser, Parser } from "@prompts/Parser";
 
 export class Prompt<
@@ -6,12 +7,12 @@ export class Prompt<
   P extends Parser<any> = NoopParser
 > implements Parser<any>
 {
-  text: string;
-  variableNames: T[];
+  text: T;
+  variableNames: ExtractVariableNames<T>;
 
   private parser: P;
 
-  constructor(text: string, variableNames: T[], parser?: P) {
+  constructor(text: T, variableNames: ExtractVariableNames<T>, parser?: P) {
     this.text = text;
     this.variableNames = variableNames;
 
@@ -25,7 +26,7 @@ export class Prompt<
     return this.parser.parse(completion);
   }
 
-  format(variables: Record<T, string>) {
+  format(variables: ExtractFormatObject<T>) {
     const formattedPrompt = injectVariables(this.text, variables);
     return formattedPrompt;
   }
@@ -59,8 +60,8 @@ export class Prompt<
 // const prompt = Prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
 //
 
-export const prompt = (
-  text: string,
-  variableNames: string[],
+export const prompt = <T extends string>(
+  text: T,
+  variableNames: ExtractVariableNames<T>,
   parser?: Parser<any>
 ) => new Prompt(text, variableNames, parser);
