@@ -104,6 +104,11 @@ type GenerateCompletionOptions = {
   user?: string;
 };
 
+type Options = {
+  completionsConfig?: GenerateCompletionOptions;
+  embeddingsConfig?: OpenAIEmbeddingsConfig;
+};
+
 export class OpenAI
   extends ModelProvider
   implements CompletionsModelProvider, EmbeddingsModelProvider
@@ -111,11 +116,11 @@ export class OpenAI
   apiKey: string;
   config: OpenAIConfiguration;
   api: OpenAIApi;
-  completionsConfig = DEFAULT_COMPLETION_OPTIONS;
-  embeddingsConfig: OpenAIEmbeddingsConfig = DEFAULT_OPENAI_EMBEDDINGS_CONFIG;
+  completionsConfig: GenerateCompletionOptions;
+  embeddingsConfig: OpenAIEmbeddingsConfig;
   tokenizer: OpenAITokenizer = new OpenAITokenizer();
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, options?: Options) {
     super(ModelProviderType.OpenAI);
     this.apiKey = apiKey;
 
@@ -124,6 +129,10 @@ export class OpenAI
     });
 
     this.config = config;
+    this.completionsConfig =
+      options?.completionsConfig ?? DEFAULT_COMPLETION_OPTIONS;
+    this.embeddingsConfig =
+      options?.embeddingsConfig ?? DEFAULT_OPENAI_EMBEDDINGS_CONFIG;
 
     this.api = new OpenAIApi(config);
   }
@@ -134,7 +143,7 @@ export class OpenAI
 
   async generate(
     promptText: string,
-    options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
+    options: GenerateCompletionOptions = this.completionsConfig
   ) {
     try {
       if (options.stop != null) {
@@ -165,10 +174,7 @@ export class OpenAI
    */
   async stream(
     promptText: string,
-    options: Omit<
-      GenerateCompletionOptions,
-      "stream"
-    > = DEFAULT_COMPLETION_OPTIONS
+    options: Omit<GenerateCompletionOptions, "stream"> = this.completionsConfig
   ) {
     throw "not implemented";
     // try {
@@ -200,10 +206,7 @@ export class OpenAI
   ): Promise<number[][]>;
   async embed(
     textOrTexts: any,
-    options: Omit<
-      CreateEmbeddingRequest,
-      "input"
-    > = DEFAULT_OPENAI_EMBEDDINGS_CONFIG
+    options: Omit<CreateEmbeddingRequest, "input"> = this.embeddingsConfig
   ) {
     if (Array.isArray(textOrTexts)) {
       return this.embedMany(textOrTexts, options);
