@@ -55,3 +55,14 @@ await openai.stream(
   }
 );
 ```
+
+### Rate limiting
+
+Some model providers (eg. `OpenAI`) have rate limits on the number of requests and tokens per minute.
+By default, Promptable will handle rate limiting for you assuming you are using `text-davinci` as your model.
+
+If you are using a different model or you want to set your own rate limits, you can do so:
+```ts
+// Codex model rate limits
+new OpenAI(apiKey, { rateLimitConfig: { requestsPerMinute: 20, tokensPerMinute: 40000 } });
+```

@@ -10,7 +10,7 @@ export class LLMChain<
   constructor(
     public prompt: Prompt<T, P>,
     public provider: CompletionsModelProvider
-  ) {}
+  ) { }
 
   protected async _run(variables: Record<T, string>) {
     // TODO: fix trace so that the anonymous function isn't needed
