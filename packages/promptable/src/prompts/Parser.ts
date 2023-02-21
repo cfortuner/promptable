@@ -1,4 +1,4 @@
-import { logger } from "src/internal/Logger";
+import { logger } from "@utils/Logger";
 import { parse } from "csv-parse/sync";
 
 export interface Parser<T extends any> {
