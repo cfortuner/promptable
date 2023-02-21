@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { SentenceTextSplitter } from "promptable";
+import { SentenceTextSplitter } from "@promptable/promptable";
 
 /**
  * Simple example showing how to split text on new sentences

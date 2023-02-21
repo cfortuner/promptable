@@ -11,7 +11,7 @@ You can use Model providers in the same way you would use the OpenAI API.
 ## Creating a Model Provider
 
 ```ts title ="examples/model-providers.ts"
-import { OpenAI } from "promptable";
+import { OpenAI } from "@promptable/promptable";
 const openai = new OpenAI(apiKey);
 //or
 const openai = new OpenAI(apiKey, {
@@ -26,7 +26,7 @@ const openai = new OpenAI(apiKey, {
 You can use the model provider to complete text generation.
 
 ```ts title ="examples/model-providers.ts"
-import { OpenAI } from "promptable";
+import { OpenAI } from "@promptable/promptable";
 
 const text = "This is a test";
 const tokensUsed = openai.countTokens(text);
@@ -41,7 +41,7 @@ console.log(response);
 With OpenAI, you can also stream completions like this:
 
 ```ts
-import { OpenAI } from "promptable";
+import { OpenAI } from "@promptable/promptable";
 
 const text = "This is a test";
 const tokensUsed = openai.countTokens(text);

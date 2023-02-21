@@ -1,5 +1,8 @@
 import chalk from "chalk";
-import { CharacterTextSplitter, SentenceTextSplitter } from "promptable";
+import {
+  CharacterTextSplitter,
+  SentenceTextSplitter,
+} from "@promptable/promptable";
 
 /**
  * Simple example showing how to use the TextSplitter to split and chunk text.

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Prompt, OpenAI, LLMChain } from "promptable";
+import { Prompt, OpenAI, LLMChain } from "@promptable/promptable";
 
 export default async function handler(
   req: NextApiRequest,

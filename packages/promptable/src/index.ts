@@ -44,17 +44,11 @@ export {
   SentenceTextSplitter,
 };
 
-import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
 export const utils = {
-  unescapeStopTokens,
   injectVariables,
   parseJsonSSE,
 };
 
 export { Prompt, ModelProvider };
-
-import { graphTraces, trace, setTraceConfig, sendTraceToServer } from "./tracing";
-import type { Trace } from "./tracing";
-export { graphTraces, trace, setTraceConfig, Trace, sendTraceToServer };

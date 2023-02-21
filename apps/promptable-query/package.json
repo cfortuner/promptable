@@ -16,7 +16,7 @@
   "author": "Colin Fortuner",
   "license": "ISC",
   "dependencies": {
-    "promptable": "workspace*",
+    "@promptable/promptable": "workspace*",
     "react": "^18.2.0",
     "react-query": "^3.39.3",
     "typescript": "latest",

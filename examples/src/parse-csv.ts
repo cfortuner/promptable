@@ -1,6 +1,6 @@
 // import dotenv from "dotenv";
 // dotenv.config();
-// import { prompts, FileLoader, OpenAI, CharacterTextSplitter } from "promptable";
+// import { prompts, FileLoader, OpenAI, CharacterTextSplitter } from "@promptable/promptable";
 
 // /**
 //  * Extract CSV from Data
