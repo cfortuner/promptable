@@ -40,6 +40,9 @@ import tracingWebPrompt from "./tracing-web-prompt";
 import chainSimple from "./chain-simple";
 import chainMemory from "./chain-memory";
 import chainMultiMemory from "./chain-multi-memory";
+import chainCombineDocuments from "./chain-combine-documents";
+import chainSummarizeDocuments from "./chain-summarize-documents";
+import chainQuestionAnswer from "./chain-question-answer";
 
 // Add examples here!
 
@@ -85,6 +88,9 @@ const examples = {
   "chain-simple": chainSimple,
   "chain-memory": chainMemory,
   "chain-multi-memory": chainMultiMemory,
+  "chain-combine-documents": chainCombineDocuments,
+  "chain-summarize-documents": chainSummarizeDocuments,
+  "chain-question-answer": chainQuestionAnswer,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>

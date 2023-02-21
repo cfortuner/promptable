@@ -1,6 +1,10 @@
 import { NoopParser, Parser } from "@prompts/Parser";
 import { Prompt } from "@prompts/Prompt";
 import { CompletionsModelProvider } from "@providers/ModelProvider";
+import {
+  GenerateCompletionOptions,
+  DEFAULT_COMPLETION_OPTIONS,
+} from "@providers/OpenAI";
 
 export class LLMChain<
   T extends string = string,
@@ -8,7 +12,8 @@ export class LLMChain<
 > {
   constructor(
     public prompt: Prompt<T, P>,
-    public provider: CompletionsModelProvider
+    public provider: CompletionsModelProvider,
+    public options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
   ) {}
 
   protected async _run(variables: Record<T, string>) {
