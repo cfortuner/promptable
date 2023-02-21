@@ -48,33 +48,63 @@ while (true) {
 
 This example uses a pre-built prompt for chatbots. You can also use your own custom prompts. See the [prompts](./prompts.md) docs for more info.
 
-## Tracing Chains
+## CombineDocumentsChain
 
-Chains often have many steps, and tracing can help you understand what is happening in your chain. You can enable tracing by using the `setTraceConfig` function.
+The CombineDocumentsChain combines documents using a TextSplitter and an Optional LLMChain. It is useful for combining multiple documents into a single document to be provided as context for a prompt. The following example combines two documents into a single document by splitting them, and summarizing them.
 
 ```typescript
-import { setTraceConfig } from "@promptable/promptable";
+import { CombineDocumentsChain, Prompt } from "@promptable/promptable";
 
-setTraceConfig({
-  send: (trace) => {
-    console.log("Received Trace", trace);
-  },
+const summarizeDocumentPrompt = new Prompt(
+  `Combine the following documents into a single document:
+  {{document}}
+
+  Results:
+  `,
+  ["document"]
+);
+
+const combineDocumentsChain = new CombineDocumentsChain(
+  new CharacterTextSplitter("\n\n") // split on paragraphs
+  (documents: Document[], meta: any) => documents.join("\n"), // join with newlines
+  summarizeDocumentPrompt,
+);
+
+const combinedDocument = await combineDocumentsChain.run({
+  documents: [
+    "The quick brown fox jumps over the lazy dog.",
+    "The quick brown fox jumps over the lazy dog.",
+  ],
 });
+
+console.log(combinedDocument);
 ```
 
-You can also visualize the trace graphically with `graphTraces`.
+## Question Answer Chain
+
+QA Chains allow you to ask a question about a set of documents and generate an answer using a LLM. QA chains can be created by providing a set of documents and a LLMChain to answer the question.
 
 ```typescript
-import { graphTraces } from "@promptable/promptable";
 
-graphTraces(traces);
+import { QuestionAnswerChain, Prompt } from "@promptable/promptable";
+
+const answerQuestionPrompt = new Prompt(
+  `Answer the following question:
+  {{question}}
+
+  Results:
+  `,
+  ["question"]
+);
+
+const combineDocumentsChain = new QuestionAnswerChain(
+  new CharacterTextSplitter("\n\n") // split on paragraphs
+  (documents: Document[], meta: any) => documents.join("\n"), // join with newlines
+);
+
+const qaChain = new QuestionAnswerChain(
+  documents,
+  combineDocumentsChain,
+  answerQuestionPrompt,
+);
 ```
-
-## More Chains
-
-More chains are coming soon! Keep an eye on this library for updates. Here are some you can expect to see very shortly:
-
-- `QaLLMChain` - A chain that combines an `LLMChain` with embeddings. This enables QA applications over documents.
-- `SummaryChain` - A chain that combines an `LLMChain` with a summary prompt for summarization purposes.
-
-Send us a message if you have a chain you would like to see added to this library.

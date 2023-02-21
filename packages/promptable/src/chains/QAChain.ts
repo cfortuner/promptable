@@ -10,7 +10,7 @@ import { CombineDocumentsChain } from "./CombineDocumentsChain";
  *
  * It's composed of a few parts:
  * - a set of documents to search for an answer
- * - a list of chains to run to generate a answer
+ * - a chain to run to generate a answer
  *
  */
 export class QAChain {

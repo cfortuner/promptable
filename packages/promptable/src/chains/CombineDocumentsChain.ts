@@ -6,7 +6,32 @@ import { TextSplitter, TextSplitterOptions } from "@utils/TextSplitter";
 import { Document } from "src";
 import { LLMChain } from "./LLMChain";
 
+/**
+ * A chain which combines documents into a single document.
+ *
+ * You can configure the chain to split documents into chunks and optionally, summarize each chunk.
+ *
+ * @example
+ * ```typescript
+ * const summarizeChain = new LLMChain(prompts.summarize(), openai, {
+ *    model: "text-davinci-003",
+ *    max_tokens: 500,
+ * });
+ *
+ * const combineDocumentsChain = new CombineDocumentsChain(
+ *    new SentenceTextSplitter(),
+ *    utils.mergeDocumentsWithSeparator("\n\n"),
+ *    summarizeChain
+ * );
+ * ```
+ */
 export class CombineDocumentsChain {
+  /**
+   *
+   * @param splitter a TextSplitter to split documents into chunks
+   * @param mergeDocuments  A function to merge documents
+   * @param summarizer (optional) a summarizer LLMChain to summarize each chun
+   */
   constructor(
     public splitter: TextSplitter,
     public mergeDocuments: MergeDocuments,
@@ -39,6 +64,13 @@ export class CombineDocumentsChain {
     return this.mergeDocuments(results, meta);
   }
 
+  /**
+   * Run the CombineDocumentsChain to call the chain with documents and TextSplitterOptions
+   *
+   * @param documents
+   * @param opts
+   * @returns
+   */
   async run(
     documents: Document[],
     opts: TextSplitterOptions = {
