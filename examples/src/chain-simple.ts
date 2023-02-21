@@ -8,27 +8,11 @@ Chains often have many steps, and tracing can help you understand what is happen
 **/
 import dotenv from "dotenv";
 dotenv.config();
-import {
-  Prompt,
-  OpenAI,
-  LLMChain,
-  setTraceConfig,
-  Trace,
-  graphTraces,
-} from "@promptable/promptable";
+import { Prompt, OpenAI, LLMChain } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
 export default async function run() {
-  const traces: Trace[] = [];
-
-  setTraceConfig({
-    send: (trace) => {
-      console.log("Received Trace", trace);
-      traces.push(trace);
-    },
-  });
-
   const openai = new OpenAI(apiKey);
 
   const writePoemPrompt = new Prompt("Write a poem about {{topic}}:", [
@@ -40,6 +24,4 @@ export default async function run() {
   const poem = await llmChain.run({ topic: "the moon" });
 
   console.log(poem);
-
-  graphTraces(traces);
 }

@@ -1,8 +1,4 @@
-import {
-  trace,
-  setTraceConfig,
-  sendTraceToServer,
-} from "@promptable/promptable";
+import { trace, setTraceConfig, sendTraceToServer } from "@promptable/tracing";
 import { pipeAsync } from "ramda-async";
 
 /**

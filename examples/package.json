@@ -20,6 +20,7 @@
     "handlebars": "^4.7.7",
     "openai": "^3.1.0",
     "@promptable/promptable": "workspace:*",
+    "@promptable/tracing": "workspace:*",
     "ramda": "^0.28.0",
     "ramda-async": "^1.1.2",
     "seedrandom": "^3.0.5"
