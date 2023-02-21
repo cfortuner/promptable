@@ -13,7 +13,12 @@ Tracing is a utility provided by this library to help diagnose and debug applica
 To use Tracing, you can import the trace function from the tracing module:
 
 ```ts
-import { trace, setTraceConfig, graphTraces, sendTraceToServer } from "promptable";
+import {
+  trace,
+  setTraceConfig,
+  graphTraces,
+  sendTraceToServer,
+} from "@promptable/promptable";
 ```
 
 To trace a function, simply wrap it with the trace function:

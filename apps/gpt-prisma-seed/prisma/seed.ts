@@ -1,25 +1,31 @@
-import { OpenAI, PromptStep, Prompt, SequentialChain, utils } from "promptable";
+import {
+  OpenAI,
+  PromptStep,
+  Prompt,
+  SequentialChain,
+  utils,
+} from "@promptable/promptable";
 import dotenv from "dotenv";
 dotenv.config();
-import { PrismaClient, User } from '@prisma/client'
+import { PrismaClient, User } from "@prisma/client";
 
-import { printSchema, getSchema } from "@mrleebo/prisma-ast"
+import { printSchema, getSchema } from "@mrleebo/prisma-ast";
 import * as fs from "fs";
 
-utils.logger.setLevel("info")
+utils.logger.setLevel("info");
 
 interface LooseObject {
-  [key: string]: any
+  [key: string]: any;
 }
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 const provider = new OpenAI(apiKey);
 
 async function main() {
   const filePath = "./prisma/schema.prisma";
 
-  let schemaString = ""
+  let schemaString = "";
 
   fs.readFile(filePath, "utf-8", async (error, data) => {
     if (error) {
@@ -37,10 +43,11 @@ async function main() {
         // console.log(node);
         const modelName = node.name;
         const properties = node.properties;
-        const exampleData : LooseObject = {}
+        const exampleData: LooseObject = {};
         for (const property of properties) {
           if (property.type == "field" && property.name != "id") {
-                const prompt = new Prompt(`
+            const prompt = new Prompt(
+              `
             Seed: ${Math.random() * 1000000}
             Create a list of five examples the following data and type.
             The following are three examples of length five:
@@ -54,8 +61,9 @@ async function main() {
             Here is the input data I want to generate examples for:
             Input: { data: {{fieldName}}, type: {{fieldType}} }
             Output:
-            `, ["fieldName", "fieldType"]);
-            
+            `,
+              ["fieldName", "fieldType"]
+            );
 
             const examplesStep = new PromptStep({
               name: "Generate Examples",
@@ -64,7 +72,7 @@ async function main() {
               inputNames: ["fieldType", "fieldName"],
               outputNames: ["output"],
             });
-            
+
             const { output } = await examplesStep.run({
               steps: [examplesStep],
               inputs: {
@@ -79,52 +87,43 @@ async function main() {
           }
         }
 
-          for (let i = 0; i < 5; i++) {
-            const data : LooseObject = {}
-            for (const field of Object.keys(exampleData)) {
-              data[field] = exampleData[field][i]
-            }
-            console.log(`Adding seed data to Model - ${modelName}:`)
-            console.log(data);
-            // @ts-ignore
-            await prisma[modelName].create({
-              data: data,
-            })
+        for (let i = 0; i < 5; i++) {
+          const data: LooseObject = {};
+          for (const field of Object.keys(exampleData)) {
+            data[field] = exampleData[field][i];
           }
+          console.log(`Adding seed data to Model - ${modelName}:`);
+          console.log(data);
+          // @ts-ignore
+          await prisma[modelName].create({
+            data: data,
+          });
+        }
 
-          console.log(`\n✅ Added seed data for Model: ${modelName}`)
-        
-        
-        
-        
+        console.log(`\n✅ Added seed data for Model: ${modelName}`);
+
         // @ts-ignore
         // await prisma[modelName].create({
         //   data: data,
         // })
       }
     }
-  // }
-
+    // }
   });
-  
-  
-  
 }
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
-
-
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
 
 // const run = async () => {
 //   const prompt = new Prompt("Print Hello world and a similar fruit to {{fruit}}", ["fruit"]);
-  
+
 //   const provider = new OpenAI(apiKey);
 //   console.log(process.env.OPENAI_API_KEY)
 
@@ -142,7 +141,6 @@ main()
 //       fruit: "apple"
 //     },
 //   });
-
 
 //   console.log(output);
 // };

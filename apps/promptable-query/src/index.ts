@@ -1,6 +1,6 @@
 import { printNode, zodToTs } from "zod-to-ts";
 import z from "zod";
-import promptable from "promptable";
+import promptable from "@promptable/promptable";
 import {
   FetchQueryOptions,
   QueryClient,

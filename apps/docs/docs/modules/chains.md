@@ -11,7 +11,7 @@ Chains are pre-built workflows for executing specific tasks. They combine a prom
 The simplest chain is the LLMChain, which takes a prompt and a completions model provider.
 
 ```typescript
-import { LLMChain, Prompt } from "promptable";
+import { LLMChain, Prompt } from "@promptable/promptable";
 
 const writePoemPrompt = new Prompt("Write a poem about {{topic}}:", ["topic"]);
 const llmChain = new LLMChain(writePoemPrompt, completionsModelProvider);
@@ -53,7 +53,7 @@ This example uses a pre-built prompt for chatbots. You can also use your own cus
 Chains often have many steps, and tracing can help you understand what is happening in your chain. You can enable tracing by using the `setTraceConfig` function.
 
 ```typescript
-import { setTraceConfig } from "promptable";
+import { setTraceConfig } from "@promptable/promptable";
 
 setTraceConfig({
   send: (trace) => {
@@ -65,7 +65,7 @@ setTraceConfig({
 You can also visualize the trace graphically with `graphTraces`.
 
 ```typescript
-import { graphTraces } from "promptable";
+import { graphTraces } from "@promptable/promptable";
 
 graphTraces(traces);
 ```

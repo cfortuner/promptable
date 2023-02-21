@@ -1,5 +1,5 @@
 {
-    "name": "@promptable/promptable",
+    "name": "@promptable/tracing",
     "version": "0.0.10",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -14,22 +14,14 @@
         "@babel/preset-typescript": "^7.18.6",
         "@jest/globals": "^29.4.1",
         "@types/jest": "^29.4.0",
-        "@types/node": "^18.11.18",
-        "@types/uuid": "^9.0.0",
         "babel-jest": "^29.4.1",
         "jest": "^29.4.1",
         "ts-jest": "^29.0.5",
-        "tsup": "^6.5.0"
+        "tsup": "^6.5.0",
+        "@types/node": "18.14.0",
+        "typescript": "latest"
     },
     "dependencies": {
-        "@stdlib/nlp-sentencize": "^0.0.2",
-        "axios": "^1.2.4",
-        "chalk": "^4.1.2",
-        "csv-parse": "^5.3.4",
-        "gpt3-tokenizer": "^1.1.4",
-        "openai": "^3.1.0",
-        "typescript": "latest",
-        "uuid": "^9.0.0",
-        "zod": "^3.20.2"
+        "axios": "^1.2.4"
     }
 }

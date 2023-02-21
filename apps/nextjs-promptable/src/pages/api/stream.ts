@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as promptable from "promptable";
+import * as promptable from "@promptable/promptable";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // Note: this only works for one client at a time.

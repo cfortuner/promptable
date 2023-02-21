@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import * as promptable from "promptable";
+import * as promptable from "@promptable/promptable";
 
 const openai = new promptable.OpenAI(process.env.OPENAI_API_KEY || "");
 

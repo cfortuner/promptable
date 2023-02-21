@@ -18,7 +18,7 @@ The steps are:
     4. Submit the question along with the most relevant context to GPT, and receive an answer which makes use of the provided contextual information.
 **/
 
-import { Embeddings, OpenAI } from "promptable";
+import { Embeddings, OpenAI } from "@promptable/promptable";
 import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";

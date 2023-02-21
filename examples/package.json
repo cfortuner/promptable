@@ -19,7 +19,8 @@
     "gpt3-tokenizer": "^1.1.5",
     "handlebars": "^4.7.7",
     "openai": "^3.1.0",
-    "promptable": "workspace:*",
+    "@promptable/promptable": "workspace:*",
+    "@promptable/tracing": "workspace:*",
     "ramda": "^0.28.0",
     "ramda-async": "^1.1.2",
     "seedrandom": "^3.0.5"

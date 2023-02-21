@@ -5,7 +5,6 @@ import {
 } from "./ModelProvider";
 import { ModelProvider, Tokenizer } from "./ModelProvider";
 import { Configuration, OpenAIApi, CreateEmbeddingRequest } from "openai";
-import { unescapeStopTokens } from "@utils/unescape-stop-tokens";
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
 
@@ -146,10 +145,6 @@ export class OpenAI
     options: GenerateCompletionOptions = this.completionsConfig
   ) {
     try {
-      if (options.stop != null) {
-        options.stop = unescapeStopTokens(options.stop);
-      }
-
       const res = await this.api.createCompletion({
         prompt: promptText,
         ...options,
@@ -161,39 +156,6 @@ export class OpenAI
       console.log(e);
     }
     return "failed";
-  }
-
-  /**
-   * NOTE: DISABLED until we can figure out how to stream the response.
-   *
-   * Use this on your server to stream completions from the OpenAI API.
-   *
-   * @param promptText
-   * @param options
-   * @returns
-   */
-  async stream(
-    promptText: string,
-    options: Omit<GenerateCompletionOptions, "stream"> = this.completionsConfig
-  ) {
-    throw "not implemented";
-    // try {
-    //   if (options.stop != null) {
-    //     options.stop = unescapeStopTokens(options.stop);
-    //   }
-
-    //   // const stream = await OpenAIStream({
-    //   //   prompt: promptText,
-    //   //   ...options,
-    //   //   model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
-    //   //   stream: true,
-    //   // });
-
-    //   return new Response(stream);
-    // } catch (e) {
-    //   console.log(e);
-    // }
-    // return "failed";
   }
 
   async embed(
