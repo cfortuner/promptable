@@ -35,10 +35,11 @@ import streamCompletions from "./stream-completions";
 
 import tracing from "./tracing";
 import tracingWeb from "./tracing-web";
-import tracingWebPrompt from "./tracing-web-prompt"
+import tracingWebPrompt from "./tracing-web-prompt";
 
 import chainSimple from "./chain-simple";
 import chainMemory from "./chain-memory";
+import chainMultiMemory from "./chain-multi-memory";
 
 // Add examples here!
 
@@ -83,6 +84,7 @@ const examples = {
 
   "chain-simple": chainSimple,
   "chain-memory": chainMemory,
+  "chain-multi-memory": chainMultiMemory,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>
@@ -102,4 +104,4 @@ async function run(args: string[]) {
 
 run(process.argv.slice(2));
 
-export { };
+export {};

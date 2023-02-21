@@ -1,6 +1,6 @@
 export { BufferedChatMemory } from "./BufferedChatMemory";
 
 export interface Memory {
-  get: () => string;
-  clear: () => void;
+  get: (...args: any[]) => string;
+  clear: (...args: any[]) => void;
 }
