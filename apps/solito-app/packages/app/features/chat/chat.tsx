@@ -196,9 +196,9 @@ export default function Chat() {
         {/*<View className="h-[400px] flex-grow overflow-y-scroll pb-20" ref={ref}>*/}
         {!messages.length && (
           <View className="flex h-full w-full flex-col items-center justify-center space-y-2">
-            <View className="text-xl font-semibold">
-              <Text>Build your own ChatGPT3 With Promptable! and Expo</Text>
-            </View>
+            <Text className="text-xl font-semibold">
+              Build your own ChatGPT3 With Promptable! and Expo
+            </Text>
           </View>
         )}
         <View>
@@ -253,17 +253,17 @@ export default function Chat() {
 
 export const UserMessage = ({ msg }: { msg: Message }) => {
   return (
-    <View className="flex items-center space-x-8 py-10 px-40 text-xl">
-      <Text>User: {msg.text}</Text>
+    <View className="flex flex-row md:items-center space-x-8 py-10 md:px-40 px-3 ">
+      <Text className={"web:text-xl ios:text-md"}>User: {msg.text}</Text>
     </View>
   );
 };
 
 export const BotMessage = ({ msg }: { msg: Message }) => {
   return (
-    <View className="flex items-center space-x-8 border-y-2 bg-purple-50 py-10 px-40 text-xl">
+    <View className="flex flex-row md:items-center space-x-8 border-y-2 bg-purple-50 px-3 py-10 md:px-40">
       <Text>AI:{" "}</Text>
-      {msg.text.length ? <Text>{msg.text.trim()}</Text> : <Text className="">Loading...</Text>}
+      {msg.text.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text.trim()}</Text> : <Text className="">Loading...</Text>}
     </View>
   );
 };
