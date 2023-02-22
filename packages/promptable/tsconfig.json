@@ -4,7 +4,7 @@
         "lib": [
             "dom",
             "dom.iterable",
-            "esnext",
+            "esnext"
         ],
         "module": "esnext",
         "esModuleInterop": true,
@@ -37,8 +37,8 @@
             ],
             "@loaders/*": [
                 "src/loaders/*"
-            ],
-        },
+            ]
+        }
     },
     "exclude": [
         "node_modules"

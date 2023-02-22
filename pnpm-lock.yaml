@@ -387,6 +387,7 @@ importers:
       jest: ^29.4.1
       openai: ^3.1.0
       ts-jest: ^29.0.5
+      ts-toolbelt: ^9.6.0
       tsup: ^6.5.0
       typescript: latest
       uuid: ^9.0.0
@@ -398,6 +399,7 @@ importers:
       csv-parse: 5.3.4
       gpt3-tokenizer: 1.1.4
       openai: 3.1.0
+      ts-toolbelt: 9.6.0
       typescript: 4.9.5
       uuid: 9.0.0
       zod: 3.20.2
@@ -16554,6 +16556,10 @@ packages:
   /ts-toolbelt/6.15.5:
     resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
     dev: true
+
+  /ts-toolbelt/9.6.0:
+    resolution: {integrity: sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==}
+    dev: false
 
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}

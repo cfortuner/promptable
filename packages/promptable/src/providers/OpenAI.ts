@@ -1,12 +1,21 @@
 import {
   CompletionsModelProvider,
+  CreateCompletionRequest,
+  CreateEmbeddingsRequest,
+  CreateEmbeddingsResponse,
   EmbeddingsModelProvider,
   ModelProviderType,
 } from "./ModelProvider";
 import { ModelProvider, Tokenizer } from "./ModelProvider";
-import { Configuration, OpenAIApi, CreateEmbeddingRequest } from "openai";
+import {
+  Configuration,
+  OpenAIApi,
+  CreateEmbeddingRequest as CreateOpenAIEmbeddingsRequest,
+  CreateEmbeddingResponse as CreateOpenAIEmbeddingResponse,
+} from "openai";
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
+import { logger } from "@utils/Logger";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -141,69 +150,53 @@ export class OpenAI
   }
 
   async generate(
-    promptText: string,
+    req: CreateCompletionRequest<any>,
     options: GenerateCompletionOptions = this.completionsConfig
   ) {
+    const { prompt, variables } = req;
+
     try {
       const res = await this.api.createCompletion({
-        prompt: promptText,
+        prompt: prompt.format(variables),
         ...options,
         model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
       });
 
-      return res.data.choices[0]?.text || "";
+      return {
+        text: res.data.choices[0]?.text || "",
+        providerResponse: res.data,
+      };
     } catch (e) {
-      console.log(e);
+      logger.error(e as any);
+      throw e;
     }
-    return "failed";
   }
 
-  async embed(
-    text: string,
-    options?: Omit<CreateEmbeddingRequest, "input">
-  ): Promise<number[]>;
-  async embed(
-    texts: string[],
-    options?: Omit<CreateEmbeddingRequest, "input">
-  ): Promise<number[][]>;
-  async embed(
-    textOrTexts: any,
-    options: Omit<CreateEmbeddingRequest, "input"> = this.embeddingsConfig
+  async createEmbeddings(
+    req: CreateEmbeddingsRequest,
+    options: Omit<CreateOpenAIEmbeddingsRequest, "input"> = this
+      .embeddingsConfig
   ) {
-    if (Array.isArray(textOrTexts)) {
-      return this.embedMany(textOrTexts, options);
-    } else {
-      return this.embedOne(textOrTexts, options);
-    }
-  }
+    const { documents: docOrDocs } = req;
 
-  private embedOne = async (
-    text: string,
-    options: Omit<CreateEmbeddingRequest, "input">
-  ) => {
-    const result = await this.api.createEmbedding({
+    const replaceNewlines = (text: string, char: string) =>
+      text.replace(/\n/g, char);
+
+    const input = Array.isArray(docOrDocs)
+      ? docOrDocs.map((doc) => replaceNewlines(doc.content, " "))
+      : [replaceNewlines(docOrDocs.content, " ")];
+
+    const response = await this.api.createEmbedding({
       ...options,
-      input: text.replace(/\n/g, " "),
+      input,
     });
 
-    return result?.data.data[0].embedding;
-  };
-
-  private embedMany = async (
-    texts: string[],
-    options: Omit<CreateEmbeddingRequest, "input">
-  ) => {
-    const batchResults = await Promise.all(
-      texts.map((text) =>
-        this.api.createEmbedding({
-          ...options,
-          input: text.replace(/\n/g, " "),
-        })
-      )
-    );
-
-    return batchResults.map((result) => result?.data.data[0].embedding);
-  };
+    return {
+      documents: Array.isArray(docOrDocs) ? docOrDocs : [docOrDocs],
+      embeddings: response?.data.data.map((d) => d.embedding),
+      providerResponse: response.data,
+    };
+  }
 }
 
 export const DEFAULT_COMPLETION_OPTIONS = {

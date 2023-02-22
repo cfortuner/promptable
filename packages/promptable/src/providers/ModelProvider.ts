@@ -13,24 +13,38 @@ export abstract class ModelProvider {
   }
 }
 
+export type CreateCompletionRequest<T extends string> = {
+  prompt: Prompt<T, any>;
+  variables: Record<T, string>;
+};
+
+export type CreateCompletionResponse<T extends any> = {
+  text: string;
+  providerResponse: T;
+} & { [key: string]: any };
+
 export interface CompletionsModelProvider extends ModelProvider {
-  generate<T extends string>(
-    promptText: string,
+  generate(
+    req: CreateCompletionRequest<any>,
     ...args: any[]
-  ): Promise<string>;
+  ): Promise<CreateCompletionResponse<any>>;
 }
 
-export interface CompletionStreamModelProvider extends ModelProvider {
-  stream<T extends string>(
-    prompt: Prompt<T>,
-    variables: Record<T, string>,
-    ...args: any[]
-  ): Promise<string>;
-}
+export type CreateEmbeddingsRequest = {
+  documents: Document[] | Document;
+};
+
+export type CreateEmbeddingsResponse<T> = {
+  documents: Document[];
+  embeddings: number[][];
+  providerResponse: T;
+} & { [key: string]: any };
 
 export interface EmbeddingsModelProvider extends ModelProvider {
-  embed(texts: string[], ...args: any[]): Promise<number[][]>;
-  embed(text: string, ...args: any[]): Promise<number[]>;
+  createEmbeddings(
+    req: CreateEmbeddingsRequest,
+    ...args: any[]
+  ): Promise<CreateEmbeddingsResponse<any>>;
 }
 
 export interface Tokenizer {

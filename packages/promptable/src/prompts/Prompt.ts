@@ -1,66 +1,34 @@
 import { injectVariables } from "@utils/inject-variables";
 import { NoopParser, Parser } from "@prompts/Parser";
+import { ExtractFormatObject } from "@utils/type-utils";
 
-export class Prompt<
-  T extends string = string,
-  P extends Parser<any> = NoopParser
-> implements Parser<any>
-{
-  text: string;
-  variableNames: T[];
+/**
+ * A prompt is is container for a string that can be formatted with variables.
+ *
+ * @example
+ * const prompt = new Prompt("Hello {{name}}!");
+ * const formattedPrompt = prompt.format({ name: "World" });
+ *
+ * console.log(formattedPrompt.text); // "Hello World!"
+ * console.log(formattedPrompt.template); // "Hello {{name}}!"
+ */
+export class Prompt<T extends string = string> {
+  template: T;
+  currentVariables: ExtractFormatObject<T> = {} as ExtractFormatObject<T>;
 
-  private parser: P;
-
-  constructor(text: string, variableNames: T[], parser?: P) {
-    this.text = text;
-    this.variableNames = variableNames;
-
-    this.parser = new NoopParser() as P;
-    if (typeof parser !== "undefined") {
-      this.parser = parser;
-    }
+  constructor(
+    template: T,
+    currentVariables: ExtractFormatObject<T> = {} as ExtractFormatObject<T>
+  ) {
+    this.template = template;
+    this.currentVariables = currentVariables;
   }
 
-  parse(completion: string) {
-    return this.parser.parse(completion);
+  format(variables: ExtractFormatObject<T>) {
+    return new Prompt(this.template, variables);
   }
 
-  format(variables: Record<T, string>) {
-    const formattedPrompt = injectVariables(this.text, variables);
-    return formattedPrompt;
-  }
-
-  toJson() {
-    return {
-      text: this.text,
-      variableNames: this.variableNames,
-    };
+  get text() {
+    return injectVariables(this.template, this.currentVariables);
   }
 }
-
-//TODO: This is very unweildy. I need to figure out a better way to do this.
-// how to handle injecting documents / context into the base prompt.
-// How to select context for the prompt?, Ranking?
-// how to check the token size of the prompt + context?
-
-// Maybe a builder pattern?
-// like this:
-// const prompt = new PromptBuilder()
-//   .text("What is your name?")
-//   .variable("name")
-//   .examples(["John", "Jane", "Joe"])
-//   .build();
-//
-// Instead of a builder pattern, I could use a
-// factory function:
-// const prompt = prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
-//
-// Or I could use a class factory:
-// const prompt = Prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
-//
-
-export const prompt = (
-  text: string,
-  variableNames: string[],
-  parser?: Parser<any>
-) => new Prompt(text, variableNames, parser);

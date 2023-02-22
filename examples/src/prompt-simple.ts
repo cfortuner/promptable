@@ -11,11 +11,10 @@ export default async function run() {
     "topic",
   ]);
 
-  const promptText = writePoemPrompt.format({
-    topic: "hi",
+  const poem = await openai.generate({
+    prompt: writePoemPrompt,
+    variables: { topic: "hi" },
   });
-
-  const poem = await openai.generate(promptText);
 
   console.log(poem);
 }
