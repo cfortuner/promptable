@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // import ReactTextareaAutosize from "react-textarea-autosize";
 import UUID from "react-native-uuid";
-import {TextInput, View, Text, Pressable, Link} from "../../design";
+import {TextInput, View, Text, Pressable, Link, ScrollView} from "../../design";
 
 /**
  *
@@ -183,7 +183,7 @@ export default function Chat() {
   };
 
   return (
-    <View className="flex flex-grow flex-col justify-between border-4">
+    <View className="flex flex-grow flex-col justify-between ">
       <View className="flex space-x-4 bg-black p-8 ios:hidden">
         <Link
           href="/"
@@ -192,12 +192,12 @@ export default function Chat() {
           <Text>{"<- Back"}</Text>
         </Link>
       </View>
-      <View className="h-[400px] flex-grow overflow-y-scroll pb-20" >
+      <ScrollView className="h-[400px] flex-grow overflow-y-scroll pb-20" >
         {/*<View className="h-[400px] flex-grow overflow-y-scroll pb-20" ref={ref}>*/}
         {!messages.length && (
           <View className="flex h-full w-full flex-col items-center justify-center space-y-2">
             <View className="text-xl font-semibold">
-              <Text>Build your own ChatGPT3 With Promptable!</Text>
+              <Text>Build your own ChatGPT3 With Promptable! and Expo</Text>
             </View>
           </View>
         )}
@@ -214,7 +214,7 @@ export default function Chat() {
             );
           })}
         </View>
-      </View>
+      </ScrollView>
       <View className="flex-row mx-20 mb-8 flex items-center space-x-2">
         <TextInput
           maxRows={5}
@@ -224,7 +224,7 @@ export default function Chat() {
             "scroll m-0 box-border resize-none border-none bg-transparent hover:ring-2",
             "min-w-none p max-w-none"
           )}
-          onChange={(e) => setInput(e.target.value)}
+          onChangeText={(text) => setInput(text)}
           value={input}
         />
         <Pressable
