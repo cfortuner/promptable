@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 // import ReactTextareaAutosize from "react-textarea-autosize";
-import { v4 as uuid } from "uuid";
+import UUID from "react-native-uuid";
 import {TextInput, View, Text, Pressable, Link} from "../../design";
 
 /**
@@ -28,7 +28,7 @@ const createMessage = (text: string, isUserMessage: boolean): Message => {
   return {
     isUserMessage,
     text,
-    id: uuid(),
+    id: UUID.v4(),
   };
 };
 
@@ -183,8 +183,8 @@ export default function Chat() {
   };
 
   return (
-    <View className="flex h-[100vh] flex-grow flex-col justify-between">
-      <View className="flex space-x-4 bg-black p-8">
+    <View className="flex flex-grow flex-col justify-between border-4">
+      <View className="flex space-x-4 bg-black p-8 ios:hidden">
         <Link
           href="/"
           className="bold border-[1px] border-white p-2 text-xl text-white"
@@ -205,7 +205,7 @@ export default function Chat() {
           {messages.map((msg) => {
             return (
               <View key={msg.id} className="py-2">
-                {<Text>{msg.isUserMessage}</Text> ? (
+                {msg.isUserMessage ? (
                   <UserMessage msg={msg} />
                 ) : (
                   <BotMessage msg={msg} />
@@ -229,22 +229,22 @@ export default function Chat() {
         />
         <Pressable
           onPress={() => submit()}
-          className="rounded bg-purple-700 p-2 text-white"
+          className="rounded bg-purple-700 "
         >
-          <Text>Run</Text>
+          <Text className={"text-white  p-2"}>Run</Text>
         </Pressable>
         <Pressable
           onPress={() => toggleStreaming()}
-          className="rounded bg-green-500 p-2 text-white"
+          className="rounded bg-green-500 text-white"
         >
-          <Text>Streaming {streaming ? "On" : "Off"}</Text>
+          <Text className={"text-white  p-2"}>Streaming {streaming ? "On" : "Off"}</Text>
         </Pressable>
         <Pressable
           disabled={!messages.length}
           onPress={handleClear}
-          className="rounded bg-gray-300 p-2"
+          className="rounded bg-gray-300"
         >
-          <Text>Clear</Text>
+          <Text className={"text-white  p-2"}>Clear</Text>
         </Pressable>
       </View>
     </View>
