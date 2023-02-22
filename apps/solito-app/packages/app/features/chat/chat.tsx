@@ -187,12 +187,13 @@ export default function Chat() {
       <View className="flex space-x-4 bg-black p-8 ios:hidden">
         <Link
           href="/"
-          className="bold border-[1px] border-white p-2 text-xl text-white"
         >
-          <Text>{"<- Back"}</Text>
+          <View    className="flex border-2 border-white p-2 " >
+            <Text className={"bold border-[1px] text-xl text-white" }>{"<- Back"}</Text>
+          </View>
         </Link>
       </View>
-      <ScrollView className="h-[400px] flex-grow overflow-y-scroll pb-20" >
+      <ScrollView className="h-[400px]  overflow-y-scroll pb-20" >
         {/*<View className="h-[400px] flex-grow overflow-y-scroll pb-20" ref={ref}>*/}
         {!messages.length && (
           <View className="flex h-full w-full flex-col items-center justify-center space-y-2">
@@ -215,14 +216,14 @@ export default function Chat() {
           })}
         </View>
       </ScrollView>
-      <View className="flex-row mx-20 mb-8 flex items-center space-x-2">
+      <View className="flex-row md:mx-20 mb-8 flex items-center space-x-2 border-2">
         <TextInput
           maxRows={5}
           onKeyDown={handleKeyDown}
           className={classNames(
             "outline-base-300 flex-grow resize-none rounded-md py-2 px-2 text-3xl shadow-xl outline",
             "scroll m-0 box-border resize-none border-none bg-transparent hover:ring-2",
-            "min-w-none p max-w-none"
+            "min-w-none p max-w-none border-2"
           )}
           onChangeText={(text) => setInput(text)}
           value={input}
