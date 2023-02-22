@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 // import ReactTextareaAutosize from "react-textarea-autosize";
 import UUID from "react-native-uuid";
 import {TextInput, View, Text, Pressable, Link, ScrollView} from "../../design";
+import {Platform} from "react-native";
 
 /**
  *
@@ -56,7 +57,7 @@ export default function Chat() {
   const [input, setInput] = useState("");
 
 
-  const fetchPrefix = "https://promptable.loca.lt"
+  const fetchPrefix = Platform.OS === "web" ? "" : "https://promptable.loca.lt";
   const getChat = async (input: string) => {
     const rep = await fetch(fetchPrefix + "/api/chat", {
       method: "POST",
@@ -266,7 +267,7 @@ export const BotMessage = ({ msg }: { msg: Message }) => {
   return (
     <View className="flex flex-row md:items-center space-x-8 border-y-2 bg-purple-50 px-3 py-10 md:px-40">
       <Text>AI:{" "}</Text>
-      {msg.text.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text.trim()}</Text> : <Text className="">Loading...</Text>}
+      {msg?.text?.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text.trim()}</Text> : <Text className="">Loading...</Text>}
     </View>
   );
 };
