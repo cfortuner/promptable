@@ -25,8 +25,7 @@ Document:
 Question:
 {{question}}
 
-Answer:`.trim(),
-    ["document", "question"]
+Answer:`.trim()
   );
 
 /**
@@ -47,8 +46,7 @@ Use the following portion of a long document to see if any of the text is releva
 Return any relevant text verbatim.
 {{document}}
 Question: {{question}}
-Relevant text, if any:`.trim(),
-    ["document", "question"]
+Relevant text, if any:`.trim()
   );
 
 /**
@@ -64,8 +62,7 @@ export const summarize = () =>
 
 {{document}}
 
-Summary:`.trim(),
-    ["document"]
+Summary:`.trim()
   );
 
 /**
@@ -144,9 +141,7 @@ export const extractJSON = () =>
   {{type}}
 
   Stringified JSON:
-  `.trim(),
-    ["data", "type"],
-    new JSONParser()
+  `.trim()
   );
 
 /**
@@ -207,9 +202,7 @@ export const extractCSV = () =>
 
     CSV:
     {{headers}}
-    `.trim(),
-    ["data", "headers"],
-    new CSVParser()
+    `.trim()
   );
 
 /**
@@ -231,10 +224,15 @@ export const fixMarkup = () =>
     Input Data:
     {{markup}}
     Response:
-    `.trim(),
-    [
-      "markupLanguage",
-      "documentType",
-      "markup"
-    ]
-);
+    `.trim()
+  );
+
+fixMarkup().format({
+  markupLanguage: "JSON",
+  documentType: "object",
+  markup: `{
+        "name": "John",
+        "age": 29,
+        "occupation": "Software Engineer"
+      }`,
+});

@@ -153,11 +153,9 @@ export class OpenAI
     req: CreateCompletionRequest<any>,
     options: GenerateCompletionOptions = this.completionsConfig
   ) {
-    const { prompt, variables } = req;
-
     try {
       const res = await this.api.createCompletion({
-        prompt: prompt.format(variables),
+        prompt: req.text,
         ...options,
         model: options.model || DEFAULT_COMPLETION_OPTIONS.model,
       });
@@ -177,22 +175,38 @@ export class OpenAI
     options: Omit<CreateOpenAIEmbeddingsRequest, "input"> = this
       .embeddingsConfig
   ) {
-    const { documents: docOrDocs } = req;
-
     const replaceNewlines = (text: string, char: string) =>
       text.replace(/\n/g, char);
 
-    const input = Array.isArray(docOrDocs)
-      ? docOrDocs.map((doc) => replaceNewlines(doc.content, " "))
-      : [replaceNewlines(docOrDocs.content, " ")];
+    const isArray = (
+      inp: string | string[] | Document | Document[]
+    ): inp is string[] | Document[] => {
+      return Array.isArray(inp);
+    };
 
-    const response = await this.api.createEmbedding({
-      ...options,
-      input,
-    });
+    const input = isArray(req.input)
+      ? req.input.map((doc) =>
+          replaceNewlines(typeof doc === "string" ? doc : doc.content, " ")
+        )
+      : replaceNewlines(
+          typeof req.input === "string" ? req.input : req.input.content,
+          " "
+        );
+
+    const documents = isArray(req.input)
+      ? req.input.map((doc) =>
+          typeof doc === "string" ? { content: doc, meta: {} } : doc
+        )
+      : [
+          typeof req.input === "string"
+            ? { content: req.input, meta: {} }
+            : req.input,
+        ];
+
+    const response = await this.api.createEmbedding({ ...options, input });
 
     return {
-      documents: Array.isArray(docOrDocs) ? docOrDocs : [docOrDocs],
+      documents,
       embeddings: response?.data.data.map((d) => d.embedding),
       providerResponse: response.data,
     };

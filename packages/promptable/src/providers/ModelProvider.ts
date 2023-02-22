@@ -14,8 +14,7 @@ export abstract class ModelProvider {
 }
 
 export type CreateCompletionRequest<T extends string> = {
-  prompt: Prompt<T, any>;
-  variables: Record<T, string>;
+  text: string;
 };
 
 export type CreateCompletionResponse<T extends any> = {
@@ -31,7 +30,7 @@ export interface CompletionsModelProvider extends ModelProvider {
 }
 
 export type CreateEmbeddingsRequest = {
-  documents: Document[] | Document;
+  input: Document[] | Document | string | string[];
 };
 
 export type CreateEmbeddingsResponse<T> = {

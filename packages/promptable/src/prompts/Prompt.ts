@@ -2,6 +2,8 @@ import { injectVariables } from "@utils/inject-variables";
 import { NoopParser, Parser } from "@prompts/Parser";
 import { ExtractFormatObject } from "@utils/type-utils";
 
+export type PromptVariables<T extends string> = ExtractFormatObject<T>;
+
 /**
  * A prompt is is container for a string that can be formatted with variables.
  *

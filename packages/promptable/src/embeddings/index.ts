@@ -128,7 +128,9 @@ export class Embeddings {
         // use the provided embeddings if they exist
         this.embeddings?.[i] ||
         // otherwise, create the embedding
-        (await this.provider.embed(this.documents[i].content));
+        (await this.provider.createEmbeddings({
+          input: this.documents[i].content,
+        }));
 
       this.embeddings.push(embedding);
     }
@@ -156,14 +158,16 @@ export class Embeddings {
     let queryEmbedding: number[];
 
     if (typeof query === "string") {
-      const embedding = await this.provider.embed(query);
-      queryEmbedding = embedding;
+      const embedding = await this.provider.createEmbeddings({
+        input: query,
+      });
+
+      queryEmbedding = embedding.embeddings[0];
     }
 
     // compute similarity
     // for each embedding in the df, compute the similarity to the query embedding
     // create objects to represent the results
-    // todo: There is probably a better way to do this using the dfd library
     const similarity = this.embeddings.map((row: any) => {
       return vectorSimilarity(row, queryEmbedding);
     });

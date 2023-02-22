@@ -6,25 +6,48 @@ export {
 } from "@chains/index";
 export { BufferedChatMemory } from "src/memories/BufferedChatMemory";
 
-import { Prompt } from "@prompts/Prompt";
-import { ModelProvider } from "@providers/ModelProvider";
-
 export interface Document {
   content: string;
   meta: Record<string, any>;
 }
 
-import { Embeddings } from "./embeddings";
-export { Embeddings };
-
 // Prebuilt prompts
+import { Prompt, PromptVariables } from "@prompts/Prompt";
 import * as prompts from "@prompts/prompts";
 export { prompts };
+export { Prompt };
+export type { PromptVariables };
 
 // Providers
+import {
+  ModelProvider,
+  ModelProviderType,
+  CreateCompletionRequest,
+  CompletionsModelProvider,
+  CreateEmbeddingsRequest,
+  EmbeddingsModelProvider,
+  CreateCompletionResponse,
+  CreateEmbeddingsResponse,
+  Tokenizer,
+} from "@providers/ModelProvider";
 import { OpenAI, GenerateCompletionOptions } from "@providers/OpenAI";
 export { OpenAI };
-export type { GenerateCompletionOptions };
+export type {
+  GenerateCompletionOptions,
+  ModelProvider,
+  ModelProviderType,
+  CreateCompletionRequest,
+  CompletionsModelProvider,
+  CreateEmbeddingsRequest,
+  EmbeddingsModelProvider,
+  CreateCompletionResponse,
+  CreateEmbeddingsResponse,
+  Tokenizer,
+};
+
+// Embeddings
+import { Embeddings } from "./embeddings";
+export { Embeddings };
 
 // Loaders
 import { Loader, FileLoader } from "@loaders/index";
@@ -62,5 +85,3 @@ export const utils = {
   mergeDocumentsWithSeparator,
   mergeDocumentsTruncated,
 };
-
-export { Prompt, ModelProvider };
