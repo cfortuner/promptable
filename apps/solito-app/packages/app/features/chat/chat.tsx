@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import UUID from "react-native-uuid";
 import {TextInput, View, Text, Pressable, Link, ScrollView} from "../../design";
 import {Platform} from "react-native";
+import {fetch} from 'react-native-fetch-api'
 
 /**
  *
@@ -125,7 +126,8 @@ export default function Chat() {
   };
 
   const stream = async (input: string) => {
-    const response = await fetch(fetchPrefix + "/api/stream", {
+    fetch(fetchPrefix + "/api/stream", {
+      reactNative: { textStreaming: true },
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -134,55 +136,53 @@ export default function Chat() {
         prevMessages: messages,
         userInput: input,
       }),
-    });
+    }).then((response) => response.body).then(async (data) => {
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+      console.log('data', data)
 
-    // This data is a ReadableStream
-    const data = response.body;
-    if (!data) {
-      return;
-    }
-
-    const reader = data.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
-
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-
-      const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
-
-      if (jsn === "[DONE]") {
-        break;
+      if (!data) {
+        return;
       }
 
-      try {
-        const data = JSON.parse(jsn);
-        console.log(data);
+      const reader = data.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
 
-        const text = data.choices[0].text;
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
 
-        setMessages((prevMessages) => {
-          const last =
-            prevMessages[prevMessages.length - 1] || createMessage("", false);
-          return [
-            ...prevMessages.slice(0, -1),
-            { ...last, text: last.text + text },
-          ];
-        });
+        const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
 
-        // handleScroll();
-      } catch (e) {
-        console.log(chunkValue);
-        console.log(jsn);
-        console.log(e);
+        if (jsn === "[DONE]") {
+          break;
+        }
+
+        try {
+          const data = JSON.parse(jsn);
+          console.log(data);
+
+          const text = data.choices[0].text;
+
+          setMessages((prevMessages) => {
+            const last =
+              prevMessages[prevMessages.length - 1] || createMessage("", false);
+            return [
+              ...prevMessages.slice(0, -1),
+              { ...last, text: last.text + text },
+            ];
+          });
+
+          // handleScroll();
+        } catch (e) {
+          console.log(chunkValue);
+          console.log(jsn);
+          console.log(e);
+        }
       }
-    }
+    })
+
   };
 
   return (
@@ -267,7 +267,7 @@ export const BotMessage = ({ msg }: { msg: Message }) => {
   return (
     <View className="flex flex-row md:items-center space-x-8 border-y-2 bg-purple-50 px-3 py-10 md:px-40">
       <Text>AI:{" "}</Text>
-      {msg?.text?.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text.trim()}</Text> : <Text className="">Loading...</Text>}
+      {msg.text?.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text?.trim()}</Text> : <Text className="">Loading...</Text>}
     </View>
   );
 };
