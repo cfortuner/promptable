@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { FileLoader, OpenAI, TokenSplitter } from "@promptable/promptable";
+import { FileLoader, OpenAI, TokenSplitter } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 

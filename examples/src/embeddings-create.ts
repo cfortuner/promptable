@@ -23,7 +23,7 @@ import {
   Embeddings,
   OpenAI,
   SentenceTextSplitter,
-} from "@promptable/promptable";
+} from "promptable";
 import dotenv from "dotenv";
 dotenv.config();
 import chalk from "chalk";

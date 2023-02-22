@@ -1,5 +1,5 @@
 import { trace, setTraceConfig, sendTraceToServer } from "@promptable/tracing";
-import { Prompt, OpenAI } from "@promptable/promptable";
+import { Prompt, OpenAI } from "promptable";
 import { pipeAsync } from "ramda-async";
 import dotenv from "dotenv";
 dotenv.config();

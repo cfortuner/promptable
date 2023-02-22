@@ -1,6 +1,6 @@
 import fs from "fs";
 import chalk from "chalk";
-import { FileLoader, OpenAI, prompts } from "@promptable/promptable";
+import { FileLoader, OpenAI, prompts } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 

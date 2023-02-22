@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { Prompt, OpenAI } from "@promptable/promptable";
+import { Prompt, OpenAI } from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 

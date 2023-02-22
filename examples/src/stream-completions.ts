@@ -1,5 +1,5 @@
 import { OpenAIApi, Configuration } from "openai";
-import { utils, OpenAI, Prompt } from "@promptable/promptable";
+import { utils, OpenAI, Prompt } from "promptable";
 
 // const apiKey = process.env.OPENAI_API_KEY || "missing";
 

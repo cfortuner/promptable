@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { OpenAI, prompts } from "@promptable/promptable";
+import { OpenAI, prompts } from "promptable";
 import chalk from "chalk";
 
 /**

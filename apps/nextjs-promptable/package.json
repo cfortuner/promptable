@@ -13,7 +13,7 @@
     "classnames": "^2.3.2",
     "eventsource-parser": "^0.1.0",
     "next": "13.1.6",
-    "@promptable/promptable": "workspace:*",
+    "@promptable/promptable": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-textarea-autosize": "^8.4.0",

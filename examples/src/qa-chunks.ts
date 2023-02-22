@@ -8,7 +8,7 @@ import {
   prompts,
   FileLoader,
   CharacterTextSplitter,
-} from "@promptable/promptable";
+} from "promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
