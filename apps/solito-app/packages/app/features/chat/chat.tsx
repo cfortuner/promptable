@@ -138,7 +138,7 @@ export default function Chat() {
       }),
     }).then((response) => response.body).then(async (data) => {
 
-      console.log('data', data)
+      console.log('data>', data)
 
       if (!data) {
         return;
@@ -150,20 +150,39 @@ export default function Chat() {
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
+        console.log('value', value)
         done = doneReading;
         const chunkValue = decoder.decode(value);
 
-        const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
+        console.log('chunkValue', chunkValue, 'typeof: ', typeof chunkValue)
 
-        if (jsn === "[DONE]") {
-          break;
-        }
+        // const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
+        const jsn = chunkValue.trim();
+        // const jsn = chunkValue.trim().split(
+        //   '\n\n'
+        // );
+        // const jsn = chunkValue.trim().split(
+        //   '\n\n'
+        // );
+
+        console.log('jsn',jsn);
+
+        // if (jsn === "[DONE]") {
+        //   break;
+        // }
+        // if (chunkValue.includes("DONE")) {
+        //   break;
+        // }
 
         try {
+          console.log('here look:', jsn)
+
           const data = JSON.parse(jsn);
-          console.log(data);
+          console.log('dat:',data);
 
           const text = data.choices[0].text;
+
+          console.log('text:', text)
 
           setMessages((prevMessages) => {
             const last =
