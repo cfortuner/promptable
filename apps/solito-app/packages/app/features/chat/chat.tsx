@@ -55,8 +55,10 @@ export default function Chat() {
 
   const [input, setInput] = useState("");
 
+
+  const fetchPrefix = "https://promptable.loca.lt"
   const getChat = async (input: string) => {
-    const rep = await fetch("/api/chat", {
+    const rep = await fetch(fetchPrefix + "/api/chat", {
       method: "POST",
       body: JSON.stringify({
         userInput: input,
@@ -106,14 +108,14 @@ export default function Chat() {
     setMessages([]);
 
     if (streaming) {
-      await fetch("/api/stream", {
+      await fetch(fetchPrefix + "/api/stream", {
         method: "POST",
         body: JSON.stringify({
           clear: true,
         }),
       });
     }
-    await fetch("/api/chat", {
+    await fetch(fetchPrefix + "/api/chat", {
       method: "POST",
       body: JSON.stringify({
         clear: true,
@@ -122,7 +124,7 @@ export default function Chat() {
   };
 
   const stream = async (input: string) => {
-    const response = await fetch("/api/stream", {
+    const response = await fetch(fetchPrefix + "/api/stream", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
