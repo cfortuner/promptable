@@ -1,9 +1,17 @@
 import { ComponentProps, forwardRef } from 'react'
-import { Text as NativeText, Platform, Linking, TextStyle } from 'react-native'
+import {
+  Text as NativeText,
+  Platform,
+  Linking,
+  TextStyle,
+  TextInput as NativeTextInput,
+} from 'react-native'
 import { styled, StyledProps } from 'nativewind'
-import { TextLink as SolitoTextLink } from 'solito/link'
+import { TextLink as SolitoTextLink, Link as SolitoLink } from 'solito/link'
 
 export const Text = styled(NativeText)
+
+export const TextInput = styled(NativeTextInput)
 
 /**
  * You can use this pattern to create components with default styles
@@ -28,7 +36,7 @@ export interface AProps extends ComponentProps<typeof Text> {
 }
 
 export const A = forwardRef<NativeText, StyledProps<AProps>>(function A(
-  { className = '', href, target, ...props },
+  { tw = '', href, target, ...props },
   ref
 ) {
   const nativeAProps = Platform.select<Partial<AProps>>({
@@ -53,7 +61,7 @@ export const A = forwardRef<NativeText, StyledProps<AProps>>(function A(
   return (
     <Text
       accessibilityRole="link"
-      className={`text-blue-500 hover:underline ${className}`}
+      className={`text-blue-500 hover:underline ${tw}`}
       {...props}
       {...nativeAProps}
       ref={ref}
@@ -61,6 +69,7 @@ export const A = forwardRef<NativeText, StyledProps<AProps>>(function A(
   )
 })
 
+export const Link = styled(SolitoLink)
 /**
  * Solito's TextLink doesn't work directly with styled() since it has a textProps prop
  * By wrapping it in a function, we can forward style down properly.
