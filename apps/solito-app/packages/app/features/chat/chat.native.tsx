@@ -34,7 +34,7 @@ const createMessage = (text: string, isUserMessage: boolean): Message => {
   };
 };
 
-export default function Chat() {
+export default function ChatNative() {
   // ref to track text area and scroll text into view
   // const ref = useRef<HTMLParagraphElement | null>(null);
   //
