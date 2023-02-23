@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import UUID from "react-native-uuid";
 import {TextInput, View, Text, Pressable, Link, ScrollView} from "../../design";
 import {Platform} from "react-native";
+import {CONST} from '../../CONST'
 
 /**
  *
@@ -39,7 +40,7 @@ export default function Chat() {
   const [input, setInput] = useState("");
 
 
-  const fetchPrefix = Platform.OS === "web" ? "" : "http://192.168.0.111:3000";
+  const fetchPrefix = Platform.OS === "web" ? "" : CONST.PROXY_API_URL;
 
   const getChat = async (input: string) => {
     const rep = await fetch(fetchPrefix + "/api/chat", {
