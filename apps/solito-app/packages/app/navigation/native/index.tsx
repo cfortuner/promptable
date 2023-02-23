@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { HomeScreen } from '../../features/home/screen'
 import { UserDetailScreen } from '../../features/user/detail-screen'
-import ChatScreen from '../../features/chat/chat.native'
+import ChatScreen from '../../features/chat/chat'
 
 const Stack = createNativeStackNavigator<{
   home: undefined

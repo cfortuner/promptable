@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import UUID from "react-native-uuid";
 import {TextInput, View, Text, Pressable, Link, ScrollView} from "../../design";
 import {Platform} from "react-native";
-import {fetch} from 'react-native-fetch-api'
 
+const uniFetch = (() => Platform.OS === 'web' ? fetch : require('react-native-fetch-api').fetch)()
 /**
  *
  * TODO: extract out each of these components to their own packages.
@@ -34,7 +34,7 @@ const createMessage = (text: string, isUserMessage: boolean): Message => {
   };
 };
 
-export default function ChatNative() {
+export default function Chat() {
   // ref to track text area and scroll text into view
   // const ref = useRef<HTMLParagraphElement | null>(null);
   //
@@ -60,7 +60,7 @@ export default function ChatNative() {
 
   const fetchPrefix = Platform.OS === "web" ? "" : "http://promptable.ngrok.io";
   const getChat = async (input: string) => {
-    const rep = await fetch(fetchPrefix + "/api/chat", {
+    const rep = await uniFetch(fetchPrefix + "/api/chat", {
       method: "POST",
       body: JSON.stringify({
         userInput: input,
@@ -110,14 +110,14 @@ export default function ChatNative() {
     setMessages([]);
 
     if (streaming) {
-      await fetch(fetchPrefix + "/api/stream", {
+      await uniFetch(fetchPrefix + "/api/stream", {
         method: "POST",
         body: JSON.stringify({
           clear: true,
         }),
       });
     }
-    await fetch(fetchPrefix + "/api/chat", {
+    await uniFetch(fetchPrefix + "/api/chat", {
       method: "POST",
       body: JSON.stringify({
         clear: true,
@@ -126,7 +126,7 @@ export default function ChatNative() {
   };
 
   const stream = async (input: string) => {
-    fetch(fetchPrefix + "/api/stream", {
+    uniFetch(fetchPrefix + "/api/stream", {
       reactNative: { textStreaming: true },
       method: "POST",
       headers: {
