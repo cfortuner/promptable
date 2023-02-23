@@ -211,12 +211,13 @@ export default function Chat() {
           </View>
         </Link>
       </View>
-      <ScrollView className="h-[400px]  overflow-y-scroll pb-20" >
+      <ScrollView className="h-[400px] flex overflow-y-scroll pb-20 " contentContainerStyle={{justifyContent: 'center', height: '100%'}} >
+        <View>
         {/*<View className="h-[400px] flex-grow overflow-y-scroll pb-20" ref={ref}>*/}
         {!messages.length && (
-          <View className="flex h-full w-full flex-col items-center justify-center space-y-2">
-            <Text className="text-xl font-semibold">
-              Build your own ChatGPT3 With Promptable! and Expo
+          <View className="flex flex-basis w-full flex-col items-center justify-center space-y-2">
+            <Text className="text-xl font-semibold text-center">
+              Build your own ChatGPT3 With Promptable and Expo!
             </Text>
           </View>
         )}
@@ -232,6 +233,7 @@ export default function Chat() {
               </View>
             );
           })}
+        </View>
         </View>
       </ScrollView>
       <View className="flex-row md:mx-20 mb-8 flex items-center space-x-2 bg-white ios:p-2">
