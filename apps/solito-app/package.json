@@ -16,7 +16,8 @@
   },
   "scripts": {
     "native": "cd apps/expo && expo start",
-    "web": "cd apps/next && yarn next"
+    "web": "cd apps/next && yarn next",
+    "clean:node-modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +"
   },
   "engines": {
     "node": ">=16.0.0 <17.0.0"
