@@ -1,18 +1,27 @@
-# Solito + NativeWind Example Monorepo 🕴
+# Promptable.js Universal Starter (Expo + Next.js + Promptable.js + NativeWind + Solito)
 
-```sh
-npx create-solito-app@latest my-solito-app -t with-tailwind
-```
+This is the Solito starter with NativeWind that has a refactor of the [Promptable.js](https://promptable.ai) Next.js starter on top to make it a universal app.
+That means that you can use the same codebase for both web and native when creating your app on top of Promptable.js.
+Create once a screen and share across Expo and Next.js. For this port we have used same tailwind.js utility classes with the needed changes to use Nativewind in replacement.
 
-And just like that, you now have an Expo + Next.js app that is styled with Tailwind CSS.
+## 🚀 Getting started
+`git clone https://github.com/cfortuner/promptable.git` and pick the `apps/solito-app` folder
 
-## ⚡️ Instantly clone & deploy
+## 🔦 About this starter
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnandorojo%2Fsolito%2Ftree%2Fmaster%2Fexample-monorepos%2Fwith-tailwind&root-directory=apps/next&envDescription=Set%20this%20environment%20variable%20to%201%20for%20Turborepo%20to%20cache%20your%20node_modules.&envLink=https%3A%2F%2Ftwitter.com%2Fjaredpalmer%2Fstatus%2F1488954563533189124&project-name=solito-app&repo-name=solito-app&demo-title=Solito%20App%20%E2%9A%A1%EF%B8%8F&demo-description=React%20Native%20%2B%20Next.js%20starter%20with%20Solito.%20Made%20by%20Fernando%20Rojo.&demo-url=https%3A%2F%2Fsolito.dev%2Fstarter&demo-image=https%3A%2F%2Fsolito.dev%2Fimg%2Fog.png&build-command=cd+..%2F..%3Bnpx+turbo+run+build+--filter%3Dnext-app)
+This monorepo is a starter for a Expo + Next.js app using [Promptable](https://promptable.ai) for building LLM apps in Typescript/Javascript, [NativeWind](https://nativewind.dev) for its styling & [Solito](https://solito.dev) for navigation.
 
-## 🔦 About
+## ☝️Configuration
 
-This monorepo is a starter for an Expo + Next.js app using [NativeWind](https://nativewind.dev) for its styling & [Solito](https://solito.dev) for navigation.
+- Set your OpenAI API key in `apps/solito-app/apps/next/.env` file on the `OPENAI_API_KEY` variable.
+- Set your Next.js API proxy url in `packages/app/CONST.ts` file on the `PROXY_API_URL` variable.
+- On root folder run `yarn dev` && `yarn native` to start the Expo app and the Next.js app.
+
+## 🤖About Promptable
+
+Promptable is a library that enables you to build powerful AI applications with LLMs and Embeddings providers such as OpenAI, Hugging Face, Cohere and Anthropic. It provides a flexible and extensible API that makes it easy to compose LLMs with data and tools to build complex applications quickly and easily.
+With Promptable, you can combine LLMs with other powerful tools and data sources, such as databases and APIs, to create a wide range of AI applications.
+Find out more at [Promptable Github repo](https://github.com/bidah/promptable) or in [documentation](https://docs-promptable.vercel.app/docs/introduction)
 
 ## 👓 How NativeWind works with Solito
 
@@ -101,6 +110,7 @@ Take a look at the [`packages/app/design`](https://github.com/nandorojo/solito/t
 - `packages` shared packages across apps
   - `app` you'll be importing most files from `app/`
     - `features` (don't use a `screens` folder. organize by feature.)
+      - `chat` heres the chat component
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
     - `navigation` Next.js has a `pages/` folder. React Native doesn't. This folder contains navigation-related code for RN. You may use it for any navigation code, such as custom links.
     - `design` your app's design system. organize this as you please.
@@ -147,6 +157,14 @@ You can also install the native library inside of `packages/app` if you want to 
 
 ## 🎙 About the creator
 
+### Rodrigo Figueroa
+
+Follow Rodrigo Figueroa, creator of `Promptable.js Universal Starter`, on Twitter: [@bidah](https://twitter.com/bidah)
+
+### Rodrigo Figueroa
+
+Follow Colin Fortuner, creator of `Promptable.js`, on Twitter: [@colinfortuner](https://twitter.com/colinfortuner)
+
 ### Fernando Rojo
 
 Follow Fernando Rojo, creator of `solito`, on Twitter: [@FernandoTheRojo](https://twitter.com/fernandotherojo)
@@ -157,7 +175,7 @@ Follow Mark Lawlor, creator of `NativeWind`, on Twitter: [@mark\_\_lawlor](https
 
 ## 🧐 Why use Expo + Next.js?
 
-See my talk about this topic at Next.js Conf 2021:
+See talk about this topic at Next.js Conf 2021:
 
 <a href="https://www.youtube.com/watch?v=0lnbdRweJtA"><img width="1332" alt="image" src="https://user-images.githubusercontent.com/13172299/157299915-b633e083-f271-48c6-a262-7b7eef765be5.png">
 </a>
