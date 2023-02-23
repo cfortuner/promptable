@@ -1,23 +1,25 @@
 # Promptable.js Universal Starter (Expo + Next.js + Promptable.js + NativeWind + Solito)
 
-This is the Solito starter with NativeWind that has a refactor of the [Promptable.js](https://promptable.ai) Next.js starter on top to make it a universal app.
+<img width="1237" alt="desktop and mobile view of app" src="https://user-images.githubusercontent.com/1574028/221014822-3b0de38d-8391-487f-98a8-c5dd18e85799.png">
+
+
+## 🔦 About this starter
+
+This monorepo is a starter for a Expo + Next.js app using [Promptable](https://promptable.ai) for building LLM apps in Typescript/Javascript, [NativeWind](https://nativewind.dev) for its styling & [Solito](https://solito.dev) for navigation.
+It is a refactor of the [Promptable.js](https://promptable.ai) Next.js starter on top to make it a universal app.
 That means that you can use the same codebase for both web and native when creating your app on top of Promptable.js.
 Create once a screen and share across Expo and Next.js. For this port we have used same tailwind.js utility classes with the needed changes to use Nativewind in replacement.
 
 ## 🚀 Getting started
 `git clone https://github.com/cfortuner/promptable.git` and pick the `apps/solito-app` folder
 
-## 🔦 About this starter
-
-This monorepo is a starter for a Expo + Next.js app using [Promptable](https://promptable.ai) for building LLM apps in Typescript/Javascript, [NativeWind](https://nativewind.dev) for its styling & [Solito](https://solito.dev) for navigation.
 
 ## ☝️Configuration
 
 - Set your OpenAI API key in `apps/solito-app/apps/next/.env` file on the `OPENAI_API_KEY` variable.
 - Set your Next.js API proxy url in `packages/app/CONST.ts` file on the `PROXY_API_URL` variable.
-- On root folder run `yarn dev` && `yarn native` to start the Expo app and the Next.js app.
 
-## 🤖About Promptable
+## 🤖 About Promptable
 
 Promptable is a library that enables you to build powerful AI applications with LLMs and Embeddings providers such as OpenAI, Hugging Face, Cohere and Anthropic. It provides a flexible and extensible API that makes it easy to compose LLMs with data and tools to build complex applications quickly and easily.
 With Promptable, you can combine LLMs with other powerful tools and data sources, such as databases and APIs, to create a wide range of AI applications.
@@ -93,6 +95,7 @@ Take a look at the [`packages/app/design`](https://github.com/nandorojo/solito/t
 
 ## 📦 Included packages
 
+- `promptable.js` for building LLM apps
 - `solito` for cross-platform navigation
 - `moti` for animations
 - `nativewind` for theming/design (you can bring your own, too)
@@ -110,7 +113,7 @@ Take a look at the [`packages/app/design`](https://github.com/nandorojo/solito/t
 - `packages` shared packages across apps
   - `app` you'll be importing most files from `app/`
     - `features` (don't use a `screens` folder. organize by feature.)
-      - `chat` heres the chat component
+      - `chat` chat component
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
     - `navigation` Next.js has a `pages/` folder. React Native doesn't. This folder contains navigation-related code for RN. You may use it for any navigation code, such as custom links.
     - `design` your app's design system. organize this as you please.
@@ -125,6 +128,7 @@ You can add other folders inside of `packages/` if you know what you're doing an
 
 - Next.js local dev: `yarn web`
   - Runs `yarn next`
+  - Use your your computer IP to grab your Next.js api route or run a proxy using a service like NGROK. Set it in `PROXY_API_URL` on the `CONST.ts` file.
 - Expo local dev: `yarn native`
   - Runs `expo start`
 
@@ -161,7 +165,7 @@ You can also install the native library inside of `packages/app` if you want to 
 
 Follow Rodrigo Figueroa, creator of `Promptable.js Universal Starter`, on Twitter: [@bidah](https://twitter.com/bidah)
 
-### Rodrigo Figueroa
+### Colin Fortuner
 
 Follow Colin Fortuner, creator of `Promptable.js`, on Twitter: [@colinfortuner](https://twitter.com/colinfortuner)
 
