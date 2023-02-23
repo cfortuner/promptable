@@ -211,7 +211,7 @@ export default function Chat() {
           </View>
         </Link>
       </View>
-      <ScrollView className="h-[400px] flex overflow-y-scroll pb-20 " contentContainerStyle={{justifyContent: 'center', height: '100%'}} >
+      <ScrollView className="h-[400px] flex overflow-y-scroll pb-20 " contentContainerStyle={{justifyContent: messages.length ? 'flex-start': 'center', height: '100%'}} >
         <View>
         {/*<View className="h-[400px] flex-grow overflow-y-scroll pb-20" ref={ref}>*/}
         {!messages.length && (
