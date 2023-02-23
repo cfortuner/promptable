@@ -12,10 +12,10 @@ export interface Document {
 }
 
 // Prebuilt prompts
-import { Prompt, PromptVariables } from "@prompts/Prompt";
+import { Prompt, PromptVariables, prompt } from "@prompts/Prompt";
 import * as prompts from "@prompts/prompts";
 export { prompts };
-export { Prompt };
+export { Prompt, prompt };
 export type { PromptVariables };
 
 // Providers

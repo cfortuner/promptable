@@ -1,5 +1,7 @@
+import { Memory } from "@memory/index";
 import { CSVParser, JSONParser } from "@prompts/Parser";
 import { Prompt } from "@prompts/Prompt";
+import { Document } from "src";
 
 /**
  * 
@@ -14,18 +16,10 @@ Question:
 
 Answer:`
  */
-export const QA = () =>
+export const QA = (question: string, document: Document) =>
   new Prompt(
-    `
-Given the following document, answer the question if you can.
-If you don\'t have enough information, don't return anything.
-Document:
-{{document}}
-
-Question:
-{{question}}
-
-Answer:`.trim()
+    `Given the following document, answer the question if you can.If you don\'t have enough information, don't return anything.\nDocument: {{document}}\nQuestion: {{question}}\nAnswer:`,
+    { question, document: document.content }
   );
 
 /**
@@ -39,14 +33,15 @@ Question: {{question}}
 
 Relevant text, if any: 
  */
-export const extractText = () =>
+export const extractText = (question: string, document: Document) =>
   new Prompt(
     `
 Use the following portion of a long document to see if any of the text is relevant to answer the question. 
 Return any relevant text verbatim.
 {{document}}
 Question: {{question}}
-Relevant text, if any:`.trim()
+Relevant text, if any:`.trim(),
+    { question, document: document.content }
   );
 
 /**
@@ -56,13 +51,14 @@ Relevant text, if any:`.trim()
 
 Summary:
  */
-export const summarize = () =>
+export const summarize = (document: Document) =>
   new Prompt(
     `Write a concise summary of the text below:
 
 {{document}}
 
-Summary:`.trim()
+Summary:`.trim(),
+    { document: document.content }
   );
 
 /**
@@ -72,14 +68,14 @@ You are Assistant. Help the user as much as possible.
 User: {{userInput}}
 Assistant:
 */
-export const chatbot = () =>
+export const chatbot = (memory: Memory, userInput: string) =>
   new Prompt(
     `You are Assistant. Help the user as much as possible.
 
 {{memory}}
 User: {{userInput}}
 Assistant:`.trim(),
-    ["memory", "userInput"]
+    { memory, userInput }
   );
 
 /**
@@ -108,7 +104,7 @@ Assistant:`.trim(),
 
   const VALID_STRINGIFIED_JSON=
  */
-export const extractJSON = () =>
+export const extractJSON = (data: string, type: string) =>
   new Prompt(
     `Given this data and a typescript type, return a valid, stringified JSON Object representing an instance of the type.
   Make sure the response is JUST the object. Not a variable or anything else.
@@ -141,7 +137,8 @@ export const extractJSON = () =>
   {{type}}
 
   Stringified JSON:
-  `.trim()
+  `.trim(),
+    { data, type }
   );
 
 /**
@@ -171,7 +168,7 @@ Given this data and a list of headers, return a CSV file containing the column d
   
     CSV:
  */
-export const extractCSV = () =>
+export const extractCSV = (data: string, headers: string) =>
   new Prompt(
     `Given this data and a list of headers, return a CSV file containing the column data.
     Example:
@@ -202,7 +199,8 @@ export const extractCSV = () =>
 
     CSV:
     {{headers}}
-    `.trim()
+    `.trim(),
+    { data, headers }
   );
 
 /**
@@ -213,7 +211,15 @@ export const extractCSV = () =>
   Set the markup to the markup that is not parsing correctly.
 **/
 
-export const fixMarkup = () =>
+export const fixMarkup = ({
+  markup,
+  markupLanguage,
+  documentType,
+}: {
+  markup: string;
+  markupLanguage: string;
+  documentType: string;
+}) =>
   new Prompt(
     `
     The following is supposed to be a {{markupLanguage}} {{documentType}} which is not parsing correctly.
@@ -224,10 +230,11 @@ export const fixMarkup = () =>
     Input Data:
     {{markup}}
     Response:
-    `.trim()
+    `.trim(),
+    { markup, markupLanguage, documentType }
   );
 
-fixMarkup().format({
+fixMarkup({
   markupLanguage: "JSON",
   documentType: "object",
   markup: `{
