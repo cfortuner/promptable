@@ -22,7 +22,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import * as dfd from "danfojs-node";
 import chalk from "chalk";
-import { Embeddings, OpenAI, prompts } from "promptable";
+import { Embeddings, OpenAI, prompts } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -90,12 +90,12 @@ const run = async (args: string[]) => {
   console.log(chalk.blue(`Running QA Bot...`));
   console.log(chalk.white(`${prompt.text}`));
 
-  const promptText = prompt.format({
-    document: top5Documents.join("\n---\n"),
-    question: query,
-  });
-
-  const answer = await openai.generate(promptText);
+  const { text: answer } = await openai.generate(
+    prompt.format({
+      document: top5Documents.join("\n---\n"),
+      question: query,
+    })
+  );
 
   console.log(chalk.greenBright(`${answer}`));
 };

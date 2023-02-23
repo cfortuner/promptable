@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { CharacterTextSplitter } from "promptable";
+import { CharacterTextSplitter } from "@promptable/promptable";
 
 /**
  * Simple example showing how to split text on new lines

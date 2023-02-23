@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { OpenAI, Prompt, CharacterTextSplitter } from "promptable";
+import { OpenAI, Prompt, CharacterTextSplitter } from "@promptable/promptable";
 
 /**
  * Evaluate a poem on each paragraph
@@ -20,18 +20,18 @@ export default async function run() {
 
   const evalPoemChunksPrompt = new Prompt(
     `Rate the following poem phrase on it's creativity:\n\nPoem:{{poem}}\n\n\nRating: Give the phrase a rating (1-5) and an explaination:`,
-    ["poem"]
+    {}
   );
 
   const evaluations = await Promise.all(
     chunks.map((chunk) => {
-      const promptText = evalPoemChunksPrompt.format({
-        poem: chunk,
-      });
-
-      return openai.generate(promptText);
+      return openai.generate(
+        evalPoemChunksPrompt.format({
+          poem: chunk,
+        })
+      );
     })
   );
 
-  console.log(evaluations);
+  console.log(evaluations.map((e) => e.text));
 }

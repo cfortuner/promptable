@@ -1,5 +1,5 @@
 import { trace, setTraceConfig, sendTraceToServer } from "@promptable/tracing";
-import { Prompt, OpenAI } from "promptable";
+import { Prompt, OpenAI } from "@promptable/promptable";
 import { pipeAsync } from "ramda-async";
 import dotenv from "dotenv";
 dotenv.config();
@@ -25,13 +25,10 @@ const run = async (args: string[]) => {
     const step1 = trace(
       "Create Poem about Animal",
       async (animal: string) => {
-        const writePoemPromptText = new Prompt(
-          "Write a poem about {{topic}}:",
-          ["topic"]
-        ).format({
+        const writePoemPrompt = new Prompt("Write a poem about {{topic}}:", {
           topic: animal,
         });
-        const poem = await openai.generate(writePoemPromptText);
+        const { text: poem } = await openai.generate(writePoemPrompt);
 
         return {
           poem,
@@ -42,13 +39,15 @@ const run = async (args: string[]) => {
     const step2 = trace(
       "Remix Poem into Pirate Style",
       async (props: { poem: string }) => {
-        const remixPoemPromptText = new Prompt(
+        const remixPoemPrompt = new Prompt(
           "Rewrite the poem in the style of a Pirate's writing: \n{{poem}}",
-          ["poem"]
-        ).format({
-          poem: props.poem,
+          {
+            poem: props.poem,
+          }
+        );
+        const { text: remixedPoem } = await openai.generate({
+          text: remixPoemPrompt.text,
         });
-        const remixedPoem = await openai.generate(remixPoemPromptText);
         return {
           remixedPoem,
         };
@@ -58,13 +57,15 @@ const run = async (args: string[]) => {
     const step3 = trace(
       "Review the Poem",
       async (props: { remixedPoem: string }) => {
-        const reviewPoemPromptText = new Prompt(
+        const reviewPoemPrompt = new Prompt(
           "You are given the following poem\n{{poem}}\n Describe the author and subject of the poem",
-          ["poem"]
-        ).format({
-          poem: props.remixedPoem,
+          {
+            poem: props.remixedPoem,
+          }
+        );
+        const { text: review } = await openai.generate({
+          text: reviewPoemPrompt.text,
         });
-        const review = await openai.generate(reviewPoemPromptText);
         return {
           review,
         };

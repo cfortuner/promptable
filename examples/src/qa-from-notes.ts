@@ -8,7 +8,7 @@ import {
   ListParser,
   OpenAI,
   prompts,
-} from "promptable";
+} from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -59,22 +59,25 @@ const run = async (args: string[]) => {
   // how do you avoid the token limit?
   const noteSummaries = await Promise.all(
     notes.map((note) => {
-      const promptText = summarizePrompt.format({
-        document: note,
+      const formattedPrompt = summarizePrompt.format({
+        document: note.text,
       });
 
-      return openai.generate(promptText);
+      return openai.generate({ text: formattedPrompt.text });
     })
   );
 
   // TODO: Is there a way to handle this for the user?
-  const document = `NOTES:\n${splitter.mergeText(noteSummaries, "\n---\n")}`;
+  const document = `NOTES:\n${splitter.mergeText(
+    noteSummaries.map((sum) => sum.text),
+    "\n---\n"
+  )}`;
 
   const tokenCount = openai.countTokens(
     qaPrompt.format({
       question,
       document,
-    })
+    }).text
   );
   console.log("token count ", tokenCount);
 
@@ -89,7 +92,7 @@ const run = async (args: string[]) => {
     document,
   });
 
-  const answer = await openai.generate(qaPromptText);
+  const { text: answer } = await openai.generate(qaPromptText);
 
   console.log(chalk.greenBright(`Answer: ${answer}`));
 };

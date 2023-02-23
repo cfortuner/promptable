@@ -303,6 +303,7 @@ importers:
 
   examples:
     specifiers:
+      '@promptable/promptable': workspace:*
       '@promptable/tracing': workspace:*
       '@tensorflow/tfjs': ^4.2.0
       '@types/node': ^18.11.18
@@ -318,13 +319,13 @@ importers:
       gpt3-tokenizer: ^1.1.5
       handlebars: ^4.7.7
       openai: ^3.1.0
-      promptable: latest
       ramda: ^0.28.0
       ramda-async: ^1.1.2
       seedrandom: ^3.0.5
       tsup: ^6.5.0
       typescript: ^4.9.4
     dependencies:
+      '@promptable/promptable': link:../packages/promptable
       '@promptable/tracing': link:../packages/tracing
       '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
       axios: 1.2.4
@@ -337,7 +338,6 @@ importers:
       gpt3-tokenizer: 1.1.5
       handlebars: 4.7.7
       openai: 3.1.0
-      promptable: 0.0.10
       ramda: 0.28.0
       ramda-async: 1.1.2_ramda@0.28.0
       seedrandom: 3.0.5

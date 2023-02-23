@@ -3,7 +3,9 @@ import { NoopParser, Parser } from "@prompts/Parser";
 import { ExtractFormatObject } from "@utils/type-utils";
 import { ModelProviderType } from "dist";
 
-export type PromptVariables<T extends string> = ExtractFormatObject<T>;
+export type PromptVariables<T extends string> = {
+  [K in keyof ExtractFormatObject<T>]: Required<ExtractFormatObject<T>[K]>;
+};
 export interface PromptConfiguration {
   stop?: string[] | string | undefined;
   temperature?: number | undefined;
@@ -35,14 +37,14 @@ export const DEFAULT_PROMPT_CONFIGURATION: PromptConfiguration = {
  * console.log(newPrompt.text); // "Hello World!"
  *
  */
-export class Prompt<T extends string = string> {
+export class Prompt<T extends string, V extends PromptVariables<T>> {
   readonly template: T;
   readonly configuration: PromptConfiguration;
   readonly variables: PromptVariables<T>;
 
   constructor(
     template: T,
-    variables: PromptVariables<T>,
+    variables: V,
     configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
   ) {
     this.template = template;
@@ -56,7 +58,7 @@ export class Prompt<T extends string = string> {
     configuration,
   }: {
     template?: T;
-    variables?: Partial<PromptVariables<T>> | PromptVariables<T>;
+    variables?: V;
     configuration?: Partial<PromptConfiguration> | PromptConfiguration;
   }) {
     return new Prompt(
@@ -95,7 +97,7 @@ export class Prompt<T extends string = string> {
    * @param variables
    * @returns  Prompt
    */
-  format(variables: Partial<PromptVariables<T>> | PromptVariables<T>) {
+  format(variables: Partial<V>) {
     return this.clone(variables);
   }
 }
@@ -128,9 +130,9 @@ export class Prompt<T extends string = string> {
  * @param configuration - configuration for the prompt
  * @returns Prompt
  */
-export function prompt<T extends string>(
+export function prompt<T extends string, V extends PromptVariables<T>>(
   template: T,
-  variables: ExtractFormatObject<T>,
+  variables: V,
   configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
 ) {
   return new Prompt(template, variables, configuration);

@@ -2,7 +2,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { CharacterTextSplitter, FileLoader, OpenAI, prompts } from "promptable";
+import {
+  CharacterTextSplitter,
+  FileLoader,
+  OpenAI,
+  prompts,
+} from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -41,12 +46,12 @@ const run = async (args: string[]) => {
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
     docs.map((doc) => {
-      const promptText = prompt.format({
-        document: doc.content,
-        question,
-      });
-
-      return openai.generate(promptText);
+      return openai.generate(
+        prompt.format({
+          document: doc.content,
+          question,
+        })
+      );
     })
   );
 
@@ -55,7 +60,7 @@ const run = async (args: string[]) => {
       `Notes: ${JSON.stringify(
         {
           question,
-          notes,
+          notes: notes.map((n) => n.text),
         },
         null,
         4

@@ -1,6 +1,3 @@
-import { NoopParser, Parser } from "@prompts/Parser";
-import { Prompt } from "@prompts/Prompt";
-import { CompletionsModelProvider } from "@providers/ModelProvider";
 import { MergeDocuments } from "@utils/merge-documents";
 import { TextSplitter, TextSplitterOptions } from "@utils/TextSplitter";
 import { Document } from "src";
@@ -35,7 +32,7 @@ export class CombineDocumentsChain {
   constructor(
     public splitter: TextSplitter,
     public mergeDocuments: MergeDocuments,
-    public summarizer?: LLMChain<"document", any>
+    public summarizer?: LLMChain<string, { document: string }>
   ) {}
 
   protected async _run(

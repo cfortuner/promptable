@@ -14,7 +14,7 @@ import {
   CharacterTextSplitter,
   utils,
   FileLoader,
-} from "promptable";
+} from "@promptable/promptable";
 
 export default async function run() {
   const filepath = "./data/startup-mistakes.txt";

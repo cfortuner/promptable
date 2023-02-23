@@ -17,7 +17,7 @@ import {
   LLMChain,
   SentenceTextSplitter,
   QAChain,
-} from "promptable";
+} from "@promptable/promptable";
 import chalk from "chalk";
 
 const apiKey = process.env.OPENAI_API_KEY || "";

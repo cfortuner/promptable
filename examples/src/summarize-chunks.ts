@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, prompts } from "promptable";
+import { OpenAI, prompts } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -48,11 +48,11 @@ const run = async (args: string[]) => {
   // summarize each chunk
   const summaries = await Promise.all(
     chunks.map((chunk) => {
-      const promptText = prompt.format({
-        document: chunk,
-      });
-
-      return openai.generate(promptText);
+      return openai.generate(
+        prompt.format({
+          document: chunk,
+        })
+      );
     })
   );
 
@@ -64,7 +64,7 @@ const run = async (args: string[]) => {
     Chunk: ${chunks[i].slice(0, 50)}... 
     `),
       chalk.greenBright(`
-    Summary: ${sum.slice(0, 200)}...`)
+    Summary: ${sum.text.slice(0, 200)}...`)
     );
   });
 };

@@ -1,6 +1,3 @@
-import { NoopParser, Parser } from "@prompts/Parser";
-import { Prompt } from "@prompts/Prompt";
-import { CompletionsModelProvider } from "@providers/ModelProvider";
 import { Document, LLMChain } from "src";
 import { CombineDocumentsChain } from "./CombineDocumentsChain";
 
@@ -17,7 +14,10 @@ export class QAChain {
   constructor(
     public documents: Document[],
     public combineDocumentsChain: CombineDocumentsChain,
-    public answerQuestion: LLMChain<"question" | "document">
+    public answerQuestion: LLMChain<
+      string,
+      { question: string; document: string }
+    >
   ) {}
 
   protected async _run(question: string) {

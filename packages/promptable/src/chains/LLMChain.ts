@@ -1,4 +1,3 @@
-import { NoopParser, Parser } from "@prompts/Parser";
 import { Prompt, PromptVariables } from "@prompts/Prompt";
 import { CompletionsModelProvider } from "@providers/ModelProvider";
 import {
@@ -6,29 +5,24 @@ import {
   DEFAULT_COMPLETION_OPTIONS,
 } from "@providers/OpenAI";
 
-export class LLMChain<
-  T extends string = string,
-  P extends Parser<any> = NoopParser
-> {
+export class LLMChain<T extends string, V extends PromptVariables<T>> {
   constructor(
-    public prompt: Prompt<T>,
-    public parser: P,
+    public prompt: Prompt<T, V>,
     public provider: CompletionsModelProvider,
     public options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
   ) {}
 
-  protected async _run(variables: PromptVariables<T>) {
+  protected async _run(variables: V) {
     const prompt = this.prompt.format(variables);
 
     const completion = await this.provider.generate({
       text: prompt.text,
     });
 
-    const parsed = this.parser.parse(completion.text);
-    return parsed;
+    return completion.text;
   }
 
-  async run(variables: PromptVariables<T>) {
+  async run(variables: V) {
     return await this._run(variables);
   }
 }

@@ -8,7 +8,7 @@ import {
   prompts,
   FileLoader,
   CharacterTextSplitter,
-} from "promptable";
+} from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -40,9 +40,9 @@ export default async function run(args: string[]) {
   console.log(chalk.white(`Question: ${question}`));
 
   for (const doc of docs) {
-    const tokensUsed = openai.countTokens(
-      prompt.format({ document: doc.content, question })
-    );
+    const formattedPrompt = prompt.format({ document: doc.content, question });
+
+    const tokensUsed = openai.countTokens(formattedPrompt.text);
 
     console.log(
       `\n${doc.content.substring(0, 100).trim()}...\n\n...${doc.content
@@ -50,12 +50,9 @@ export default async function run(args: string[]) {
         .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
     );
 
-    const promptText = prompt.format({
-      document: doc.content,
-      question,
+    const { text: answer } = await openai.generate({
+      text: formattedPrompt.text,
     });
-
-    const answer = await openai.generate(promptText);
 
     console.log(chalk.greenBright(`Answer: ${answer}`));
   }

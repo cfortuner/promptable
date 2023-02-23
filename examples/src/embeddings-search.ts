@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { readCSV } from "danfojs-node";
-import { Embeddings, OpenAI } from "promptable";
+import { Embeddings, OpenAI } from "@promptable/promptable";
 import chalk from "chalk";
 
 /**

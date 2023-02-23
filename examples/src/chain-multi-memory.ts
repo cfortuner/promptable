@@ -15,7 +15,7 @@ import {
   MemoryLLMChain,
   prompts,
   BufferedChatMemory,
-} from "promptable";
+} from "@promptable/promptable";
 import chalk from "chalk";
 import enquirer from "enquirer";
 

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, prompts } from "promptable";
+import { OpenAI, prompts } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -18,7 +18,9 @@ const run = async (args: string[]) => {
 
   const text = "This is a test";
   const tokensUsed = openai.countTokens(text);
-  const response = await openai.generate(text);
+  const response = await openai.generate({
+    text,
+  });
 
   console.log("Tokens: ", tokensUsed);
   console.log(response);

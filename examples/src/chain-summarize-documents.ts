@@ -16,7 +16,7 @@ import {
   prompts,
   LLMChain,
   SentenceTextSplitter,
-} from "promptable";
+} from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 

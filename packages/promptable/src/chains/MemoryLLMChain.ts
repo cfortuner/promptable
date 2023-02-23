@@ -1,35 +1,25 @@
-import { NoopParser, Parser } from "@prompts/Parser";
 import { Prompt, PromptVariables } from "@prompts/Prompt";
 import { CompletionsModelProvider } from "@providers/ModelProvider";
 import { Memory } from "src/memories/index";
 import { LLMChain } from "@chains/LLMChain";
 
 export class MemoryLLMChain<
-  T extends "memory" | "userInput",
-  P extends Parser<any> = NoopParser
-> extends LLMChain<T, P> {
+  V extends { memory: string; userInput: string }
+> extends LLMChain<string, V> {
   constructor(
-    public prompt: Prompt<T>,
-    public parser: P,
+    public prompt: Prompt<string, V>,
     public provider: CompletionsModelProvider,
     public memory: Memory
   ) {
-    super(prompt, parser, provider);
+    super(prompt, provider);
     this.prompt = prompt;
   }
 
-  protected async _run(variables: PromptVariables<T>) {
-    const formattedPrompt = this.prompt.format(variables);
-    const completion = await this.provider.generate(formattedPrompt);
-    const parsed = this.parser.parse(completion.text);
-    return parsed;
-  }
-
-  async run(variables: Omit<PromptVariables<T>, "memory">) {
+  async run(v: Omit<V, "memory">) {
     const vars = {
-      ...variables,
+      userInput: v.userInput,
       memory: this.memory.get(),
-    } as PromptVariables<T>;
+    } as V;
 
     return await this._run(vars);
   }
