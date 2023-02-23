@@ -58,7 +58,7 @@ export default function ChatNative() {
   const [input, setInput] = useState("");
 
 
-  const fetchPrefix = Platform.OS === "web" ? "" : "https://promptable.loca.lt";
+  const fetchPrefix = Platform.OS === "web" ? "" : "http://promptable.ngrok.io";
   const getChat = async (input: string) => {
     const rep = await fetch(fetchPrefix + "/api/chat", {
       method: "POST",
@@ -150,41 +150,37 @@ export default function ChatNative() {
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
-        console.log('value', value)
+        // console.log('value', value)
         done = doneReading;
         const chunkValue = decoder.decode(value);
 
-        console.log('chunkValue', chunkValue, 'typeof: ', typeof chunkValue)
-
-        // const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
-        const jsn = chunkValue.trim();
+        // console.log('chunkValue', chunkValue, 'typeof: ', typeof chunkValue)
+        const jsn = chunkValue.slice(6, chunkValue.length - 1).trim();
+        // const jsn = chunkValue.trim();
         // const jsn = chunkValue.trim().split(
         //   '\n\n'
         // );
         // const jsn = chunkValue.trim().split(
         //   '\n\n'
         // );
+        // console.log('jsn',jsn);
 
-        console.log('jsn',jsn);
-
-        // if (jsn === "[DONE]") {
-        //   break;
-        // }
+        if (jsn === "[DONE]") {
+          break;
+        }
         // if (chunkValue.includes("DONE")) {
         //   break;
         // }
 
         try {
-          console.log('here look:', jsn)
-
+          console.log('jsn before parse', jsn)
           const data = JSON.parse(jsn);
-          console.log('dat:',data);
+          console.log('data:after parse', data);
 
           const text = data.choices[0].text;
 
-          console.log('text:', text)
-
           setMessages((prevMessages) => {
+            console.log('on setMessages')
             const last =
               prevMessages[prevMessages.length - 1] || createMessage("", false);
             return [

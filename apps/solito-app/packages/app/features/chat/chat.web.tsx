@@ -159,12 +159,14 @@ export default function Chat() {
       }
 
       try {
+        console.log('jsn before parse', jsn)
         const data = JSON.parse(jsn);
-        console.log(data);
+        console.log('data:after parse', data);
 
         const text = data.choices[0].text;
 
         setMessages((prevMessages) => {
+          console.log('on setMessages')
           const last =
             prevMessages[prevMessages.length - 1] || createMessage("", false);
           return [
