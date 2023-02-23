@@ -12,13 +12,6 @@ import {Platform} from "react-native";
  * @param element
  */
 
-// export const scrollToBottom = (element: HTMLElement) => {
-//   element.scroll({
-//     behavior: "auto",
-//     top: element.scrollHeight,
-//   });
-// };
-
 interface Message {
   isUserMessage: boolean;
   text: string;
