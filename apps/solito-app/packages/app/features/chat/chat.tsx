@@ -234,12 +234,12 @@ export default function Chat() {
           })}
         </View>
       </ScrollView>
-      <View className="flex-row md:mx-20 mb-8 flex items-center space-x-2 border-2">
+      <View className="flex-row md:mx-20 mb-8 flex items-center space-x-2 bg-white ios:p-2">
         <TextInput
           maxRows={5}
           onKeyDown={handleKeyDown}
           className={classNames(
-            "outline-base-300 flex-grow resize-none rounded-md py-2 px-2 text-3xl shadow-xl outline",
+            "outline-base-300 flex-grow resize-none rounded-md py-2 px-2 ios:p-0 text-3xl shadow-xl outline",
             "scroll m-0 box-border resize-none border-none bg-transparent hover:ring-2",
             "min-w-none p max-w-none border-2"
           )}
@@ -250,20 +250,20 @@ export default function Chat() {
           onPress={() => submit()}
           className="rounded bg-purple-700 "
         >
-          <Text className={"text-white  p-2"}>Run</Text>
+          <Text className={"text-white  p-5 ios:p-3"}>Run</Text>
         </Pressable>
         <Pressable
           onPress={() => toggleStreaming()}
           className="rounded bg-green-500 text-white"
         >
-          <Text className={"text-white  p-2"}>Streaming {streaming ? "On" : "Off"}</Text>
+          <Text className={"text-white  p-5 ios:p-3"}>Streaming {streaming ? "On" : "Off"}</Text>
         </Pressable>
         <Pressable
           disabled={!messages.length}
           onPress={handleClear}
           className="rounded bg-gray-300"
         >
-          <Text className={"text-white  p-2"}>Clear</Text>
+          <Text className={"text-black  p-5 ios:p-3"}>Clear</Text>
         </Pressable>
       </View>
     </View>
@@ -272,7 +272,7 @@ export default function Chat() {
 
 export const UserMessage = ({ msg }: { msg: Message }) => {
   return (
-    <View className="flex flex-row md:items-center space-x-8 py-10 md:px-40 px-3 ">
+    <View className="flex flex-row md:items-center space-x-8 web:py-10 ios:py-4 md:px-40 px-3 ">
       <Text className={"web:text-xl ios:text-md"}>User: {msg.text}</Text>
     </View>
   );
@@ -280,7 +280,7 @@ export const UserMessage = ({ msg }: { msg: Message }) => {
 
 export const BotMessage = ({ msg }: { msg: Message }) => {
   return (
-    <View className="flex flex-row md:items-center space-x-8 border-y-2 bg-purple-50 px-3 py-10 md:px-40">
+    <View className="flex flex-row md:items-center space-x-8 border-y-2 bg-purple-50 px-3 web:py-10 ios:py-4 md:px-40">
       <Text className={"web:text-xl ios:text-md"}>AI:{" "} {msg.text?.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text?.trim()}</Text> : <Text className={"web:text-xl ios:text-md"}>Loading...</Text>}</Text>
 
     </View>
