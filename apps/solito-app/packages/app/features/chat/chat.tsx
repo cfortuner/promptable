@@ -202,13 +202,13 @@ export default function Chat() {
 
   return (
     <View className="flex flex-grow flex-col justify-between ">
-      <View className="flex space-x-4 bg-black p-8 ios:hidden">
+      <View className=" bg-black p-8 ios:hidden">
         <Link
           href="/"
         >
-          <View    className="flex border-2 border-white p-2 " >
-            <Text className={"bold border-[1px] text-xl text-white" }>{"<- Back"}</Text>
-          </View>
+        <View    className="flex self-start bold border-[1px] border-white p-2" >
+          <Text className={"font-semibold text-xl text-white" }>{"<- Back"}</Text>
+        </View>
         </Link>
       </View>
       <ScrollView className="h-[400px] flex overflow-y-scroll pb-20 " contentContainerStyle={{justifyContent: messages.length ? 'flex-start': 'center', height: '100%'}} >
@@ -243,7 +243,7 @@ export default function Chat() {
           className={classNames(
             "outline-base-300 flex-grow resize-none rounded-md py-2 px-2 ios:p-0 text-3xl ios:text-sm shadow-xl outline",
             "scroll m-0 box-border resize-none border-none bg-transparent hover:ring-2",
-            "min-w-none p max-w-none border-2 ios:h-10 px-2 "
+            "min-w-none p max-w-none border-2 ios:h-10 px-2 ios:pb-[5px]"
           )}
           onChangeText={(text) => setInput(text)}
           value={input}
