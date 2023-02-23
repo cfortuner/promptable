@@ -281,8 +281,8 @@ export const UserMessage = ({ msg }: { msg: Message }) => {
 export const BotMessage = ({ msg }: { msg: Message }) => {
   return (
     <View className="flex flex-row md:items-center space-x-8 border-y-2 bg-purple-50 px-3 py-10 md:px-40">
-      <Text>AI:{" "}</Text>
-      {msg.text?.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text?.trim()}</Text> : <Text className="">Loading...</Text>}
+      <Text className={"web:text-xl ios:text-md"}>AI:{" "} {msg.text?.length ? <Text className={"web:text-xl ios:text-md"}>{msg.text?.trim()}</Text> : <Text className={"web:text-xl ios:text-md"}>Loading...</Text>}</Text>
+
     </View>
   );
 };
