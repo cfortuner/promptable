@@ -37,7 +37,7 @@ export default function Chat() {
   // ref to track text area and scroll text into view
   const scrollViewRef = useRef();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [streaming, setStreaming] = useState(false);
+  const [streaming, setStreaming] = useState(Platform.OS === 'web' ? true : false);
   const toggleStreaming = () => {
     handleClear();
     setStreaming((p) => !p);
@@ -228,12 +228,12 @@ export default function Chat() {
         >
           <Text className={"text-white  p-5 ios:p-3"}>Run</Text>
         </Pressable>
-        {/*<Pressable*/}
-        {/*  onPress={() => toggleStreaming()}*/}
-        {/*  className="rounded bg-green-500 text-white"*/}
-        {/*>*/}
-        {/*  <Text className={"text-white  p-5 ios:p-3"}>{Platform.OS === 'web' ? 'Streaming ' : ''}{streaming ? "On" : "Off"}</Text>*/}
-        {/*</Pressable>*/}
+        <Pressable
+          onPress={() => toggleStreaming()}
+          className="rounded bg-green-500 text-white ios:hidden"
+        >
+          <Text className={"text-white  p-5 ios:p-3"}>{Platform.OS === 'web' ? 'Streaming ' : ''}{streaming ? "On" : "Off"}</Text>
+        </Pressable>
         <Pressable
           disabled={!messages.length}
           onPress={handleClear}
