@@ -13,10 +13,11 @@ import {
   CombineDocumentsChain,
   utils,
   FileLoader,
-  prompts,
+  promptTemplates,
   LLMChain,
   SentenceTextSplitter,
   QAChain,
+  PromptTemplate,
 } from "@promptable/promptable";
 import chalk from "chalk";
 
@@ -29,8 +30,10 @@ export default async function run() {
 
   const openai = new OpenAI(apiKey);
 
+  const pt = new PromptTemplate("{{data}}");
+
   // Summarize each document
-  const summarizeChain = new LLMChain(prompts.summarize(), openai, {
+  const summarizeChain = new LLMChain(promptTemplates.Summarize, openai, {
     model: "text-davinci-003",
     max_tokens: 500,
   });
@@ -43,7 +46,7 @@ export default async function run() {
   );
 
   // Ask a question about the combined document
-  const answerQuestionChain = new LLMChain(prompts.QA(), openai, {
+  const answerQuestionChain = new LLMChain(promptTemplates.QA, openai, {
     model: "text-davinci-003",
     max_tokens: 2000,
   });

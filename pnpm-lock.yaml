@@ -32,8 +32,6 @@ importers:
       '@vercel/analytics': ^0.1.8
       autoprefixer: ^10.4.13
       axios: ^1.3.2
-      bridge: ^2.0.42
-      bridge-react-query: ^1.0.8
       clsx: ^1.2.1
       docusaurus-preset-shiki-twoslash: ^1.1.38
       form-data: ^4.0.0
@@ -60,8 +58,6 @@ importers:
       '@vercel/analytics': 0.1.8_react@17.0.2
       autoprefixer: 10.4.13_postcss@8.4.21
       axios: 1.3.2
-      bridge: 2.0.46
-      bridge-react-query: 1.0.8_sfoxds7t5ydpegc3knd667wn6m
       clsx: 1.2.1
       docusaurus-preset-shiki-twoslash: 1.1.38
       form-data: 4.0.0
@@ -87,7 +83,6 @@ importers:
     specifiers:
       '@mrleebo/prisma-ast': ^0.5.1
       '@prisma/client': ^4.9.0
-      '@promptable/promptable': workspace:*
       '@types/node': ^18.11.18
       '@types/prettier': ^2.7.2
       '@typescript-eslint/eslint-plugin': ^5.47.1
@@ -97,14 +92,15 @@ importers:
       eslint-config-next: 13.1.6
       prettier: ^2.8.1
       prisma: ^4.9.0
+      promptable: latest
       ts-node: ^10.9.1
       typescript: ^4.9.4
       zod: ^3.20.2
     dependencies:
       '@mrleebo/prisma-ast': 0.5.1
       '@prisma/client': 4.9.0_prisma@4.9.0
-      '@promptable/promptable': link:../../packages/promptable
       dotenv: 16.0.3
+      promptable: 0.0.10
       ts-node: 10.9.1_bdgp3l2zgaopogaavxusmetvge
       zod: 3.20.2
     devDependencies:
@@ -156,7 +152,7 @@ importers:
 
   apps/nextjs-promptable:
     specifiers:
-      '@promptable/promptable': workspace:*
+      '@promptable/promptable': latest
       '@types/axios': ^0.14.0
       '@types/node': ^18.11.18
       '@types/prettier': ^2.7.2
@@ -213,7 +209,7 @@ importers:
 
   apps/promptable-query:
     specifiers:
-      '@promptable/promptable': workspace*
+      promptable: latest
       react: ^18.2.0
       react-query: ^3.39.3
       tsup: ^6.5.0
@@ -221,7 +217,7 @@ importers:
       zod: ^3.20.2
       zod-to-ts: ^1.1.2
     dependencies:
-      '@promptable/promptable': link:../../packages/promptable
+      promptable: 0.0.10
       react: 18.2.0
       react-query: 3.39.3_react@18.2.0
       typescript: 4.9.5
@@ -327,7 +323,7 @@ importers:
       ramda-async: ^1.1.2
       seedrandom: ^3.0.5
       tsup: ^6.5.0
-      typescript: ^4.9.4
+      typescript: latest
     dependencies:
       '@promptable/promptable': link:../packages/promptable
       '@promptable/tracing': link:../packages/tracing
@@ -347,6 +343,53 @@ importers:
       seedrandom: 3.0.5
     devDependencies:
       '@types/node': 18.11.18
+      '@types/ramda': 0.28.23
+      eslint: 7.32.0
+      tsup: 6.5.0_typescript@4.9.5
+      typescript: 4.9.5
+
+  examples-test:
+    specifiers:
+      '@promptable/promptable': workspace:*
+      '@promptable/tracing': workspace:*
+      '@tensorflow/tfjs': ^4.2.0
+      '@types/node': ^18.11.18
+      '@types/ramda': ^0.28.23
+      axios: ^1.2.4
+      chalk: ^4.1.2
+      console-table-printer: ^2.11.1
+      csv-parse: ^5.3.4
+      danfojs-node: ^1.1.2
+      dotenv: ^16.0.3
+      enquirer: ^2.3.6
+      eslint: 7.32.0
+      gpt3-tokenizer: ^1.1.5
+      handlebars: ^4.7.7
+      openai: ^3.1.0
+      ramda: ^0.28.0
+      ramda-async: ^1.1.2
+      seedrandom: ^3.0.5
+      tsup: ^6.5.0
+      typescript: latest
+    dependencies:
+      '@promptable/promptable': link:../packages/promptable
+      '@promptable/tracing': link:../packages/tracing
+      '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
+      axios: 1.3.3
+      chalk: 4.1.2
+      console-table-printer: 2.11.1
+      csv-parse: 5.3.4
+      danfojs-node: 1.1.2_seedrandom@3.0.5
+      dotenv: 16.0.3
+      enquirer: 2.3.6
+      gpt3-tokenizer: 1.1.5
+      handlebars: 4.7.7
+      openai: 3.1.0
+      ramda: 0.28.0
+      ramda-async: 1.1.2_ramda@0.28.0
+      seedrandom: 3.0.5
+    devDependencies:
+      '@types/node': 18.14.0
       '@types/ramda': 0.28.23
       eslint: 7.32.0
       tsup: 6.5.0_typescript@4.9.5
@@ -5530,24 +5573,6 @@ packages:
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
-  /@tanstack/react-query/4.23.0_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-cfQsrecZQjYYueiow4WcK8ItokXJnv+b2OrK8Lf5kF7lM9uCo1ilyygFB8wo4MfxchUBVM6Cs8wq4Ed7fouwkA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      '@tanstack/query-core': 4.22.4
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      use-sync-external-store: 1.2.0_react@17.0.2
-    dev: false
-
   /@tensorflow/tfjs-backend-cpu/3.21.0_aipmo6igpprgzt4umpaa3m6sn4:
     resolution: {integrity: sha512-88S21UAdzyK0CsLUrH17GPTD+26E85OP9CqmLZslaWjWUmBkeTQ5Zqyp6iK+gELnLxPx6q7JsNEeFuPv4254lQ==}
     engines: {yarn: '>= 1.3.2'}
@@ -7446,20 +7471,6 @@ packages:
     resolution: {integrity: sha512-ex5W9DoOQ/LUEU3PMdLs9ua/CYZl1678NUkKOdUSi8Aw5F1idieaiRURCBFJCwVcrD1J8Iy3vfWSloaMwO2qFg==}
     dependencies:
       wcwidth: 1.0.1
-    dev: false
-
-  /bridge-react-query/1.0.8_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-tgTPfQO/ZDKylmZjKL0hoQ6MnW3uMIRwG1TK9zVo6ltVIOP344cL5VwWpQdKsSlvwIRfxnw4lyqMsQOPAhGnhg==}
-    dependencies:
-      '@tanstack/react-query': 4.23.0_sfoxds7t5ydpegc3knd667wn6m
-    transitivePeerDependencies:
-      - react
-      - react-dom
-      - react-native
-    dev: false
-
-  /bridge/2.0.46:
-    resolution: {integrity: sha512-uJ8JoTYSnRvvI1uVScAwYJLiUh7bfWXx5KJLZp/qSFXGwLph3RiZ1tcU0lNHT3r18TiGIhH+G1Wu3IyPW5OYCQ==}
     dev: false
 
   /broadcast-channel/3.7.0:
@@ -14313,6 +14324,22 @@ packages:
       asap: 2.0.6
     dev: false
 
+  /promptable/0.0.10:
+    resolution: {integrity: sha512-aLodDN2XPNQ/RxhU0YSdoUi4doTeEFiyqY4unT9bwofORhgHUn5YFbO5aQvu7muFRIEFCSNSdGwR0PxiS3q4WQ==}
+    dependencies:
+      '@stdlib/nlp-sentencize': 0.0.2
+      axios: 1.3.3
+      chalk: 4.1.2
+      csv-parse: 5.3.4
+      gpt3-tokenizer: 1.1.5
+      openai: 3.1.0
+      typescript: 4.9.5
+      uuid: 9.0.0
+      zod: 3.20.2
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /prompts/2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
@@ -17152,14 +17179,6 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.5.0
-    dev: false
-
-  /use-sync-external-store/1.2.0_react@17.0.2:
-    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 17.0.2
     dev: false
 
   /use-sync-external-store/1.2.0_react@18.2.0:

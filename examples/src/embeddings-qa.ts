@@ -90,12 +90,12 @@ const run = async (args: string[]) => {
   console.log(chalk.blue(`Running QA Bot...`));
   console.log(chalk.white(`${prompt.text}`));
 
-  const promptText = prompt.format({
-    document: top5Documents.join("\n---\n"),
-    question: query,
-  });
-
-  const answer = await openai.generate(promptText);
+  const { text: answer } = await openai.generate(
+    prompt.format({
+      document: top5Documents.join("\n---\n"),
+      question: query,
+    })
+  );
 
   console.log(chalk.greenBright(`${answer}`));
 };

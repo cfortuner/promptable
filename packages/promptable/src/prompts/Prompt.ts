@@ -1,66 +1,109 @@
 import { injectVariables } from "@utils/inject-variables";
 import { NoopParser, Parser } from "@prompts/Parser";
+import { ExtractFormatObject, ExtractVariableNames } from "@utils/type-utils";
+import { extractVariableNames } from "@utils/extract-variable-names";
 
-export class Prompt<
-  T extends string = string,
-  P extends Parser<any> = NoopParser
-> implements Parser<any>
-{
-  text: string;
-  variableNames: T[];
+export type PromptVariables<T extends string> = {
+  [K in keyof ExtractFormatObject<T>]: Required<ExtractFormatObject<T>[K]>;
+};
 
-  private parser: P;
+export interface PromptConfiguration {
+  stop?: string[] | string | null;
+  temperature?: number | undefined;
+  max_tokens?: number | undefined;
+}
 
-  constructor(text: string, variableNames: T[], parser?: P) {
-    this.text = text;
-    this.variableNames = variableNames;
+export const DEFAULT_PROMPT_CONFIGURATION: PromptConfiguration = {
+  stop: null,
+  temperature: 0.7,
+  max_tokens: 128,
+};
 
-    this.parser = new NoopParser() as P;
-    if (typeof parser !== "undefined") {
-      this.parser = parser;
+export class Prompt<T extends string, V extends PromptVariables<T>> {
+  readonly template: PromptTemplate<T, V>;
+  constructor(
+    initTemplate: PromptTemplate<T, V> | T,
+    readonly variables: V,
+    readonly configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
+  ) {
+    if (typeof initTemplate === "string") {
+      this.template = new PromptTemplate(initTemplate);
+    } else {
+      this.template = initTemplate;
     }
+
+    this.variables = variables;
+    this.configuration = configuration;
   }
 
-  parse(completion: string) {
-    return this.parser.parse(completion);
+  clone({
+    variables,
+    configuration,
+  }: {
+    variables?: Partial<V> | V;
+    configuration?: Partial<PromptConfiguration> | PromptConfiguration;
+  }): Prompt<T, V> {
+    return new Prompt(
+      this.template,
+      {
+        ...this.variables,
+        ...variables,
+      },
+      {
+        ...this.configuration,
+        ...configuration,
+      }
+    );
   }
 
-  format(variables: Record<T, string>) {
-    const formattedPrompt = injectVariables(this.text, variables);
-    return formattedPrompt;
+  get text() {
+    return injectVariables(this.template.text, this.variables || {});
   }
 
-  toJson() {
+  toJSON() {
     return {
+      template: this.template.toJSON(),
       text: this.text,
-      variableNames: this.variableNames,
+      variables: this.variables,
+      configuration: this.configuration,
     };
   }
 }
 
-//TODO: This is very unweildy. I need to figure out a better way to do this.
-// how to handle injecting documents / context into the base prompt.
-// How to select context for the prompt?, Ranking?
-// how to check the token size of the prompt + context?
+export class PromptTemplate<T extends string, V extends PromptVariables<T>> {
+  readonly text: T;
+  readonly configuration: PromptConfiguration;
 
-// Maybe a builder pattern?
-// like this:
-// const prompt = new PromptBuilder()
-//   .text("What is your name?")
-//   .variable("name")
-//   .examples(["John", "Jane", "Joe"])
-//   .build();
-//
-// Instead of a builder pattern, I could use a
-// factory function:
-// const prompt = prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
-//
-// Or I could use a class factory:
-// const prompt = Prompt("What is your name?", ["name"], ["John", "Jane", "Joe"]);
-//
+  constructor(
+    text: T,
+    configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
+  ) {
+    this.text = text;
+    this.configuration = configuration;
+  }
 
-export const prompt = (
-  text: string,
-  variableNames: string[],
-  parser?: Parser<any>
-) => new Prompt(text, variableNames, parser);
+  /**
+   * Returns a new prompt with the given variables injected into the template.
+   *
+   * @param variables
+   * @returns  Prompt
+   */
+  build(variables: V, configuration?: PromptConfiguration) {
+    return new Prompt<T, V>(this, variables, configuration);
+  }
+
+  toJSON() {
+    return {
+      text: this.text,
+      configuration: this.configuration,
+    };
+  }
+}
+
+export const prompt = <T extends string>(
+  template: T,
+  variables: PromptVariables<T>,
+  configuration?: PromptConfiguration
+) => {
+  return new PromptTemplate(template, configuration).build(variables);
+};

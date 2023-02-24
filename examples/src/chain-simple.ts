@@ -8,16 +8,19 @@ Chains often have many steps, and tracing can help you understand what is happen
 **/
 import dotenv from "dotenv";
 dotenv.config();
-import { Prompt, OpenAI, LLMChain } from "@promptable/promptable";
+import {
+  Prompt,
+  OpenAI,
+  LLMChain,
+  PromptTemplate,
+} from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 
 export default async function run() {
   const openai = new OpenAI(apiKey);
 
-  const writePoemPrompt = new Prompt("Write a poem about {{topic}}:", [
-    "topic",
-  ]);
+  const writePoemPrompt = new PromptTemplate("Write a poem about {{topic}}:");
 
   const llmChain = new LLMChain(writePoemPrompt, openai);
 

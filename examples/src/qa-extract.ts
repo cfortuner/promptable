@@ -6,7 +6,7 @@ import {
   CharacterTextSplitter,
   FileLoader,
   OpenAI,
-  prompts,
+  promptTemplates,
 } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
@@ -24,7 +24,6 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.extractText();
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
@@ -46,12 +45,12 @@ const run = async (args: string[]) => {
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
     docs.map((doc) => {
-      const promptText = prompt.format({
+      const extractTextPrompt = promptTemplates.ExtractText.build({
         document: doc.content,
         question,
       });
 
-      return openai.generate(promptText);
+      return openai.generate(extractTextPrompt);
     })
   );
 
@@ -60,7 +59,7 @@ const run = async (args: string[]) => {
       `Notes: ${JSON.stringify(
         {
           question,
-          notes,
+          notes: notes.map((n) => n.text),
         },
         null,
         4

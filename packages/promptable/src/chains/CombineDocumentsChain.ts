@@ -1,10 +1,12 @@
-import { NoopParser, Parser } from "@prompts/Parser";
-import { Prompt } from "@prompts/Prompt";
-import { CompletionsModelProvider } from "@providers/ModelProvider";
-import { MergeDocuments } from "@utils/merge-documents";
+import {
+  MergeDocuments,
+  mergeDocumentsWithSeparator,
+} from "@utils/merge-documents";
 import { TextSplitter, TextSplitterOptions } from "@utils/TextSplitter";
-import { Document } from "src";
+import { PromptTemplate } from "../prompts/Prompt";
+import { Document, OpenAI } from "src";
 import { LLMChain } from "./LLMChain";
+import { SentenceTextSplitter } from "../utils/TextSplitter";
 
 /**
  * A chain which combines documents into a single document.
@@ -35,7 +37,7 @@ export class CombineDocumentsChain {
   constructor(
     public splitter: TextSplitter,
     public mergeDocuments: MergeDocuments,
-    public summarizer?: LLMChain<"document", any>
+    public summarizer?: LLMChain<any, { document: string }>
   ) {}
 
   protected async _run(

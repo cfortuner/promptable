@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, prompts } from "@promptable/promptable";
+import { OpenAI, promptTemplates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -15,7 +15,6 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.summarize();
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
@@ -48,11 +47,11 @@ const run = async (args: string[]) => {
   // summarize each chunk
   const summaries = await Promise.all(
     chunks.map((chunk) => {
-      const promptText = prompt.format({
-        document: chunk,
-      });
-
-      return openai.generate(promptText);
+      return openai.generate(
+        promptTemplates.Summarize.build({
+          document: chunk,
+        })
+      );
     })
   );
 
@@ -64,7 +63,7 @@ const run = async (args: string[]) => {
     Chunk: ${chunks[i].slice(0, 50)}... 
     `),
       chalk.greenBright(`
-    Summary: ${sum.slice(0, 200)}...`)
+    Summary: ${sum.text.slice(0, 200)}...`)
     );
   });
 };

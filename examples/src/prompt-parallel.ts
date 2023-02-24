@@ -18,20 +18,18 @@ export default async function run() {
 
   const chunks = splitter.splitText(text);
 
-  const evalPoemChunksPrompt = new Prompt(
-    `Rate the following poem phrase on it's creativity:\n\nPoem:{{poem}}\n\n\nRating: Give the phrase a rating (1-5) and an explaination:`,
-    ["poem"]
-  );
-
   const evaluations = await Promise.all(
     chunks.map((chunk) => {
-      const promptText = evalPoemChunksPrompt.format({
-        poem: chunk,
-      });
+      const evalPoemChunksPrompt = new Prompt(
+        `Rate the following poem phrase on it's creativity:\n\nPoem:{{poem}}\n\n\nRating: Give the phrase a rating (1-5) and an explaination:`,
+        {
+          poem: chunk,
+        }
+      );
 
-      return openai.generate(promptText);
+      return openai.generate(evalPoemChunksPrompt);
     })
   );
 
-  console.log(evaluations);
+  console.log(evaluations.map((e) => e.text));
 }
