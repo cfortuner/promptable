@@ -1,51 +1,29 @@
 import { injectVariables } from "@utils/inject-variables";
 import { NoopParser, Parser } from "@prompts/Parser";
-import { ExtractFormatObject } from "@utils/type-utils";
-import { ModelProviderType } from "dist";
+import { ExtractFormatObject, ExtractVariableNames } from "@utils/type-utils";
+import { extractVariableNames } from "@utils/extract-variable-names";
 
 export type PromptVariables<T extends string> = {
   [K in keyof ExtractFormatObject<T>]: Required<ExtractFormatObject<T>[K]>;
 };
+
 export interface PromptConfiguration {
-  stop?: string[] | string | undefined;
+  stop?: string[] | string | null;
   temperature?: number | undefined;
   maxTokens?: number | undefined;
 }
 
 export const DEFAULT_PROMPT_CONFIGURATION: PromptConfiguration = {
-  stop: undefined,
+  stop: null,
   temperature: 0.7,
   maxTokens: 128,
 };
 
-/**
- * A prompt is is container for a string that can be formatted with variables.
- *
- *
- * @example
- * const prompt = prompt("Hello {{name}}!", { name: "World" });
- * console.log(prompt.text); // "Hello World!"
- *
- * @example
- * const prompt = prompt("Hello {{name}}!", { name: "World" });
- * const newPrompt = prompt.format({ name: "Universe" });
- * console.log(newPrompt.text); // "Hello Universe!"
- *
- * @example
- * const prompt = prompt("Hello {{name}}!", { name: "World" });
- * const newPrompt = prompt.configure({ temperature: 0.5 });
- * console.log(newPrompt.text); // "Hello World!"
- *
- */
-export class Prompt<T extends string, V extends PromptVariables<T>> {
-  readonly template: T;
-  readonly configuration: PromptConfiguration;
-  readonly variables: PromptVariables<T>;
-
-  constructor(
-    template: T,
-    variables: V,
-    configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
+export class Prompt<T extends string, V extends ExtractFormatObject<T>> {
+  private constructor(
+    readonly template: PromptTemplate<T, V>,
+    readonly variables: V,
+    readonly configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
   ) {
     this.template = template;
     this.variables = variables;
@@ -53,16 +31,14 @@ export class Prompt<T extends string, V extends PromptVariables<T>> {
   }
 
   clone({
-    template,
     variables,
     configuration,
   }: {
-    template?: T;
-    variables?: V;
+    variables?: Partial<V> | V;
     configuration?: Partial<PromptConfiguration> | PromptConfiguration;
-  }) {
+  }): Prompt<T, V> {
     return new Prompt(
-      template || this.template,
+      this.template,
       {
         ...this.variables,
         ...variables,
@@ -74,21 +50,41 @@ export class Prompt<T extends string, V extends PromptVariables<T>> {
     );
   }
 
-  get text() {
-    return injectVariables(this.template, this.variables);
+  static fromTemplate<T extends string, V extends ExtractFormatObject<T>>(
+    template: PromptTemplate<T, V>,
+    variables: V,
+    configuration?: PromptConfiguration
+  ) {
+    return new Prompt(template, variables, configuration);
   }
 
-  /**
-   * Configure the prompt with a new configuration
-   *
-   * @param configuration
-   * @returns
-   */
-  configure(configuration: Partial<PromptConfiguration> | PromptConfiguration) {
-    return new Prompt(this.template, this.variables, {
-      ...this.configuration,
-      ...configuration,
-    });
+  get text() {
+    return injectVariables(this.template.text, this.variables || {});
+  }
+
+  toJSON() {
+    return {
+      template: this.template.toJSON(),
+      text: this.text,
+      variables: this.variables,
+      configuration: this.configuration,
+    };
+  }
+}
+
+export class PromptTemplate<
+  T extends string,
+  V extends ExtractFormatObject<T>
+> {
+  readonly text: T;
+  readonly configuration: PromptConfiguration;
+
+  constructor(
+    text: T,
+    configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
+  ) {
+    this.text = text;
+    this.configuration = configuration;
   }
 
   /**
@@ -97,43 +93,31 @@ export class Prompt<T extends string, V extends PromptVariables<T>> {
    * @param variables
    * @returns  Prompt
    */
-  format(variables: Partial<V>) {
-    return this.clone(variables);
+  build(variables: V, configuration?: PromptConfiguration): Prompt<T, V> {
+    return Prompt.fromTemplate(this, variables, configuration);
+  }
+
+  toJSON() {
+    return {
+      text: this.text,
+      configuration: this.configuration,
+    };
   }
 }
 
-/**
- * This function creates a new prompt with the given template and variables.
- *
- * @example
- * prompt("Hello {{name}}!", { name: "World" });
- * prompt("Hello {{name}}!", { name: "World" }, { temperature: 0.5 });
- *
- *
- * @example // Cloning
- * const prompt = prompt("Hello {{name}}!", { name: "World" });
- * const newPrompt = prompt.clone({ variables: { name: "Universe" } });
- * console.log(newPrompt.text); // "Hello Universe!"
- *
- * @example // Formatting:
- * const prompt = prompt("Hello {{name}}!", { name: "World" });
- * const newPrompt = prompt.format({ name: "Universe" });
- * console.log(newPrompt.text); // "Hello Universe!"
- *
- * @example // Configuring:
- * const prompt = prompt("Hello {{name}}!", { name: "World" });
- * const newPrompt = prompt.configure({ temperature: 0.5 });
- * console.log(newPrompt.text); // "Hello World!"
- *
- * @param template - template to use for the prompt
- * @param variables - variables to inject into the template
- * @param configuration - configuration for the prompt
- * @returns Prompt
- */
-export function prompt<T extends string, V extends PromptVariables<T>>(
+export const prompt = <T extends string>(
   template: T,
-  variables: V,
-  configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
-) {
-  return new Prompt(template, variables, configuration);
-}
+  variables: ExtractFormatObject<T>,
+  configuration?: PromptConfiguration
+) => {
+  return new PromptTemplate(template, configuration).build(variables);
+};
+
+const p = prompt("Hello, my name is {{name}}. I am a {{occupation}}.", {
+  name: "John",
+  occupation: "programmer",
+});
+
+const promptTemplate = new PromptTemplate(
+  "Hello, my name is {{name}}. I am a {{occupation}}."
+);

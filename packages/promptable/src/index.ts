@@ -12,11 +12,19 @@ export interface Document {
 }
 
 // Prebuilt prompts
-import { Prompt, PromptVariables, prompt } from "@prompts/Prompt";
-import * as prompts from "@prompts/prompts";
-export { prompts };
-export { Prompt, prompt };
-export type { PromptVariables };
+import {
+  Prompt,
+  PromptVariables,
+  PromptConfiguration,
+  PromptTemplate,
+  prompt,
+} from "@prompts/Prompt";
+export { Prompt, PromptTemplate, prompt };
+export type { PromptVariables, PromptConfiguration };
+
+// prebuilt prompts
+import promptTemplates, { QA } from "@prompts/prompt-templates";
+export { promptTemplates, QA };
 
 // Providers
 import {
@@ -85,3 +93,4 @@ export const utils = {
   mergeDocumentsWithSeparator,
   mergeDocumentsTruncated,
 };
+export type { ExtractFormatObject } from "./utils/type-utils";

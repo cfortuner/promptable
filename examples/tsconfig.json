@@ -17,7 +17,5 @@
     "strict": true,
     "baseUrl": ".",
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": []
 }

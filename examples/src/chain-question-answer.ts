@@ -13,10 +13,11 @@ import {
   CombineDocumentsChain,
   utils,
   FileLoader,
-  prompts,
+  promptTemplates,
   LLMChain,
   SentenceTextSplitter,
   QAChain,
+  PromptTemplate,
 } from "@promptable/promptable";
 import chalk from "chalk";
 
@@ -29,30 +30,35 @@ export default async function run() {
 
   const openai = new OpenAI(apiKey);
 
+  const pt = new PromptTemplate("{{data}}");
+
   // Summarize each document
-  const summarizeChain = new LLMChain(prompts.summarize(), openai, {
+  const summarizeChain = new LLMChain(promptTemplates.Summarize, openai, {
     model: "text-davinci-003",
     max_tokens: 500,
   });
 
-  // Combine documents into a single document
-  const combineDocumentsChain = new CombineDocumentsChain(
-    new SentenceTextSplitter(),
-    utils.mergeDocumentsWithSeparator("\n\n"),
-    summarizeChain
-  );
+  // todo: this should be type errorign
+  summarizeChain.run({});
 
-  // Ask a question about the combined document
-  const answerQuestionChain = new LLMChain(prompts.QA(), openai, {
-    model: "text-davinci-003",
-    max_tokens: 2000,
-  });
+  // // Combine documents into a single document
+  // const combineDocumentsChain = new CombineDocumentsChain(
+  //   new SentenceTextSplitter(),
+  //   utils.mergeDocumentsWithSeparator("\n\n"),
+  //   summarizeChain
+  // );
 
-  const qaChain = new QAChain(docs, combineDocumentsChain, answerQuestionChain);
+  // // Ask a question about the combined document
+  // const answerQuestionChain = new LLMChain(promptTemplates.QA, openai, {
+  //   model: "text-davinci-003",
+  //   max_tokens: 2000,
+  // });
 
-  const response = await qaChain.run(
-    "What is the most common startup mistake founders make?"
-  );
+  // const qaChain = new QAChain(docs, combineDocumentsChain, answerQuestionChain);
 
-  console.log(chalk.greenBright("Response: ", response));
+  // const response = await qaChain.run(
+  //   "What is the most common startup mistake founders make?"
+  // );
+
+  // console.log(chalk.greenBright("Response: ", response));
 }

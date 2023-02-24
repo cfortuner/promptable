@@ -1,7 +1,12 @@
-import { MergeDocuments } from "@utils/merge-documents";
+import {
+  MergeDocuments,
+  mergeDocumentsWithSeparator,
+} from "@utils/merge-documents";
 import { TextSplitter, TextSplitterOptions } from "@utils/TextSplitter";
-import { Document } from "src";
+import { PromptTemplate, PromptVariables } from "../prompts/Prompt";
+import { Document, OpenAI } from "src";
 import { LLMChain } from "./LLMChain";
+import { SentenceTextSplitter } from "../utils/TextSplitter";
 
 /**
  * A chain which combines documents into a single document.
@@ -32,7 +37,7 @@ export class CombineDocumentsChain {
   constructor(
     public splitter: TextSplitter,
     public mergeDocuments: MergeDocuments,
-    public summarizer?: LLMChain<string, { document: string }>
+    public summarizer?: LLMChain<any, { document: string }>
   ) {}
 
   protected async _run(
@@ -77,3 +82,13 @@ export class CombineDocumentsChain {
     return await this._run(documents, opts);
   }
 }
+
+const c = new LLMChain(
+  new PromptTemplate("{{userInput}}, {{document}}"),
+  new OpenAI("sk-")
+);
+const cd = new CombineDocumentsChain(
+  new SentenceTextSplitter(),
+  mergeDocumentsWithSeparator("\n\n"),
+  c
+);
