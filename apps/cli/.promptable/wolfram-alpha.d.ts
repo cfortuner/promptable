@@ -1,7 +1,6 @@
 import { PromptVariables, PromptTemplate } from "@promptable/promptable";
 
-declare const template: PromptTemplate<
-  `Here are some examples of Wolfram Alpha functions, operators, and keywords, along with examples of how to use them in queries:
+declare const template: PromptTemplate<`Here are some examples of Wolfram Alpha functions, operators, and keywords, along with examples of how to use them in queries:
 
 Functions:
 
@@ -87,8 +86,9 @@ Q:Find the derivative of f(x) = x^3 + 2x + 1.
 A: The derivative of f(x) is 3x^2 + 2.
 Proof: Using the power rule, the derivative of f(x) = x^3 + 2x + 1 is given by f'(x) = 3x^2 + 2.
 Valid WA Query:
-derivative(x^3 + 2x + 1, x)`,
-  PromptVariables<`{{test}} Here are some examples of Wolfram Alpha functions, operators, and keywords, along with examples of how to use them in queries:
+derivative(x^3 + 2x + 1, x)
+
+Q: {{question}}`, PromptVariables<`Here are some examples of Wolfram Alpha functions, operators, and keywords, along with examples of how to use them in queries:
 
 Functions:
 
@@ -174,7 +174,8 @@ Q:Find the derivative of f(x) = x^3 + 2x + 1.
 A: The derivative of f(x) is 3x^2 + 2.
 Proof: Using the power rule, the derivative of f(x) = x^3 + 2x + 1 is given by f'(x) = 3x^2 + 2.
 Valid WA Query:
-derivative(x^3 + 2x + 1, x)`>
->;
+derivative(x^3 + 2x + 1, x)
+
+Q: {{question}}`>>;
 
 export default template;

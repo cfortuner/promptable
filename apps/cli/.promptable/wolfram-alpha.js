@@ -87,7 +87,9 @@ Q:Find the derivative of f(x) = x^3 + 2x + 1.
 A: The derivative of f(x) is 3x^2 + 2.
 Proof: Using the power rule, the derivative of f(x) = x^3 + 2x + 1 is given by f'(x) = 3x^2 + 2.
 Valid WA Query:
-derivative(x^3 + 2x + 1, x)`,
+derivative(x^3 + 2x + 1, x)
+
+Q: {{question}}`,
   {"provider":"openai","model":"text-davinci-003","temperature":0.5,"stop":null,"max_tokens":1136}
 );
 

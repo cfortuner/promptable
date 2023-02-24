@@ -1,5 +1,5 @@
-import { wolframAlpha } from ".promptable";
+import * as prompts from ".promptable";
 
-wolframAlpha.build({
-  test: "hi",
+prompts.wolframAlpha.build({
+  question: "What is the sqrt of 2?",
 });

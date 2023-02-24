@@ -13,7 +13,7 @@ dotenv.config();
 import {
   OpenAI,
   MemoryLLMChain,
-  prompts,
+  promptTemplates,
   BufferedChatMemory,
 } from "@promptable/promptable";
 import chalk from "chalk";
@@ -38,7 +38,11 @@ export default async function run() {
   // Create a memory chain for each user
   for (const user of users) {
     const memory = new BufferedChatMemory();
-    const memoryChain = new MemoryLLMChain(prompts.chatbot(), openai, memory);
+    const memoryChain = new MemoryLLMChain(
+      promptTemplates.Chatbot,
+      openai,
+      memory
+    );
 
     map.set(user, {
       memory: memory,

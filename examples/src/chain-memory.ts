@@ -19,7 +19,7 @@ dotenv.config();
 import {
   OpenAI,
   MemoryLLMChain,
-  prompts,
+  promptTemplates,
   BufferedChatMemory,
 } from "@promptable/promptable";
 import chalk from "chalk";
@@ -32,7 +32,11 @@ const apiKey = process.env.OPENAI_API_KEY || "missing";
 export default async function run() {
   const openai = new OpenAI(apiKey);
   const memory = new BufferedChatMemory();
-  const memoryChain = new MemoryLLMChain(prompts.chatbot(), openai, memory);
+  const memoryChain = new MemoryLLMChain(
+    promptTemplates.Chatbot,
+    openai,
+    memory
+  );
 
   while (true) {
     const { userInput } = (await query({
