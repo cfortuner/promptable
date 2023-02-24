@@ -16,6 +16,7 @@
     "noEmit": true,
     "strict": true,
     "baseUrl": ".",
+    "resolveJsonModule": true
   },
   "exclude": []
 }

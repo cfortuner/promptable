@@ -94,3 +94,6 @@ export const utils = {
   mergeDocumentsTruncated,
 };
 export type { ExtractFormatObject } from "./utils/type-utils";
+
+import { loadPromptablePrompts } from "./prompts/load";
+export { loadPromptablePrompts };

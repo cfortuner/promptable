@@ -18,6 +18,7 @@
         "baseUrl": ".",
         "declaration": true,
         "declarationMap": true,
+        "resolveJsonModule": true,
         "paths": {
             "@memory/*": [
                 "src/memories/*"
