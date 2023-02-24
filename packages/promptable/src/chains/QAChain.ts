@@ -15,7 +15,7 @@ export class QAChain {
     public documents: Document[],
     public combineDocumentsChain: CombineDocumentsChain,
     public answerQuestion: LLMChain<
-      "question" | "document",
+      string,
       { question: string; document: string }
     >
   ) {}

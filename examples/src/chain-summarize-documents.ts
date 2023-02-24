@@ -13,7 +13,7 @@ import {
   CombineDocumentsChain,
   utils,
   FileLoader,
-  prompts,
+  promptTemplates,
   LLMChain,
   SentenceTextSplitter,
 } from "@promptable/promptable";
@@ -27,7 +27,7 @@ export default async function run() {
 
   const openai = new OpenAI(apiKey);
 
-  const summarizeChain = new LLMChain(prompts.summarize(), openai, {
+  const summarizeChain = new LLMChain(promptTemplates.Summarize, openai, {
     model: "text-davinci-003",
     max_tokens: 500,
   });

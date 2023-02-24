@@ -10,22 +10,28 @@ export type PromptVariables<T extends string> = {
 export interface PromptConfiguration {
   stop?: string[] | string | null;
   temperature?: number | undefined;
-  maxTokens?: number | undefined;
+  max_tokens?: number | undefined;
 }
 
 export const DEFAULT_PROMPT_CONFIGURATION: PromptConfiguration = {
   stop: null,
   temperature: 0.7,
-  maxTokens: 128,
+  max_tokens: 128,
 };
 
-export class Prompt<T extends string, V extends ExtractFormatObject<T>> {
-  private constructor(
-    readonly template: PromptTemplate<T, V>,
+export class Prompt<T extends string, V extends PromptVariables<T>> {
+  readonly template: PromptTemplate<T, V>;
+  constructor(
+    initTemplate: PromptTemplate<T, V> | T,
     readonly variables: V,
     readonly configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
   ) {
-    this.template = template;
+    if (typeof initTemplate === "string") {
+      this.template = new PromptTemplate(initTemplate);
+    } else {
+      this.template = initTemplate;
+    }
+
     this.variables = variables;
     this.configuration = configuration;
   }
@@ -50,14 +56,6 @@ export class Prompt<T extends string, V extends ExtractFormatObject<T>> {
     );
   }
 
-  static fromTemplate<T extends string, V extends ExtractFormatObject<T>>(
-    template: PromptTemplate<T, V>,
-    variables: V,
-    configuration?: PromptConfiguration
-  ) {
-    return new Prompt(template, variables, configuration);
-  }
-
   get text() {
     return injectVariables(this.template.text, this.variables || {});
   }
@@ -72,10 +70,7 @@ export class Prompt<T extends string, V extends ExtractFormatObject<T>> {
   }
 }
 
-export class PromptTemplate<
-  T extends string,
-  V extends ExtractFormatObject<T>
-> {
+export class PromptTemplate<T extends string, V extends PromptVariables<T>> {
   readonly text: T;
   readonly configuration: PromptConfiguration;
 
@@ -93,8 +88,8 @@ export class PromptTemplate<
    * @param variables
    * @returns  Prompt
    */
-  build(variables: V, configuration?: PromptConfiguration): Prompt<T, V> {
-    return Prompt.fromTemplate(this, variables, configuration);
+  build(variables: V, configuration?: PromptConfiguration) {
+    return new Prompt<T, V>(this, variables, configuration);
   }
 
   toJSON() {
@@ -107,17 +102,8 @@ export class PromptTemplate<
 
 export const prompt = <T extends string>(
   template: T,
-  variables: ExtractFormatObject<T>,
+  variables: PromptVariables<T>,
   configuration?: PromptConfiguration
 ) => {
   return new PromptTemplate(template, configuration).build(variables);
 };
-
-const p = prompt("Hello, my name is {{name}}. I am a {{occupation}}.", {
-  name: "John",
-  occupation: "programmer",
-});
-
-const promptTemplate = new PromptTemplate(
-  "Hello, my name is {{name}}. I am a {{occupation}}."
-);

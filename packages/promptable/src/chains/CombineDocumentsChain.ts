@@ -3,7 +3,7 @@ import {
   mergeDocumentsWithSeparator,
 } from "@utils/merge-documents";
 import { TextSplitter, TextSplitterOptions } from "@utils/TextSplitter";
-import { PromptTemplate, PromptVariables } from "../prompts/Prompt";
+import { PromptTemplate } from "../prompts/Prompt";
 import { Document, OpenAI } from "src";
 import { LLMChain } from "./LLMChain";
 import { SentenceTextSplitter } from "../utils/TextSplitter";
@@ -82,13 +82,3 @@ export class CombineDocumentsChain {
     return await this._run(documents, opts);
   }
 }
-
-const c = new LLMChain(
-  new PromptTemplate("{{userInput}}, {{document}}"),
-  new OpenAI("sk-")
-);
-const cd = new CombineDocumentsChain(
-  new SentenceTextSplitter(),
-  mergeDocumentsWithSeparator("\n\n"),
-  c
-);

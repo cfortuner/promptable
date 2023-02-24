@@ -5,7 +5,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "FORCE_COLOR=1 pnpm build && node dist/index.js",
-    "build": "tsup ./src/index.ts --format cjs --dts"
+    "build": "tsup ./src/index.ts --format cjs --dts",
+    "dev": "pnpm run build --watch"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.2.0",
@@ -30,7 +31,7 @@
     "@types/ramda": "^0.28.23",
     "eslint": "7.32.0",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.4"
+    "typescript": "latest"
   },
   "keywords": [
     "llm",

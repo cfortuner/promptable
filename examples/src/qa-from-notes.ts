@@ -7,7 +7,7 @@ import {
   FileLoader,
   ListParser,
   OpenAI,
-  prompts,
+  promptTemplates,
 } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
@@ -21,9 +21,9 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const extractPrompt = prompts.extractText();
-  const qaPrompt = prompts.QA();
-  const summarizePrompt = prompts.summarize();
+  const extractPrompt = promptTemplates.ExtractText;
+  const qaPrompt = promptTemplates.QA;
+  const summarizePrompt = promptTemplates.Summarize;
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
@@ -45,7 +45,7 @@ const run = async (args: string[]) => {
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
     docs.map((doc) => {
-      const promptText = extractPrompt.format({
+      const promptText = extractPrompt.build({
         document: doc.content,
         question,
       });
@@ -59,7 +59,7 @@ const run = async (args: string[]) => {
   // how do you avoid the token limit?
   const noteSummaries = await Promise.all(
     notes.map((note) => {
-      const formattedPrompt = summarizePrompt.format({
+      const formattedPrompt = summarizePrompt.build({
         document: note.text,
       });
 
@@ -74,7 +74,7 @@ const run = async (args: string[]) => {
   )}`;
 
   const tokenCount = openai.countTokens(
-    qaPrompt.format({
+    qaPrompt.build({
       question,
       document,
     }).text
@@ -87,7 +87,7 @@ const run = async (args: string[]) => {
   // & formatting the notes is very simple. but useful.
   // generally just making it easy to format prompts.
 
-  const qaPromptText = qaPrompt.format({
+  const qaPromptText = qaPrompt.build({
     question,
     document,
   });

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, prompts } from "@promptable/promptable";
+import { OpenAI, promptTemplates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -13,7 +13,7 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.summarize();
+  const summarizeTemplate = promptTemplates.Summarize;
 
   // Load the file
   const filepath = "./data/beyond-smart.txt";
@@ -21,7 +21,7 @@ const run = async (args: string[]) => {
 
   console.log(chalk.blue.bold("\nRunning Summarize Example: beyond-smart.txt"));
 
-  const formattedPrompt = prompt.format({ document: doc });
+  const formattedPrompt = summarizeTemplate.build({ document: doc });
   const tokensUsed = openai.countTokens(formattedPrompt.text);
 
   console.log(

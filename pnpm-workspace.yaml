@@ -2,4 +2,4 @@ packages:
   - "apps/*"
   - "packages/*"
   - "examples"
-  - "examples-latest"
+  - "examples-test"

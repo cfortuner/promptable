@@ -16,6 +16,8 @@
         "noEmit": true,
         "strict": true,
         "baseUrl": ".",
+        "declaration": true,
+        "declarationMap": true,
         "paths": {
             "@memory/*": [
                 "src/memories/*"

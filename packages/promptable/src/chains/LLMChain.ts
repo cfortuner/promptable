@@ -3,7 +3,6 @@ import { CompletionsModelProvider } from "@providers/ModelProvider";
 import {
   GenerateCompletionOptions,
   DEFAULT_COMPLETION_OPTIONS,
-  OpenAI,
 } from "@providers/OpenAI";
 
 export class LLMChain<T extends string, V extends PromptVariables<T>> {

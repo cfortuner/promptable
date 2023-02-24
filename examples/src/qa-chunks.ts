@@ -5,7 +5,7 @@ import chalk from "chalk";
 import {
   OpenAI,
   Prompt,
-  prompts,
+  promptTemplates,
   FileLoader,
   CharacterTextSplitter,
 } from "@promptable/promptable";
@@ -21,7 +21,6 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.QA();
 
   const filepath = "./data/startup-mistakes.txt";
   const loader = new FileLoader(filepath);
@@ -40,7 +39,10 @@ export default async function run(args: string[]) {
   console.log(chalk.white(`Question: ${question}`));
 
   for (const doc of docs) {
-    const formattedPrompt = prompt.format({ document: doc.content, question });
+    const formattedPrompt = promptTemplates.QA.build({
+      document: doc.content,
+      question,
+    });
 
     const tokensUsed = openai.countTokens(formattedPrompt.text);
 

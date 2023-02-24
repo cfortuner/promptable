@@ -11,11 +11,7 @@ export default async function run() {
     topic: "hi",
   });
 
-  const { text: poem } = await openai.generate(
-    writePoemPrompt.format({
-      topic: "hi",
-    })
-  );
+  const { text: poem } = await openai.generate(writePoemPrompt);
 
   console.log(poem);
 }

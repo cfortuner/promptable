@@ -38,27 +38,24 @@ export default async function run() {
     max_tokens: 500,
   });
 
-  // todo: this should be type errorign
-  summarizeChain.run({});
+  // Combine documents into a single document
+  const combineDocumentsChain = new CombineDocumentsChain(
+    new SentenceTextSplitter(),
+    utils.mergeDocumentsWithSeparator("\n\n"),
+    summarizeChain
+  );
 
-  // // Combine documents into a single document
-  // const combineDocumentsChain = new CombineDocumentsChain(
-  //   new SentenceTextSplitter(),
-  //   utils.mergeDocumentsWithSeparator("\n\n"),
-  //   summarizeChain
-  // );
+  // Ask a question about the combined document
+  const answerQuestionChain = new LLMChain(promptTemplates.QA, openai, {
+    model: "text-davinci-003",
+    max_tokens: 2000,
+  });
 
-  // // Ask a question about the combined document
-  // const answerQuestionChain = new LLMChain(promptTemplates.QA, openai, {
-  //   model: "text-davinci-003",
-  //   max_tokens: 2000,
-  // });
+  const qaChain = new QAChain(docs, combineDocumentsChain, answerQuestionChain);
 
-  // const qaChain = new QAChain(docs, combineDocumentsChain, answerQuestionChain);
+  const response = await qaChain.run(
+    "What is the most common startup mistake founders make?"
+  );
 
-  // const response = await qaChain.run(
-  //   "What is the most common startup mistake founders make?"
-  // );
-
-  // console.log(chalk.greenBright("Response: ", response));
+  console.log(chalk.greenBright("Response: ", response));
 }

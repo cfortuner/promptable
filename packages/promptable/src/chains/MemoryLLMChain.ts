@@ -1,4 +1,4 @@
-import { Prompt, PromptTemplate, PromptVariables } from "@prompts/Prompt";
+import { Prompt, PromptTemplate } from "@prompts/Prompt";
 import { CompletionsModelProvider } from "@providers/ModelProvider";
 import { Memory } from "src/memories/index";
 import { LLMChain } from "@chains/LLMChain";

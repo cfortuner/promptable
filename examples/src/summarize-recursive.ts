@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, prompts } from "@promptable/promptable";
+import { OpenAI, promptTemplates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -15,8 +15,6 @@ const apiKey = process.env.OPENAI_API_KEY || "";
  */
 const run = async (args: string[]) => {
   const openai = new OpenAI(apiKey);
-
-  const prompt = prompts.summarize();
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
@@ -46,17 +44,21 @@ const run = async (args: string[]) => {
     chalk.blue.bold("\nRunning Summarize Chunks: startup-mistakes.txt")
   );
 
+  const summarizePromptTemplate = promptTemplates.Summarize;
+
   // summarize each chunk
   const summaries = await Promise.all(
     chunks.map((chunk) => {
-      return openai.generate(
-        prompt.format({
+      const summarizePrompt = summarizePromptTemplate.build(
+        {
           document: chunk,
-        }),
+        },
         {
           max_tokens: 1000,
         }
       );
+
+      return openai.generate(summarizePrompt);
     })
   );
 
@@ -67,12 +69,12 @@ const run = async (args: string[]) => {
   );
 
   const { text: finalSummary } = await openai.generate(
-    prompt.format({
+    summarizePromptTemplate.build({
       document: summariesStr,
     })
   );
 
-  console.log(prompt.format({ document: summariesStr }));
+  console.log(summarizePromptTemplate.build({ document: summariesStr }));
   console.log(chalk.greenBright(finalSummary));
 };
 
