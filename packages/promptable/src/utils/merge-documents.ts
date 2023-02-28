@@ -11,9 +11,9 @@ export interface MergeDocuments {
 export const mergeDocumentsWithSeparator =
   (separator: string): MergeDocuments =>
   (documents: Document[], meta: { [key: string]: any }) => {
-    const content = documents.map((doc) => doc.content).join(separator);
+    const data = documents.map((doc) => doc.data).join(separator);
     return {
-      content,
+      data,
       meta,
     };
   };
@@ -21,15 +21,15 @@ export const mergeDocumentsWithSeparator =
 export const mergeDocumentsTruncated =
   (maxChars: number): MergeDocuments =>
   (documents: Document[], meta: { [key: string]: any }) => {
-    let content = "";
+    let data = "";
     for (const doc of documents) {
-      if (content.length + doc.content.length > maxChars) {
+      if (data.length + doc.data.length > maxChars) {
         break;
       }
-      content += doc.content;
+      data += doc.data;
     }
     return {
-      content,
+      data,
       meta,
     };
   };

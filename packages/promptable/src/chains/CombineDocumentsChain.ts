@@ -55,9 +55,9 @@ export class CombineDocumentsChain {
 
     const results = await Promise.all(
       docs.map(async (doc) => {
-        const summary = await this.summarizer!.run({ document: doc.content });
+        const summary = await this.summarizer!.run({ document: doc.data });
         return {
-          content: summary,
+          data: summary,
           meta: doc.meta,
         };
       })

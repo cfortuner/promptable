@@ -36,7 +36,7 @@ export {};
 //   const rows = await Promise.all(
 //     docs.map((docs) => {
 //       const promptText = prompt.format({
-//         data: docs.content,
+//         data: docs.data,
 //         headers: headers.join(","),
 //       });
 

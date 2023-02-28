@@ -46,7 +46,7 @@ const run = async (args: string[]) => {
   const notes = await Promise.all(
     docs.map((doc) => {
       const extractTextPrompt = promptTemplates.ExtractText.build({
-        document: doc.content,
+        document: doc.data,
         question,
       });
 

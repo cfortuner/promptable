@@ -1,38 +1,15 @@
 import fs from "fs";
 import chalk from "chalk";
-import { cwd } from "process";
-import { Prompt } from "@prompts/Prompt";
-import {
-  CompletionsModelProvider,
-  EmbeddingsModelProvider,
-} from "@providers/ModelProvider";
-import { Document } from "src";
+import { EmbeddingsModelProvider } from "@providers/ModelProvider";
+import { Document } from "../types";
+import { FileEmbeddingsStore } from "./stores/FileEmbeddingsStore";
+import { EmbeddingsStore } from "./stores/EmbeddingsStore";
 
-/**
- * Computes the cosine similarity between two embedding vectors.
- *
- * ## Notes
- *
- * - Since OpenAI embeddings are normalized, the dot product is equivalent to the cosine similarity.
- *
- * @private
- * @param x - first vector
- * @param y - second vector
- * @returns dot product
- */
-export function vectorSimilarity(x: number[], y: number[]): number {
-  let sum = 0;
-  for (let i = 0; i < x.length; i++) {
-    sum += x[i] * y[i];
-  }
-  return sum;
+export interface EmbeddingsOptions {
+  storeOptions?: Record<string, unknown>;
 }
 
-interface EmbeddingsOptions {
-  cacheDir?: string;
-}
-
-interface QueryResult {
+export interface QueryResult {
   query: string | number[];
   document: Document;
   similarity: number;
@@ -40,10 +17,10 @@ interface QueryResult {
 
 export class Embeddings {
   key: string;
-  cacheDir: string;
   provider: EmbeddingsModelProvider;
   documents: Document[] = [];
   embeddings: number[][] = [];
+  store: EmbeddingsStore;
 
   constructor(
     key: string,
@@ -53,43 +30,10 @@ export class Embeddings {
   ) {
     this.key = key;
     this.provider = provider;
-    this.cacheDir = options?.cacheDir || `${cwd()}/data/cache/index`;
 
     this.documents = documents;
-  }
 
-  isCached() {
-    return fs.existsSync(`${this.cacheDir}/${this.key}.json`);
-  }
-
-  clearCache() {
-    fs.rmSync(`${this.cacheDir}/${this.key}.json`, { force: true });
-
-    this.embeddings = [];
-  }
-
-  load() {
-    // load the index from cache
-    const jsn = fs.readFileSync(`${this.cacheDir}/${this.key}.json`, "utf8");
-
-    const index = JSON.parse(jsn);
-
-    if (index.key !== this.key) {
-      throw new Error(
-        `The index key ${index.key} does not match the key ${this.key}.`
-      );
-    }
-
-    if (index.documents.length !== this.documents.length) {
-      throw new Error(
-        `The number of documents in the index ${index.documents.length} does not match the number of documents ${this.documents.length}.`
-      );
-    }
-
-    this.embeddings = index.embeddings;
-    this.documents = index.documents;
-
-    console.log(chalk.green(`Loaded index for ${this.key} from cache.`));
+    this.store = new FileEmbeddingsStore(this.key);
   }
 
   async index(embeddings?: number[][]) {
@@ -102,21 +46,26 @@ export class Embeddings {
 
       this.embeddings = embeddings;
 
-      // cache the index
-      this.save();
+      // add the documents to the store
+      this.store.add(
+        this.documents.map((doc, i) => ({
+          ...doc,
+          embedding: embeddings[i],
+        }))
+      );
       return;
     }
 
     console.log(chalk.white(`Indexing Documents: ${this.documents.length}`));
 
     // check if the index already exists
-    if (this.isCached()) {
+    const hasDocuments = (await this.store.size()) > 0;
+    if (hasDocuments) {
       console.log(
         chalk.yellow(
           `Index for ${this.key} already exists. Loading from cache...`
         )
       );
-      this.load();
       return;
     }
 
@@ -129,13 +78,15 @@ export class Embeddings {
         this.embeddings?.[i] ||
         // otherwise, create the embedding
         (await this.provider.createEmbeddings({
-          input: this.documents[i].content,
+          input: this.documents[i].data,
         }));
 
       this.embeddings.push(embedding);
+      this.store.add({
+        ...this.documents[i],
+        embedding: embedding,
+      });
     }
-
-    this.save();
   }
 
   isInitialized() {
@@ -194,36 +145,29 @@ export class Embeddings {
   delete(data: string[]) {
     console.warn("not implemented yet :p");
   }
-
-  save() {
-    // save the dataframe to a json file with key as the filename
-    const cachePath = `${this.cacheDir}/${this.key}.json`;
-
-    if (!fs.existsSync(this.cacheDir)) {
-      fs.mkdirSync(this.cacheDir, { recursive: true });
-    }
-
-    fs.writeFileSync(
-      cachePath,
-      JSON.stringify({
-        key: this.key,
-        embeddings: this.embeddings,
-        documents: this.documents,
-      })
-    );
-  }
 }
 
-// /**
-//  * An interface for extracting answers from Embeddings
-//  * using a Prompt
-//  */
-// interface Extractor {
-//   new (index: Embeddings, provider: CompletionsModelProvider): Extractor;
+export interface EmbeddedDocument extends Document {
+  embedding: number[];
+  score?: number;
+}
 
-//   extract<T extends string>(
-//     query: string,
-//     prompt: Prompt<T>,
-//     variables: T[]
-//   ): string[];
-// }
+/**
+ * Computes the cosine similarity between two embedding vectors.
+ *
+ * ## Notes
+ *
+ * - Since OpenAI embeddings are normalized, the dot product is equivalent to the cosine similarity.
+ *
+ * @private
+ * @param x - first vector
+ * @param y - second vector
+ * @returns dot product
+ */
+export function vectorSimilarity(x: number[], y: number[]): number {
+  let sum = 0;
+  for (let i = 0; i < x.length; i++) {
+    sum += x[i] * y[i];
+  }
+  return sum;
+}

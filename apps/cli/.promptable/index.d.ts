@@ -1,1 +1,1 @@
-export { default as wolframAlpha}  from './wolfram-alpha';
+export { default as wolframAlpha } from "./wolfram-alpha";

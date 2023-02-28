@@ -6,10 +6,8 @@ export {
 } from "@chains/index";
 export { BufferedChatMemory } from "src/memories/BufferedChatMemory";
 
-export interface Document {
-  content: string;
-  meta: Record<string, any>;
-}
+import { Document } from "./types";
+export type { Document };
 
 // Prebuilt prompts
 import {
@@ -54,13 +52,16 @@ export type {
 };
 
 // Embeddings
-import { Embeddings } from "./embeddings";
+import { Embeddings, EmbeddedDocument } from "./embeddings";
 export { Embeddings };
+export type { EmbeddedDocument };
 
 // Loaders
-import { Loader, FileLoader } from "@loaders/index";
+import { Loader } from "@loaders/index";
 export type { Loader };
-export { FileLoader };
+import { HTMLLoader } from "@loaders/HtmlLoader";
+import { FileLoader } from "@loaders/FileLoader";
+export { FileLoader, HTMLLoader };
 
 // Parsing
 import { JSONParser, CSVParser, Parser, ListParser } from "@prompts/Parser";

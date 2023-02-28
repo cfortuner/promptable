@@ -1,5 +1,5 @@
-import { Prompt } from "@prompts/Prompt";
 import { Document } from "src";
+import { EmbeddedDocument } from "src/embeddings";
 
 export enum ModelProviderType {
   OpenAI,
@@ -34,8 +34,7 @@ export type CreateEmbeddingsRequest = {
 };
 
 export type CreateEmbeddingsResponse<T> = {
-  documents: Document[];
-  embeddings: number[][];
+  documents: EmbeddedDocument[];
   providerResponse: T;
 } & { [key: string]: any };
 

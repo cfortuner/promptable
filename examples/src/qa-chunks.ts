@@ -40,14 +40,14 @@ export default async function run(args: string[]) {
 
   for (const doc of docs) {
     const formattedPrompt = promptTemplates.QA.build({
-      document: doc.content,
+      document: doc.data,
       question,
     });
 
     const tokensUsed = openai.countTokens(formattedPrompt.text);
 
     console.log(
-      `\n${doc.content.substring(0, 100).trim()}...\n\n...${doc.content
+      `\n${doc.data.substring(0, 100).trim()}...\n\n...${doc.data
         .slice(-100)
         .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
     );

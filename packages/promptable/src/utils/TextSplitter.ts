@@ -7,6 +7,7 @@ export interface TextSplitterOptions {
   chunk?: boolean;
   chunkSize?: number;
   overlap?: number;
+  meta?: Record<string, any>;
 }
 
 export abstract class TextSplitter {
@@ -43,18 +44,24 @@ export abstract class TextSplitter {
     return texts.map((text) => text.trim()).join(separator);
   }
   mergeDocuments(docs: Document[]): string {
-    const texts = docs.map((doc) => doc.content);
+    const texts = docs.map((doc) => doc.data);
     return this.mergeText(texts);
   }
   splitDocuments(docs: Document[], opts?: TextSplitterOptions): Document[] {
-    const texts = docs.map((doc) => doc.content);
-    const metas = docs.map((doc) => doc.meta);
+    const texts = docs.map((doc) => doc.data);
+    const metas = docs.map((doc, i) => ({
+      ...doc.meta,
+      ...opts?.meta,
+      parentId: doc.id,
+      part: i,
+    }));
     return this.createDocuments(texts, metas, opts);
   }
 
+  // colin: we need to make sure to keep track of the original document id
   createDocuments(
     texts: string[],
-    metas: Record<string, any>[] = [],
+    metas: (Record<string, any> | undefined)[] = [],
     opts?: TextSplitterOptions
   ) {
     const docs = [];
@@ -63,7 +70,7 @@ export abstract class TextSplitter {
       const chunks = this.splitText(text, opts);
       for (const chunk of chunks) {
         docs.push({
-          content: chunk,
+          data: chunk,
           meta: metas[i] || {},
         });
       }

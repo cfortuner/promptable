@@ -26,7 +26,7 @@ export class QAChain {
     );
     const answer = await this.answerQuestion.run({
       question,
-      document: combinedDocuments.content,
+      document: combinedDocuments.data,
     });
 
     return answer;

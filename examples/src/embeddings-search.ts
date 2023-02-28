@@ -33,7 +33,7 @@ export default async function run() {
 
   const documents = df.column("Text").values.map((x: any) => {
     return {
-      content: x,
+      data: x,
       meta: {},
     };
   });

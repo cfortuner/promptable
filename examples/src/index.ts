@@ -44,6 +44,8 @@ import chainCombineDocuments from "./chain-combine-documents";
 import chainSummarizeDocuments from "./chain-summarize-documents";
 import chainQuestionAnswer from "./chain-question-answer";
 
+import webSearchAndGenerate from "./web-search-and-generate";
+
 // Add examples here!
 
 const examples = {
@@ -91,6 +93,8 @@ const examples = {
   "chain-combine-documents": chainCombineDocuments,
   "chain-summarize-documents": chainSummarizeDocuments,
   "chain-question-answer": chainQuestionAnswer,
+
+  "web-search-and-generate": webSearchAndGenerate,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>

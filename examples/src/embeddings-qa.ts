@@ -84,7 +84,7 @@ const run = async (args: string[]) => {
 
   const results = await embeddings.query(query, 5);
 
-  const top5Documents = results.map((r: any) => r.document.content);
+  const top5Documents = results.map((r: any) => r.document.data);
 
   // results
   console.log(chalk.blue(`Running QA Bot...`));

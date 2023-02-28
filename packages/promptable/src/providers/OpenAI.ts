@@ -16,6 +16,7 @@ import {
 import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { logger } from "@utils/Logger";
+import { EmbeddedDocument } from "src/embeddings";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -184,30 +185,41 @@ export class OpenAI
       return Array.isArray(inp);
     };
 
+    // the following code is to make sure that the input is an array of documents
     const input = isArray(req.input)
       ? req.input.map((doc) =>
-          replaceNewlines(typeof doc === "string" ? doc : doc.content, " ")
+          replaceNewlines(typeof doc === "string" ? doc : doc.data, " ")
         )
       : replaceNewlines(
-          typeof req.input === "string" ? req.input : req.input.content,
+          typeof req.input === "string" ? req.input : req.input.data,
           " "
         );
 
     const documents = isArray(req.input)
       ? req.input.map((doc) =>
-          typeof doc === "string" ? { content: doc, meta: {} } : doc
+          typeof doc === "string" ? { data: doc, meta: {} } : doc
         )
       : [
           typeof req.input === "string"
-            ? { content: req.input, meta: {} }
+            ? { data: req.input, meta: {} }
             : req.input,
         ];
 
     const response = await this.api.createEmbedding({ ...options, input });
 
+    const embeddedDocuments = [];
+    for (let i = 0; i < documents.length; i++) {
+      const newDoc = {
+        data: documents[i].data,
+        meta: documents[i].meta,
+        embedding: response?.data.data[i].embedding,
+      };
+
+      embeddedDocuments.push(newDoc as EmbeddedDocument);
+    }
+
     return {
-      documents,
-      embeddings: response?.data.data.map((d) => d.embedding),
+      documents: embeddedDocuments,
       providerResponse: response.data,
     };
   }
@@ -285,6 +297,6 @@ export class OpenAITokenizer implements Tokenizer {
   }
 
   countDocumentTokens(doc: Document) {
-    return this.countTokens(doc.content);
+    return this.countTokens(doc.data);
   }
 }

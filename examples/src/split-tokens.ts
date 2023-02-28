@@ -17,7 +17,7 @@ export default async function run(args: string[]) {
 
   const splitter = new TokenSplitter();
 
-  const chunks = splitter.splitText(docs[0].content);
+  const chunks = splitter.splitText(docs[0].data);
 
   // Count the tokens used in each chunk
   chunks.forEach((chunk, i) => {

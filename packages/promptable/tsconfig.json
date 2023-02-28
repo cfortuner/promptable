@@ -20,6 +20,12 @@
         "declarationMap": true,
         "resolveJsonModule": true,
         "paths": {
+            "@datastores/*": [
+                "src/datastores/*"
+            ],
+            "@types/*": [
+                "src/types/*"
+            ],
             "@memory/*": [
                 "src/memories/*"
             ],
