@@ -4,7 +4,7 @@ export function injectVariables(
 ): string {
   let result = template;
   for (const key in variables) {
-    result = result.replaceAll(`{{${key}}}`, variables[key]);
+    result = result.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'g'), variables[key]);
   }
   return result;
 }
