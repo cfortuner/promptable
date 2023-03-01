@@ -1,10 +1,20 @@
+import fs from "fs";
+import FormData from "form-data";
+
 import {
+  ChatModelProvider,
   CompletionsModelProvider,
+  CreateChatRequest,
+  CreateChatResponse,
   CreateCompletionRequest,
   CreateEmbeddingsRequest,
   CreateEmbeddingsResponse,
+  CreateTranscriptionRequest,
+  CreateTranscriptionResponse,
   EmbeddingsModelProvider,
   ModelProviderType,
+  TranscriptionModelProvider,
+  TranslationModelProvider,
 } from "./ModelProvider";
 import { ModelProvider, Tokenizer } from "./ModelProvider";
 import {
@@ -17,6 +27,7 @@ import { Document } from "src";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { logger } from "@utils/Logger";
 import { EmbeddedDocument } from "src/embeddings";
+import axios from "axios";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -120,7 +131,11 @@ type Options = {
 
 export class OpenAI
   extends ModelProvider
-  implements CompletionsModelProvider, EmbeddingsModelProvider
+  implements
+    CompletionsModelProvider,
+    EmbeddingsModelProvider,
+    ChatModelProvider,
+    TranscriptionModelProvider
 {
   apiKey: string;
   config: OpenAIConfiguration;
@@ -150,8 +165,38 @@ export class OpenAI
     return this.tokenizer.countTokens(text);
   }
 
+  async chat(
+    req: CreateChatRequest,
+    options: GenerateCompletionOptions = this.completionsConfig
+  ): Promise<CreateChatResponse<any>> {
+    try {
+      const res = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          messages: req.messages,
+          ...options,
+          model: "gpt-3.5-turbo",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return {
+        message: res.data.choices[0]?.message,
+        providerResponse: res.data,
+      };
+    } catch (e) {
+      logger.error(e as any);
+      throw e;
+    }
+  }
+
   async generate(
-    req: CreateCompletionRequest<any>,
+    req: CreateCompletionRequest,
     options: GenerateCompletionOptions = this.completionsConfig
   ) {
     try {
@@ -163,6 +208,38 @@ export class OpenAI
 
       return {
         text: res.data.choices[0]?.text || "",
+        providerResponse: res.data,
+      };
+    } catch (e) {
+      logger.error(e as any);
+      throw e;
+    }
+  }
+
+  async transcribe(
+    req: CreateTranscriptionRequest,
+    options: GenerateCompletionOptions = this.completionsConfig
+  ): Promise<CreateTranscriptionResponse<any>> {
+    try {
+      const formData = new FormData();
+      formData.append("model", "whisper-1");
+      const audioFile = fs.createReadStream(req.filePath);
+
+      formData.append("file", audioFile);
+
+      const res = await axios.post(
+        "https://api.openai.com/v1/audio/transcriptions",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${this.apiKey}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      return {
+        text: res.data.text,
         providerResponse: res.data,
       };
     } catch (e) {

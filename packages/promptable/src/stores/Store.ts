@@ -12,6 +12,7 @@ export interface Store {
 
   delete(id: string): void;
   delete(ids: string[]): void;
+
   update(id: string, doc: unknown): void;
   update(docs: Record<string, unknown>): void;
 }

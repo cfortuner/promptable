@@ -13,7 +13,26 @@ export abstract class ModelProvider {
   }
 }
 
-export type CreateCompletionRequest<T extends string> = {
+export interface ChatMessage {
+  role: "user" | "assistant" | "system";
+  content: string;
+}
+export type CreateChatRequest = {
+  messages: ChatMessage[];
+};
+
+export type CreateChatResponse<T extends any> = {
+  message: ChatMessage & { role: "assistant" };
+  providerResponse: T;
+};
+export interface ChatModelProvider extends ModelProvider {
+  chat(
+    req: CreateChatRequest,
+    ...args: any[]
+  ): Promise<CreateChatResponse<any>>;
+}
+
+export type CreateCompletionRequest = {
   text: string;
 };
 
@@ -24,7 +43,7 @@ export type CreateCompletionResponse<T extends any> = {
 
 export interface CompletionsModelProvider extends ModelProvider {
   generate(
-    req: CreateCompletionRequest<any>,
+    req: CreateCompletionRequest,
     ...args: any[]
   ): Promise<CreateCompletionResponse<any>>;
 }
@@ -51,4 +70,27 @@ export interface Tokenizer {
   truncate(text: string, maxTokens: number): string;
   countTokens(text: string): number;
   countDocumentTokens(doc: Document): number;
+}
+
+export interface TranscriptionModelProvider extends ModelProvider {
+  transcribe(
+    req: CreateTranscriptionRequest,
+    ...args: any[]
+  ): Promise<CreateTranscriptionResponse<any>>;
+}
+
+export interface CreateTranscriptionResponse<T extends any> {
+  text: string;
+  providerResponse: T;
+}
+
+export interface CreateTranscriptionRequest {
+  filePath: string;
+}
+
+export interface TranslationModelProvider extends ModelProvider {
+  translate(
+    text: string,
+    ...args: any[]
+  ): Promise<{ text: string; providerResponse: any }>;
 }

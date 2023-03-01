@@ -15,7 +15,7 @@ import { SentenceTextSplitter } from "../utils/TextSplitter";
  *
  * @example
  * ```typescript
- * const summarizeChain = new LLMChain(prompts.summarize(), openai, {
+ * const summarizeChain = new LLMChain(summarizePrompt, openai, {
  *    model: "text-davinci-003",
  *    max_tokens: 500,
  * });

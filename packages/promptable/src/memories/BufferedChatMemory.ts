@@ -1,8 +1,11 @@
+import { ChatMessage } from "@providers/ModelProvider";
 import { Memory } from "src/memories/index";
 
 export class BufferedChatMemory implements Memory {
   botMessages: string[] = [];
   userMessages: string[] = [];
+
+  chatMessages: ChatMessage[] = [];
 
   clear() {
     this.botMessages = [];
@@ -10,10 +13,11 @@ export class BufferedChatMemory implements Memory {
   }
 
   constructor(
-    protected botName = "Assistant",
-    protected userName = "User",
-    protected startingSpeaker: "user" | "bot" = "user",
-    protected maxInteractionTurns = Infinity
+    protected botName = "assistant",
+    protected userName = "user",
+    protected startingSpeaker: "user" | "assistant" = "user",
+    protected maxInteractionTurns = Infinity,
+    protected maxTokens = 3800
   ) {}
 
   /**
@@ -74,11 +78,23 @@ export class BufferedChatMemory implements Memory {
     return buffer.trim();
   }
 
+  getChatMessages() {
+    return this.chatMessages;
+  }
+
   addBotMessage(botMessage: string) {
     this.botMessages.push(botMessage);
+    this.chatMessages.push({
+      role: "assistant",
+      content: botMessage,
+    });
   }
 
   addUserMessage(userMessage: string) {
     this.userMessages.push(userMessage);
+    this.chatMessages.push({
+      role: "user",
+      content: userMessage,
+    });
   }
 }

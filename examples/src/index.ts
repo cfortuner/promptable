@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import transcribe from "./transcribe";
+import chat from "./chat";
 import promptSimple from "./prompt-simple";
 import promptSequential from "./prompt-sequential";
 import promptParallel from "./prompt-parallel";
@@ -45,6 +47,7 @@ import chainSummarizeDocuments from "./chain-summarize-documents";
 import chainQuestionAnswer from "./chain-question-answer";
 
 import webSearchAndGenerate from "./web-search-and-generate";
+import webSearchAndChat from "./web-search-and-chat";
 
 // Add examples here!
 
@@ -95,6 +98,10 @@ const examples = {
   "chain-question-answer": chainQuestionAnswer,
 
   "web-search-and-generate": webSearchAndGenerate,
+  "web-search-and-chat": webSearchAndChat,
+
+  chat,
+  transcribe,
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>

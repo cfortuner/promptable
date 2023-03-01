@@ -29,6 +29,11 @@ interface LoadPromptArgs {
   prompts: { id: string }[];
 }
 
+/**
+ * EXPERIMENTAL: This is a work in progress.
+ *
+ * @param args
+ */
 export const loadPromptablePrompts = async (args: LoadPromptArgs) => {
   const { prompts } = args;
   const promptIds = prompts.map((p) => p.id);
