@@ -10,16 +10,14 @@ import dotenv from "dotenv";
 dotenv.config();
 import {
   OpenAI,
-  CombineDocumentsChain,
   utils,
   FileLoader,
   promptTemplates,
-  LLMChain,
   SentenceTextSplitter,
-  QAChain,
   PromptTemplate,
 } from "@promptable/promptable";
 import chalk from "chalk";
+import { CombineDocumentsChain, LLMChain, QAChain } from "./chains";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -36,7 +34,7 @@ export default async function run() {
   const summarizeChain = new LLMChain(promptTemplates.Summarize, openai, {
     model: "text-davinci-003",
     max_tokens: 500,
-  });
+  } as any);
 
   // Combine documents into a single document
   const combineDocumentsChain = new CombineDocumentsChain(
@@ -49,7 +47,7 @@ export default async function run() {
   const answerQuestionChain = new LLMChain(promptTemplates.QA, openai, {
     model: "text-davinci-003",
     max_tokens: 2000,
-  });
+  } as any);
 
   const qaChain = new QAChain(docs, combineDocumentsChain, answerQuestionChain);
 

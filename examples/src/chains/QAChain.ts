@@ -1,5 +1,6 @@
-import { Document, LLMChain } from "src";
+import { Document } from "@promptable/promptable";
 import { CombineDocumentsChain } from "./CombineDocumentsChain";
+import { LLMChain } from "./LLMChain";
 
 /**
  *

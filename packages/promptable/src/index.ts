@@ -1,12 +1,6 @@
-export {
-  LLMChain,
-  MemoryLLMChain,
-  CombineDocumentsChain,
-  QAChain,
-} from "@chains/index";
 export { BufferedChatMemory } from "src/memories/BufferedChatMemory";
 
-import { Document } from "./types";
+import { Document } from "./Document";
 export type { Document };
 
 // Prebuilt prompts
@@ -82,12 +76,17 @@ export {
   SentenceTextSplitter,
 };
 
+import { Memory } from "./memories";
+export type { Memory };
+
 import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
 import {
   mergeDocumentsWithSeparator,
   mergeDocumentsTruncated,
+  MergeDocuments,
 } from "@utils/merge-documents";
+export type { MergeDocuments };
 export const utils = {
   injectVariables,
   parseJsonSSE,

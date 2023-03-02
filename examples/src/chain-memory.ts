@@ -18,12 +18,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import {
   OpenAI,
-  MemoryLLMChain,
   promptTemplates,
   BufferedChatMemory,
 } from "@promptable/promptable";
 import chalk from "chalk";
 import enquirer from "enquirer";
+import { MemoryLLMChain } from "./chains";
 
 const { prompt: query } = enquirer;
 

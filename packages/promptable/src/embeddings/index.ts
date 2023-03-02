@@ -1,7 +1,7 @@
 import fs from "fs";
 import chalk from "chalk";
 import { EmbeddingsModelProvider } from "@providers/ModelProvider";
-import { Document } from "../types";
+import { Document } from "../Document";
 import { FileEmbeddingsStore } from "./stores/FileEmbeddingsStore";
 import { EmbeddingsStore } from "./stores/EmbeddingsStore";
 

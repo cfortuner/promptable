@@ -1,15 +1,16 @@
-import { Prompt, PromptTemplate, PromptVariables } from "@prompts/Prompt";
-import { CompletionsModelProvider } from "@providers/ModelProvider";
 import {
-  GenerateCompletionOptions,
-  DEFAULT_COMPLETION_OPTIONS,
-} from "@providers/OpenAI";
+  Prompt,
+  PromptTemplate,
+  PromptVariables,
+} from "@promptable/promptable";
+import { CompletionsModelProvider } from "@promptable/promptable";
+import { GenerateCompletionOptions } from "@promptable/promptable";
 
 export class LLMChain<T extends string, V extends PromptVariables<T>> {
   constructor(
     public prompt: PromptTemplate<T, V>,
     public provider: CompletionsModelProvider,
-    public options: GenerateCompletionOptions = DEFAULT_COMPLETION_OPTIONS
+    public options?: GenerateCompletionOptions
   ) {}
 
   protected async _run(variables: V) {

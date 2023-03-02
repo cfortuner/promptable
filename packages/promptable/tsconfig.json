@@ -30,7 +30,7 @@
                 "src/memories/*"
             ],
             "@chains/*": [
-                "src/chains/*"
+                "../../examples/src/chains/*"
             ],
             "@steps/*": [
                 "src/steps/*"

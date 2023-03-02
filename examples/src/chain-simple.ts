@@ -8,12 +8,8 @@ Chains often have many steps, and tracing can help you understand what is happen
 **/
 import dotenv from "dotenv";
 dotenv.config();
-import {
-  Prompt,
-  OpenAI,
-  LLMChain,
-  PromptTemplate,
-} from "@promptable/promptable";
+import { Prompt, OpenAI, PromptTemplate } from "@promptable/promptable";
+import { LLMChain } from "./chains";
 
 const apiKey = process.env.OPENAI_API_KEY || "missing";
 

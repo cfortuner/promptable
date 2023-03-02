@@ -1,12 +1,13 @@
 import {
+  PromptTemplate,
+  SentenceTextSplitter,
+  utils,
+  Document,
+  OpenAI,
+  TextSplitter,
   MergeDocuments,
-  mergeDocumentsWithSeparator,
-} from "@utils/merge-documents";
-import { TextSplitter, TextSplitterOptions } from "@utils/TextSplitter";
-import { PromptTemplate } from "../prompts/Prompt";
-import { Document, OpenAI } from "src";
+} from "@promptable/promptable";
 import { LLMChain } from "./LLMChain";
-import { SentenceTextSplitter } from "../utils/TextSplitter";
 
 /**
  * A chain which combines documents into a single document.
@@ -43,9 +44,9 @@ export class CombineDocumentsChain {
   protected async _run(
     documents: Document[],
     meta: { [key: string]: any },
-    opts: TextSplitterOptions = {
+    opts = {
       chunk: true,
-    }
+    } as any
   ) {
     const docs = this.splitter.splitDocuments(documents, opts);
 
@@ -75,7 +76,7 @@ export class CombineDocumentsChain {
    */
   async run(
     documents: Document[],
-    opts: TextSplitterOptions = {
+    opts = {
       chunk: true,
     }
   ) {

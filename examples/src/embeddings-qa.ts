@@ -22,7 +22,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import * as dfd from "danfojs-node";
 import chalk from "chalk";
-import { Embeddings, OpenAI, prompts } from "@promptable/promptable";
+import { Embeddings, OpenAI, promptTemplates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -50,7 +50,7 @@ const loadData = async () => {
     const content = df.column("content").values[i] as string;
 
     return {
-      content,
+      data: content,
       meta: {
         title,
         heading,
@@ -73,7 +73,7 @@ const run = async (args: string[]) => {
   const { documents, embeddings: embeddingsVector } = await loadData();
 
   const openai = new OpenAI(apiKey);
-  const prompt = prompts.QA();
+  const prompt = promptTemplates.QA;
 
   // create your index
   const embeddings = new Embeddings("olympics", openai, documents);
@@ -91,7 +91,7 @@ const run = async (args: string[]) => {
   console.log(chalk.white(`${prompt.text}`));
 
   const { text: answer } = await openai.generate(
-    prompt.format({
+    prompt.build({
       document: top5Documents.join("\n---\n"),
       question: query,
     })

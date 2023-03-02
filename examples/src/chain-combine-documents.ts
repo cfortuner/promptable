@@ -10,11 +10,11 @@ import dotenv from "dotenv";
 dotenv.config();
 import {
   OpenAI,
-  CombineDocumentsChain,
   CharacterTextSplitter,
   utils,
   FileLoader,
 } from "@promptable/promptable";
+import { CombineDocumentsChain } from "./chains";
 
 export default async function run() {
   const filepath = "./data/startup-mistakes.txt";
@@ -29,7 +29,7 @@ export default async function run() {
   const result = await combineDocumentsChain.run(docs, {
     chunk: true,
     chunkSize: 500,
-  });
+  } as any);
 
   console.log("result", result);
 }

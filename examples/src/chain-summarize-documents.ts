@@ -10,13 +10,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import {
   OpenAI,
-  CombineDocumentsChain,
   utils,
   FileLoader,
   promptTemplates,
-  LLMChain,
   SentenceTextSplitter,
 } from "@promptable/promptable";
+import { CombineDocumentsChain, LLMChain } from "./chains";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -40,7 +39,6 @@ export default async function run() {
 
   const result = await combineDocumentsChain.run(docs, {
     chunk: true,
-    chunkSize: 100,
   });
 
   console.log("result", result);
