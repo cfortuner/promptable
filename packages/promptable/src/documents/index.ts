@@ -1,11 +1,4 @@
-import { Document } from "./Document";
-import { AudioDocument } from "./AudioDocument";
-import { ImageDocument } from "./ImageDocument";
-import { TextDocument } from "./TextDocument";
-
-export const Documents = {
-  Document,
-  AudioDocument,
-  ImageDocument,
-  TextDocument,
-};
+export { Document } from "./Document";
+export { AudioDocument } from "./AudioDocument";
+export { ImageDocument } from "./ImageDocument";
+export { TextDocument } from "./TextDocument";

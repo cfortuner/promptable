@@ -1,9 +1,9 @@
 import fs from "fs";
 import path from "path";
 import axios from "axios";
-import { PromptConfiguration, PromptTemplate, PromptVariables } from "./Prompt";
+import { PromptConfiguration } from "./Prompt";
 
-interface PromptDeployment {
+export interface PromptDeployment {
   id: string;
   name: string;
   isActive: boolean;
@@ -15,7 +15,11 @@ interface PromptDeployment {
   promptId: string;
 }
 
-const getActiveDeployment = async ({ promptId }: { promptId: string }) => {
+export const getActiveDeployment = async ({
+  promptId,
+}: {
+  promptId: string;
+}) => {
   const { data } = await axios.get(
     `https://promptable.ai/api/prompt/${encodeURIComponent(
       promptId
@@ -25,7 +29,7 @@ const getActiveDeployment = async ({ promptId }: { promptId: string }) => {
   return data as PromptDeployment;
 };
 
-interface LoadPromptArgs {
+export interface LoadPromptArgs {
   prompts: { id: string }[];
 }
 

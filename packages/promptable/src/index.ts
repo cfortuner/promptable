@@ -1,69 +1,26 @@
 // Documents
-import { Documents } from "@documents/index";
-export { Documents };
+export * from "@documents/index";
 
-import Templates from "@prompts/templates";
-import {
-  Prompt,
-  PromptTemplate,
-  PromptVariables,
-  PromptConfiguration,
-  prompt,
-} from "@prompts/Prompt";
-export { Prompt, Templates, PromptTemplate, prompt };
-export type { PromptVariables, PromptConfiguration };
+// Prompts
+export * from "@prompts/index";
 
 // Providers
-import {
-  ModelProvider,
-  ModelProviderType,
-  CreateCompletionRequest,
-  CompletionsModelProvider,
-  CreateEmbeddingsRequest,
-  EmbeddingsModelProvider,
-  CreateCompletionResponse,
-  CreateEmbeddingsResponse,
-  Tokenizer,
-} from "@providers/ModelProvider";
-import { OpenAI, GenerateCompletionOptions } from "@providers/OpenAI";
-export { OpenAI };
-export type {
-  GenerateCompletionOptions,
-  ModelProvider,
-  ModelProviderType,
-  CreateCompletionRequest,
-  CompletionsModelProvider,
-  CreateEmbeddingsRequest,
-  EmbeddingsModelProvider,
-  CreateCompletionResponse,
-  CreateEmbeddingsResponse,
-  Tokenizer,
-};
+export * from "@providers/index";
 
 // vector stores
-import { VectorStore, VectorStores } from "@vector-stores/index";
-export type { VectorStore };
-export { VectorStores };
+export * from "@vector-stores/index";
 
 // Embeddings
-import { Embeddings, EmbeddingsWithScore } from "@embeddings/Embeddings";
-export { Embeddings };
-export type { EmbeddingsWithScore };
+export * from "@embeddings/index";
 
 // Loaders
-import { Loader } from "@loaders/Loader";
-export type { Loader };
-import { Loaders } from "@loaders/index";
-export { Loaders };
+export * from "@loaders/index";
 
 // Parsing
-export type { Parser } from "@parsers/Parser";
-import { Parsers } from "@parsers/index";
-export { Parsers };
+export * from "@parsers/index";
 
 // Splitting
-import { Splitters } from "@utils/splitters/index";
-export { Splitters };
+export * from "@splitters/index";
 
 import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
@@ -73,7 +30,6 @@ import {
 } from "@utils/merge-documents";
 export type { MergeDocuments };
 export const Utils = {
-  Splitters,
   injectVariables,
   parseJsonSSE,
   mergeDocumentsWithSeparator,

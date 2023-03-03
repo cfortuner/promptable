@@ -49,7 +49,10 @@
             ],
             "@indicies/*": [
                 "src/indicies/*"
-            ]
+            ],
+            "@splitters/*": [
+                "src/splitters/*"
+            ],
         }
     },
     "exclude": [

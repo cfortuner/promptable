@@ -1,13 +1,4 @@
-import { FileVectorStore } from "./FileVectorStore";
-import { InMemoryVectorStore } from "./InMemoryVectorStore";
-import { PineconeVectorStore } from "./PineconeVectorStore";
-import { VectorStore } from "./VectorStore";
-
-export const VectorStores = {
-  FileVectorStore,
-  InMemoryVectorStore,
-  PineconeVectorStore,
-  VectorStore,
-};
-
-export type { VectorStore };
+export { FileVectorStore } from "./FileVectorStore";
+export { InMemoryVectorStore } from "./InMemoryVectorStore";
+export { PineconeVectorStore } from "./PineconeVectorStore";
+export { VectorStore } from "./VectorStore";

@@ -1,0 +1,60 @@
+{
+  "name": "old-examples",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "FORCE_COLOR=1 pnpm build && node dist/index.js",
+    "build": "tsup ./src/index.ts --format cjs --dts",
+    "dev": "pnpm run build --watch"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.2.0",
+    "axios": "^1.2.4",
+    "chalk": "^4.1.2",
+    "console-table-printer": "^2.11.1",
+    "csv-parse": "^5.3.4",
+    "danfojs-node": "^1.1.2",
+    "dotenv": "^16.0.3",
+    "enquirer": "^2.3.6",
+    "gpt3-tokenizer": "^1.1.5",
+    "handlebars": "^4.7.7",
+    "openai": "^3.1.0",
+    "@promptable/promptable": "workspace:*",
+    "@promptable/tracing": "workspace:*",
+    "ramda": "^0.28.0",
+    "ramda-async": "^1.1.2",
+    "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/ramda": "^0.28.23",
+    "eslint": "7.32.0",
+    "tsup": "^6.5.0",
+    "typescript": "latest"
+  },
+  "keywords": [
+    "llm",
+    "embeddings",
+    "qa",
+    "question answering",
+    "semantic search",
+    "chatbot",
+    "langchain",
+    "ai",
+    "gptindex",
+    "gpt3",
+    "chain",
+    "prompt",
+    "prompt programming",
+    "promptable",
+    "nlp",
+    "javascript",
+    "react",
+    "chatgpt",
+    "model",
+    "machine learning",
+    "ml",
+    "typescript"
+  ]
+}

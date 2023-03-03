@@ -208,15 +208,3 @@ export const FixMarkup = new PromptTemplate(
     Response:
     `
 );
-
-const Templates = {
-  QA,
-  ExtractText,
-  Summarize,
-  Chatbot,
-  ExtractJSON,
-  ExtractCSV,
-  FixMarkup,
-};
-
-export default Templates;

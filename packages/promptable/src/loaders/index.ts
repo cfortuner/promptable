@@ -1,19 +1,8 @@
-import { FileLoader } from "./FileLoader";
-import { GithubLoader } from "./GithubLoader";
-import { GmailLoader } from "./GmailLoader";
-import { GoogleDriveLoader } from "./GoogleDriveLoader";
-import { HTMLLoader } from "./HtmlLoader";
-import { MarkdownLoader } from "./MarkdownLoader";
-import { PDFLoader } from "./PDFLoader";
-import { SlackLoader } from "./SlackLoader";
-
-export const Loaders = {
-  FileLoader,
-  GithubLoader,
-  GmailLoader,
-  GoogleDriveLoader,
-  HTMLLoader,
-  MarkdownLoader,
-  PDFLoader,
-  SlackLoader,
-};
+export { FileLoader } from "./FileLoader";
+export { GithubLoader } from "./GithubLoader";
+export { GmailLoader } from "./GmailLoader";
+export { GoogleDriveLoader } from "./GoogleDriveLoader";
+export { HTMLLoader } from "./HtmlLoader";
+export { MarkdownLoader } from "./MarkdownLoader";
+export { PDFLoader } from "./PDFLoader";
+export { SlackLoader } from "./SlackLoader";
