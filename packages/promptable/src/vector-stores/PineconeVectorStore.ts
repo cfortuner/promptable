@@ -1,8 +1,5 @@
 import { PineconeClient } from "@pinecone-database/pinecone";
-import {
-  CreateIndexRequest,
-  VectorOperationsApi,
-} from "@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch";
+import { CreateIndexRequest } from "@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch";
 import { Document } from "src/documents/Document";
 import { Embeddings } from "src/embeddings/Embeddings";
 import { AddRequest, QueryRequest, VectorStore } from "./VectorStore";
