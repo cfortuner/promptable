@@ -429,7 +429,7 @@ importers:
       jest: ^29.4.1
       js-yaml: ^4.1.0
       marked: ^4.2.12
-      openai: ^3.1.0
+      openai: ^3.2.1
       pdf-parse: ^1.1.1
       showdown: ^2.1.0
       stream-to-blob: ^2.0.1
@@ -437,6 +437,7 @@ importers:
       tsup: ^6.5.0
       typescript: latest
       uuid: ^9.0.0
+      wikijs: ^6.4.1
       zod: ^3.20.2
     dependencies:
       '@babel/parser': 7.21.2
@@ -457,12 +458,13 @@ importers:
       html-to-text: 9.0.4
       js-yaml: 4.1.0
       marked: 4.2.12
-      openai: 3.1.0
+      openai: 3.2.1
       pdf-parse: 1.1.1
       showdown: 2.1.0
       stream-to-blob: 2.0.1
       typescript: 4.9.5
       uuid: 9.0.0
+      wikijs: 6.4.1
       zod: 3.20.2
     devDependencies:
       '@babel/core': 7.20.12
@@ -7954,6 +7956,11 @@ packages:
       quick-lru: 4.0.1
     dev: false
 
+  /camelcase/4.1.0:
+    resolution: {integrity: sha512-FxAv7HpHrXbh3aPo4o2qxHay2lkLY3x5Mw3KeE4KQE8ysVfziWeRZDwcjauvwBSGEC/nXUPzZy8zeh4HokqOnw==}
+    engines: {node: '>=4'}
+    dev: false
+
   /camelcase/5.3.1:
     resolution: {integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==}
     engines: {node: '>=6'}
@@ -11824,6 +11831,11 @@ packages:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
 
+  /hyntax/1.1.9:
+    resolution: {integrity: sha512-xjxyDLbVDdLgjPnl4NM+Iu6il3UPmk6PNCBXruQKeuKDc/HtaZx1hk1AtMgw3vsn9YnLZRfoBpPxYMXcoT5KAA==}
+    engines: {node: '>=6.11.1', npm: '>=5.3.0'}
+    dev: false
+
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -11904,6 +11916,12 @@ packages:
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
+
+  /infobox-parser/3.6.2:
+    resolution: {integrity: sha512-lasdwvbtjCtDDO6mArAs/ueFEnBJRyo2UbZPAkd5rEG5NVJ3XFCOvbMwNTT/rJlFv1+ORw8D3UvZV4brpgATCg==}
+    dependencies:
+      camelcase: 4.1.0
+    dev: false
 
   /inherits/2.0.3:
     resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==}
@@ -13997,6 +14015,15 @@ packages:
 
   /openai/3.1.0:
     resolution: {integrity: sha512-v5kKFH5o+8ld+t0arudj833Mgm3GcgBnbyN9946bj6u7bvel4Yg6YFz2A4HLIYDzmMjIo0s6vSG9x73kOwvdCg==}
+    dependencies:
+      axios: 0.26.1
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /openai/3.2.1:
+    resolution: {integrity: sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==}
     dependencies:
       axios: 0.26.1
       form-data: 4.0.0
@@ -18514,6 +18541,17 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       string-width: 5.1.2
+    dev: false
+
+  /wikijs/6.4.1:
+    resolution: {integrity: sha512-fnYyT9ISD9hFgAxFJu7Kzsomz48w7FpvvAfTuArvkMQY1bG9JPXoyURqUzYGcQA8FCq6MuZfjqT/6hP8Mh4hQA==}
+    engines: {node: '>=0.10.4'}
+    dependencies:
+      cross-fetch: 3.1.5
+      hyntax: 1.1.9
+      infobox-parser: 3.6.2
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /wildcard/2.0.0:

@@ -48,12 +48,13 @@
         "html-to-text": "^9.0.4",
         "js-yaml": "^4.1.0",
         "marked": "^4.2.12",
-        "openai": "^3.1.0",
+        "openai": "^3.2.1",
         "pdf-parse": "^1.1.1",
         "showdown": "^2.1.0",
         "stream-to-blob": "^2.0.1",
         "typescript": "latest",
         "uuid": "^9.0.0",
+        "wikijs": "^6.4.1",
         "zod": "^3.20.2"
     }
 }

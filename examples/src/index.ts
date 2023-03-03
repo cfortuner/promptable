@@ -49,6 +49,8 @@ import tracingWebPrompt from "./tracing-web-prompt";
 import webSearchAndGenerate from "./web-search-and-generate";
 // import webSearchAndChat from "./web-search-and-chat";
 
+import agentWiki from "./agent-wiki"
+
 // Add examples here!
 
 const examples = {
@@ -102,6 +104,7 @@ const examples = {
 
   // chat,
   transcribe,
+  "agent-wiki": agentWiki
 };
 
 const isExample = (arg: string): arg is keyof typeof examples =>
