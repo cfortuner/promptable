@@ -17,10 +17,9 @@ export abstract class Document {
     this.id = params.id || uuid();
     this.metadata = params.metadata || {};
   }
-}
 
-// factory function for creating a document base on the type
-const createDocument = (params: CreateDocumentOptions) => {};
+  abstract toJSON(): { id: string; metadata: Metadata };
+}
 
 // // example of a multi-modal document
 // class MultiModalDocument extends Document {

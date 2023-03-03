@@ -5,11 +5,12 @@ export { Documents };
 import Templates from "@prompts/templates";
 import {
   Prompt,
+  PromptTemplate,
   PromptVariables,
   PromptConfiguration,
   prompt,
 } from "@prompts/Prompt";
-export { Prompt, Templates, prompt };
+export { Prompt, Templates, PromptTemplate, prompt };
 export type { PromptVariables, PromptConfiguration };
 
 // Providers
@@ -68,7 +69,6 @@ import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
 import {
   mergeDocumentsWithSeparator,
-  mergeDocumentsTruncated,
   MergeDocuments,
 } from "@utils/merge-documents";
 export type { MergeDocuments };
@@ -77,7 +77,6 @@ export const Utils = {
   injectVariables,
   parseJsonSSE,
   mergeDocumentsWithSeparator,
-  mergeDocumentsTruncated,
 };
 
 export type { ExtractFormatObject } from "./utils/type-utils";

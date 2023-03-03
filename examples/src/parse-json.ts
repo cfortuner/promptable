@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import { OpenAI, promptTemplates, JSONParser } from "@promptable/promptable";
+import { OpenAI, Templates, Parsers } from "@promptable/promptable";
 import chalk from "chalk";
 
 /**
@@ -41,7 +41,7 @@ This is a Google Meet web conference. Join now
 Invitee Time Zone:
 Pacific Time - US & Canada`;
 
-  const prompt = promptTemplates.ExtractJSON.build({
+  const prompt = Templates.ExtractJSON.build({
     data,
     type: `{
       meeting_type: string, 
@@ -54,7 +54,7 @@ Pacific Time - US & Canada`;
 
   const response = await openai.generate(prompt);
 
-  const output = new JSONParser().parse(response.text);
+  const output = new Parsers.JSONParser().parse(response.text);
 
   console.log(chalk.greenBright(`JSON`, JSON.stringify(output, undefined, 4)));
 }

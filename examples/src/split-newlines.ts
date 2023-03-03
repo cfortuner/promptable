@@ -1,11 +1,11 @@
 import chalk from "chalk";
-import { CharacterTextSplitter } from "@promptable/promptable";
+import { Splitters } from "@promptable/promptable";
 
 /**
  * Simple example showing how to split text on new lines
  */
 export default async function run(args: string[]) {
-  const splitter = new CharacterTextSplitter("\n");
+  const splitter = new Splitters.CharacterTextSplitter("\n");
   const text = `
   Sports, what a way to have some fun
   Competing in a game or two

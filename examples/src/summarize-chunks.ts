@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, promptTemplates } from "@promptable/promptable";
+import { OpenAI, Templates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -48,7 +48,7 @@ const run = async (args: string[]) => {
   const summaries = await Promise.all(
     chunks.map((chunk) => {
       return openai.generate(
-        promptTemplates.Summarize.build({
+        Templates.Summarize.build({
           document: chunk,
         })
       );

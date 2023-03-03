@@ -11,4 +11,16 @@ export class AudioDocument extends Document {
     super(opts);
     this.audio = opts.audio;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      metadata: this.metadata,
+      audio: this.audio,
+    };
+  }
+
+  static fromJSON(json: any) {
+    return new AudioDocument(json);
+  }
 }

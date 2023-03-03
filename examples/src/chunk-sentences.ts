@@ -1,8 +1,5 @@
 import chalk from "chalk";
-import {
-  CharacterTextSplitter,
-  SentenceTextSplitter,
-} from "@promptable/promptable";
+import { Splitters } from "@promptable/promptable";
 
 /**
  * Simple example showing how to use the TextSplitter to split and chunk text.
@@ -18,7 +15,7 @@ import {
  * ]
  */
 export default async function run(args: string[]) {
-  const splitter = new SentenceTextSplitter();
+  const splitter = new Splitters.SentenceTextSplitter();
   const text = `
   Fatima Whitbread (born 1961) is a retired British javelin thrower. 
   She broke the women's javelin throw world record with a throw of 77.44 metres (254 ft 3⁄4 in) at the 1986 European Athletics Championships in Stuttgart, and also won the European title that year.

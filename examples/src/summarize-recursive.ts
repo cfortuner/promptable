@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, promptTemplates } from "@promptable/promptable";
+import { OpenAI, Templates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -44,7 +44,7 @@ const run = async (args: string[]) => {
     chalk.blue.bold("\nRunning Summarize Chunks: startup-mistakes.txt")
   );
 
-  const summarizePromptTemplate = promptTemplates.Summarize;
+  const summarizePromptTemplate = Templates.Summarize;
 
   // summarize each chunk
   const summaries = await Promise.all(

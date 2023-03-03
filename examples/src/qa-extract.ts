@@ -2,12 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import {
-  CharacterTextSplitter,
-  FileLoader,
-  OpenAI,
-  promptTemplates,
-} from "@promptable/promptable";
+import { Splitters, Loaders, OpenAI, Templates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -27,11 +22,11 @@ const run = async (args: string[]) => {
 
   // Load the file
   const filepath = "./data/startup-mistakes.txt";
-  const loader = new FileLoader(filepath);
-  const splitter = new CharacterTextSplitter("\n");
+  const loader = new Loaders.FileLoader();
+  const splitter = new Splitters.CharacterTextSplitter("\n");
 
   // load and split the documents
-  let docs = await loader.load();
+  let docs = await loader.loadTexts([filepath]);
   docs = splitter.splitDocuments(docs, {
     chunk: true,
   });
@@ -45,8 +40,8 @@ const run = async (args: string[]) => {
   // Run the Question-Answer prompt on each chunk asyncronously
   const notes = await Promise.all(
     docs.map((doc) => {
-      const extractTextPrompt = promptTemplates.ExtractText.build({
-        document: doc.data,
+      const extractTextPrompt = Templates.ExtractText.build({
+        document: doc.text,
         question,
       });
 

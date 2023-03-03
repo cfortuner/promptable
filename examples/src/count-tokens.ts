@@ -1,6 +1,5 @@
-import fs from "fs";
 import chalk from "chalk";
-import { FileLoader, OpenAI, promptTemplates } from "@promptable/promptable";
+import { Loaders, OpenAI, Templates, Documents } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -10,10 +9,11 @@ const apiKey = process.env.OPENAI_API_KEY || "";
 export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
 
-  const docs = await new FileLoader("./data/startup-mistakes.txt").load();
+  const loader = new Loaders.FileLoader();
+  const docs = await loader.loadTexts(["./data/startup-mistakes.txt"]);
 
-  const prompt = promptTemplates.QA.build({
-    document: docs[0].data,
+  const prompt = Templates.QA.build({
+    document: docs[0].text,
     question: "",
   });
 

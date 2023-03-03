@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { FileLoader, OpenAI, TokenSplitter } from "@promptable/promptable";
+import { Loaders, OpenAI, Splitters } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -10,14 +10,14 @@ export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
 
   const filepath = "./data/startup-mistakes.txt";
-  const loader = new FileLoader(filepath);
+  const loader = new Loaders.FileLoader();
 
   // load doc
-  let docs = await loader.load();
+  let docs = await loader.loadTexts([filepath]);
 
-  const splitter = new TokenSplitter();
+  const splitter = new Splitters.TokenSplitter();
 
-  const chunks = splitter.splitText(docs[0].data);
+  const chunks = splitter.splitText(docs[0].text);
 
   // Count the tokens used in each chunk
   chunks.forEach((chunk, i) => {

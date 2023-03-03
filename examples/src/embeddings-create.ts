@@ -19,10 +19,11 @@ The steps are:
 **/
 
 import {
-  FileLoader,
-  Embeddings,
+  Loaders,
+  Documents,
   OpenAI,
-  SentenceTextSplitter,
+  Splitters,
+  VectorStores,
 } from "@promptable/promptable";
 import dotenv from "dotenv";
 dotenv.config();
@@ -40,10 +41,10 @@ const run = async (args: string[]) => {
   console.log(chalk.blue.bold("\nRunning Example: Create embeddings"));
 
   const filepath = "./data/startup-mistakes.txt";
-  const loader = new FileLoader(filepath);
-  const splitter = new SentenceTextSplitter();
+  const loader = new Loaders.FileLoader();
+  const splitter = new Splitters.SentenceTextSplitter();
 
-  const documents = await loader.load();
+  const documents = await loader.loadTexts([filepath]);
 
   // split the documents into sentences
   const sentences = splitter.splitDocuments(documents, {
@@ -53,14 +54,32 @@ const run = async (args: string[]) => {
   console.log(chalk.green("Sentences:"));
   console.log(sentences);
 
-  // create your index
-  const embeddings = new Embeddings("startup-mistakes", openai, sentences);
-  await embeddings.index();
+  // create your embeddings
+  const { embeddings } = await openai.createEmbeddings({
+    docs: sentences,
+  });
 
-  // query your index
-  const query = "What is the worst mistake a startup can make?";
+  // create your store
+  const vectorStore = new VectorStores.InMemoryVectorStore({
+    name: "startup-mistakes",
+  });
 
-  const results = await embeddings.query(query, 1);
+  // add your embeddings to the store
+  vectorStore.add({
+    embeddings,
+  });
+
+  // create your query
+  const queryDoc = new Documents.TextDocument({
+    text: "What is the worst mistake a startup can make?",
+  });
+  const { embeddings: queryEmbeddings } = await openai.createEmbeddings({
+    docs: [queryDoc],
+  });
+
+  const results = await vectorStore.query({
+    embeddings: queryEmbeddings[0],
+  });
 
   // results
   console.log(chalk.green("Results:"));

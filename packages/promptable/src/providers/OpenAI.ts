@@ -23,11 +23,11 @@ import {
   CreateEmbeddingRequest as CreateOpenAIEmbeddingsRequest,
   CreateEmbeddingResponse as CreateOpenAIEmbeddingResponse,
 } from "openai";
-import { Document, TextDocument } from "src/documents/Document";
+import { TextDocument } from "src/documents/TextDocument";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { logger } from "@utils/Logger";
-import { EmbeddedDocument } from "src/embeddings";
 import axios from "axios";
+import { Embeddings } from "@embeddings/Embeddings";
 
 class OpenAIConfiguration extends Configuration {}
 
@@ -260,17 +260,15 @@ export class OpenAI
 
     const response = await this.api.createEmbedding({ ...options, input });
 
-    const embeddings = response.data.data.map((d) => {
+    const vectors = response.data.data.map((d) => {
       return d.embedding;
     });
 
-    // add embeddings to the docs
-    req.docs.forEach((d, i) => {
-      d.embedding = embeddings[i];
+    const embeddings = req.docs.map((d, i) => {
+      return new Embeddings(d, vectors[i]);
     });
 
     return {
-      documents: req.docs,
       embeddings,
       providerResponse: response.data,
     };

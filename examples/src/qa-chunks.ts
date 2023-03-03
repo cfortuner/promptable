@@ -5,9 +5,9 @@ import chalk from "chalk";
 import {
   OpenAI,
   Prompt,
-  promptTemplates,
-  FileLoader,
-  CharacterTextSplitter,
+  Templates,
+  Loaders,
+  Splitters,
 } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
@@ -23,11 +23,12 @@ export default async function run(args: string[]) {
   const openai = new OpenAI(apiKey);
 
   const filepath = "./data/startup-mistakes.txt";
-  const loader = new FileLoader(filepath);
-  const splitter = new CharacterTextSplitter("\n");
+  const loader = new Loaders.FileLoader();
+  const splitter = new Splitters.CharacterTextSplitter("\n");
 
   // load and split the documents
-  let docs = await loader.load();
+  let docs = await loader.loadTexts([filepath]);
+
   docs = splitter.splitDocuments(docs, {
     chunk: true,
   });
@@ -39,18 +40,10 @@ export default async function run(args: string[]) {
   console.log(chalk.white(`Question: ${question}`));
 
   for (const doc of docs) {
-    const formattedPrompt = promptTemplates.QA.build({
-      document: doc.data,
+    const formattedPrompt = Templates.QA.build({
+      document: doc.text,
       question,
     });
-
-    const tokensUsed = openai.countTokens(formattedPrompt.text);
-
-    console.log(
-      `\n${doc.data.substring(0, 100).trim()}...\n\n...${doc.data
-        .slice(-100)
-        .trim()}\n` + chalk.gray(`${"Tokens: " + tokensUsed}`)
-    );
 
     const { text: answer } = await openai.generate({
       text: formattedPrompt.text,

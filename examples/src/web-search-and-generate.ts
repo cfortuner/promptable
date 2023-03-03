@@ -1,11 +1,12 @@
 import fs from "fs";
 import axios from "axios";
 import {
-  EmbeddedDocument,
-  HTMLLoader,
+  Embeddings,
+  Loaders,
   OpenAI,
+  Documents,
   PromptTemplate,
-  TokenSplitter,
+  Splitters,
 } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
@@ -30,9 +31,9 @@ const run = async (args: string[]) => {
   // first, supply web sources for the document
   const sources = ["https://en.wikipedia.org/wiki/Artificial_intelligence"];
 
-  const htmlLoader = new HTMLLoader();
-  let embeddedDocuments: EmbeddedDocument[] = [];
+  const htmlLoader = new Loaders.HTMLLoader();
 
+  let embeddings: Embeddings<any>[] = [];
   for (const source of sources) {
     // query the web sources and load them into documents
     const response = await axios.get(source);
@@ -40,7 +41,7 @@ const run = async (args: string[]) => {
     const docs = await htmlLoader.load(html, { source: source, html });
 
     // split
-    const textSplitter = new TokenSplitter({
+    const textSplitter = new Splitters.TokenSplitter({
       chunk: true,
       chunkSize: 1000,
     });
@@ -50,17 +51,16 @@ const run = async (args: string[]) => {
     // count tokens in each chunk
     let total = 0;
 
-    let embeddedDocuments: EmbeddedDocument[] = [];
     for (const chunk of chunks) {
-      const tokens = openai.countTokens(chunk.data);
+      const tokens = openai.countTokens(chunk.text);
       console.log("tokens", tokens);
       total += tokens;
       // create embeddings for the web sources
       const embeddingResponse = await openai.createEmbeddings({
-        input: chunk,
+        docs: [chunk],
       });
 
-      embeddedDocuments = embeddedDocuments.concat(embeddingResponse.documents);
+      embeddings = embeddings.concat(embeddingResponse.embeddings);
 
       // set some delay to avoid rate limiting
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -83,16 +83,18 @@ const run = async (args: string[]) => {
   const paragraphs = await Promise.all(
     topics.map(async (topic: string) => {
       const query = "What is artificial intelligence?";
-      const queryEmbeddingRes = await openai.createEmbeddings({
-        input: query,
+      const queryDoc = new Documents.TextDocument({
+        text: query,
       });
-      const queryEmbedding = queryEmbeddingRes.documents[0].embedding;
+      const { embeddings: queryEmbeddings } = await openai.createEmbeddings({
+        docs: [queryDoc],
+      });
 
       // update documents with scores
-      const docsWithSimilarityScore = embeddedDocuments.map((doc) => {
+      const docsWithSimilarityScore = embeddings.map((emb) => {
         return {
-          ...doc,
-          score: vectorSimilarity(doc.embedding, queryEmbedding),
+          embedding: emb,
+          score: vectorSimilarity(emb.vector, queryEmbeddings[0].vector),
         };
       });
 
@@ -104,7 +106,7 @@ const run = async (args: string[]) => {
 
       const generateParagraphPrompt = generateParagraphTemplate.build({
         topic,
-        source: results.map((r) => r.data).join("\n\n"),
+        source: results.map((r) => r.embedding.document.text).join("\n\n"),
       });
 
       const generateParagraphResult = await openai.generate(

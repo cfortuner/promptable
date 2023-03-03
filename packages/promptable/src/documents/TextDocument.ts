@@ -11,4 +11,16 @@ export class TextDocument extends Document {
     super(opts);
     this.text = opts.text;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      metadata: this.metadata,
+      text: this.text,
+    };
+  }
+
+  static fromJSON(json: any) {
+    return new TextDocument(json);
+  }
 }

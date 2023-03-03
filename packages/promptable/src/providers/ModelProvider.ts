@@ -1,4 +1,6 @@
-import { Document, TextDocument } from "src/documents/Document";
+import { TextDocument } from "@documents/TextDocument";
+import { Embeddings } from "@embeddings/Embeddings";
+import { Document } from "src/documents/Document";
 
 export enum ModelProviderType {
   OpenAI,
@@ -48,13 +50,12 @@ export interface CompletionsModelProvider extends ModelProvider {
 }
 
 export type CreateEmbeddingsRequest = {
-  docs: Document[];
+  docs: TextDocument[];
 };
 
-export type CreateEmbeddingsResponse<T> = {
-  documents: Document[];
-  embeddings: number[][];
-  providerResponse: T;
+export type CreateEmbeddingsResponse<R> = {
+  embeddings: Embeddings<TextDocument>[];
+  providerResponse: R;
 } & { [key: string]: any };
 
 export interface EmbeddingsModelProvider extends ModelProvider {

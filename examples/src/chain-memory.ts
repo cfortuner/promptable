@@ -1,58 +1,56 @@
-/** 
-Chains are pre-built workflows for executing specific tasks.
+// /**
+// Chains are pre-built workflows for executing specific tasks.
 
-The MemoryLLMChain is a chain which combines a prompt, a model provider and memory.
-Memory is a way to store and retrieve data between chain runs.
+// The MemoryLLMChain is a chain which combines a prompt, a model provider and memory.
+// Memory is a way to store and retrieve data between chain runs.
 
-This example uses MemoryLLMChain to create a simple Chatbot based on a prompt.
-BufferedChatInteractionMemory is a memory which stores the user and bot messages in a buffer,
-up a max number of interactions (defaulted at Infinity).
-MemoryLLMChain will automatically extract the memory from the BufferedChatInteractionMemory and
-pass it to the prompt.
-    
-Note:
-Since this example uses CLI input, which is not supported by pnpm, to run this example
-cd into the examples directory and run `npm start chain-memory`
-**/
-import dotenv from "dotenv";
-dotenv.config();
-import {
-  OpenAI,
-  promptTemplates,
-  BufferedChatMemory,
-} from "@promptable/promptable";
-import chalk from "chalk";
-import enquirer from "enquirer";
-import { MemoryLLMChain } from "./chains";
+// This example uses MemoryLLMChain to create a simple Chatbot based on a prompt.
+// BufferedChatInteractionMemory is a memory which stores the user and bot messages in a buffer,
+// up a max number of interactions (defaulted at Infinity).
+// MemoryLLMChain will automatically extract the memory from the BufferedChatInteractionMemory and
+// pass it to the prompt.
 
-const { prompt: query } = enquirer;
+// Note:
+// Since this example uses CLI input, which is not supported by pnpm, to run this example
+// cd into the examples directory and run `npm start chain-memory`
+// **/
+// import dotenv from "dotenv";
+// dotenv.config();
+// import { OpenAI, Templates } from "@promptable/promptable";
+// import chalk from "chalk";
+// import enquirer from "enquirer";
+// import { MemoryLLMChain } from "./chains";
 
-const apiKey = process.env.OPENAI_API_KEY || "missing";
+// const { prompt: query } = enquirer;
 
-export default async function run() {
-  const openai = new OpenAI(apiKey);
-  const memory = new BufferedChatMemory();
-  const memoryChain = new MemoryLLMChain(
-    promptTemplates.Chatbot,
-    openai,
-    memory
-  );
+// const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-  while (true) {
-    const { userInput } = (await query({
-      type: "input",
-      name: "userInput",
-      message: "User: ",
-    })) as {
-      userInput: string;
-    };
+// export default async function run() {
+//   const openai = new OpenAI(apiKey);
+//   const memory = new BufferedChatMemory();
+//   const memoryChain = new MemoryLLMChain(
+//     promptTemplates.Chatbot,
+//     openai,
+//     memory
+//   );
 
-    if (userInput) {
-      if (userInput === "exit") break;
-      memory.addUserMessage(userInput);
-      const botOutput = await memoryChain.run({ userInput });
-      memory.addBotMessage(botOutput);
-      console.log(chalk.yellow("Assisant:", botOutput));
-    }
-  }
-}
+//   while (true) {
+//     const { userInput } = (await query({
+//       type: "input",
+//       name: "userInput",
+//       message: "User: ",
+//     })) as {
+//       userInput: string;
+//     };
+
+//     if (userInput) {
+//       if (userInput === "exit") break;
+//       memory.addUserMessage(userInput);
+//       const botOutput = await memoryChain.run({ userInput });
+//       memory.addBotMessage(botOutput);
+//       console.log(chalk.yellow("Assisant:", botOutput));
+//     }
+//   }
+// }
+
+export {};

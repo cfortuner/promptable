@@ -1,6 +1,9 @@
 import { google } from "googleapis";
 import { Document } from "src/documents/Document";
 import { Loader } from "@loaders/Loader";
+import { ImageDocument } from "@documents/ImageDocument";
+import { AudioDocument } from "@documents/AudioDocument";
+import { TextDocument } from "@documents/TextDocument";
 
 export class GoogleDriveLoader implements Loader<any> {
   private drive: any;
@@ -33,18 +36,18 @@ export class GoogleDriveLoader implements Loader<any> {
       case "jpg":
       case "jpeg":
       case "svg":
-        document = new ImageDocument(new Uint8Array(data));
+        document = new ImageDocument({ image: new Uint8Array(data) });
         break;
       case "wav":
       case "mp4":
       case "mp3":
-        document = new AudioDocument(new Uint8Array(data));
+        document = new AudioDocument({ audio: new Uint8Array(data) });
         break;
       case "txt":
       case "csv":
       case "json":
       default:
-        document = new TextDocument(Buffer.from(data).toString());
+        document = new TextDocument({ text: Buffer.from(data).toString() });
         break;
     }
 

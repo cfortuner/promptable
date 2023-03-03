@@ -1,26 +1,28 @@
-/** 
-Chains are pre-built workflows for executing specific tasks.
-The simplest chain is the LLMChain, a chain which combines a prompt and a model provider.
-This example uses LLMChain to use the OpenAI Completions API to generate a poem about the moon.
+// /**
+// Chains are pre-built workflows for executing specific tasks.
+// The simplest chain is the LLMChain, a chain which combines a prompt and a model provider.
+// This example uses LLMChain to use the OpenAI Completions API to generate a poem about the moon.
 
-This example also uses tracing to log the steps of the chain. 
-Chains often have many steps, and tracing can help you understand what is happening in your chain.
-**/
-import dotenv from "dotenv";
-dotenv.config();
-import { Prompt, OpenAI, PromptTemplate } from "@promptable/promptable";
-import { LLMChain } from "./chains";
+// This example also uses tracing to log the steps of the chain.
+// Chains often have many steps, and tracing can help you understand what is happening in your chain.
+// **/
+// import dotenv from "dotenv";
+// dotenv.config();
+// import { Prompt, OpenAI, Template } from "@promptable/promptable";
+// import { LLMChain } from "./chains";
 
-const apiKey = process.env.OPENAI_API_KEY || "missing";
+// const apiKey = process.env.OPENAI_API_KEY || "missing";
 
-export default async function run() {
-  const openai = new OpenAI(apiKey);
+// export default async function run() {
+//   const openai = new OpenAI(apiKey);
 
-  const writePoemPrompt = new PromptTemplate("Write a poem about {{topic}}:");
+//   const writePoemPrompt = new PromptTemplate("Write a poem about {{topic}}:");
 
-  const llmChain = new LLMChain(writePoemPrompt, openai);
+//   const llmChain = new LLMChain(writePoemPrompt, openai);
 
-  const poem = await llmChain.run({ topic: "the moon" });
+//   const poem = await llmChain.run({ topic: "the moon" });
 
-  console.log(poem);
-}
+//   console.log(poem);
+// }
+
+export {};

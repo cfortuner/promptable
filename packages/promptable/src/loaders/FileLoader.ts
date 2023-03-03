@@ -69,4 +69,8 @@ export class FileLoader implements Loader<Document> {
 
     return documents;
   }
+
+  async loadTexts(filepaths: string[]): Promise<TextDocument[]> {
+    return (await this.load(filepaths)) as TextDocument[];
+  }
 }

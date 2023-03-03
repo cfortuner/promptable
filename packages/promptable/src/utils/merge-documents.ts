@@ -1,35 +1,13 @@
-import { Document } from "src";
+import { Metadata } from "@documents/Document";
+import { TextDocument } from "@documents/TextDocument";
 
 export interface MergeDocuments {
-  (
-    documents: Document[],
-    metadata: { [key: string]: any },
-    ...args: any[]
-  ): Document;
+  (documents: TextDocument[], metadata: Metadata, ...args: any[]): TextDocument;
 }
 
 export const mergeDocumentsWithSeparator =
   (separator: string): MergeDocuments =>
-  (documents: Document[], meta: { [key: string]: any }) => {
-    const data = documents.map((doc) => doc.data).join(separator);
-    return {
-      data,
-      meta,
-    };
-  };
-
-export const mergeDocumentsTruncated =
-  (maxChars: number): MergeDocuments =>
-  (documents: Document[], meta: { [key: string]: any }) => {
-    let data = "";
-    for (const doc of documents) {
-      if (data.length + doc.data.length > maxChars) {
-        break;
-      }
-      data += doc.data;
-    }
-    return {
-      data,
-      meta,
-    };
+  (documents: TextDocument[], meta: Metadata) => {
+    const text = documents.map((doc) => doc.text).join(separator);
+    return new TextDocument({ text, metadata: meta });
   };

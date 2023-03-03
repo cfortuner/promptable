@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import fs from "fs";
 import chalk from "chalk";
-import { OpenAI, promptTemplates } from "@promptable/promptable";
+import { OpenAI, Templates } from "@promptable/promptable";
 
 const apiKey = process.env.OPENAI_API_KEY || "";
 
@@ -26,7 +26,7 @@ const run = async (args: string[]) => {
   console.log(chalk.blue.bold("\nRunning Simple QA: beyond-smart.txt"));
   console.log(chalk.white(`Question: ${question}`));
 
-  const qaPrompt = promptTemplates.QA.build({
+  const qaPrompt = Templates.QA.build({
     document: doc,
     question,
   });

@@ -11,4 +11,16 @@ export class ImageDocument extends Document {
     super(opts);
     this.image = opts.image;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      metadata: this.metadata,
+      image: this.image,
+    };
+  }
+
+  static fromJSON(json: any) {
+    return new ImageDocument(json);
+  }
 }

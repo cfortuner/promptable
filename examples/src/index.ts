@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import transcribe from "./transcribe";
-import chat from "./chat";
+// import chat from "./chat";
 import promptSimple from "./prompt-simple";
 import promptSequential from "./prompt-sequential";
 import promptParallel from "./prompt-parallel";
 
 import embeddingsCreate from "./embeddings-create";
-import embeddings from "./embeddings";
-import embeddingsQA from "./embeddings-qa";
-import embeddingsSearch from "./embeddings-search";
+// import embeddings from "./embeddings";
+// import embeddingsQA from "./embeddings-qa";
+// import embeddingsSearch from "./embeddings-search";
 
 import qaSimple from "./qa-simple";
 import qaChunks from "./qa-chunks";
@@ -39,15 +39,15 @@ import tracing from "./tracing";
 import tracingWeb from "./tracing-web";
 import tracingWebPrompt from "./tracing-web-prompt";
 
-import chainSimple from "./chain-simple";
-import chainMemory from "./chain-memory";
-import chainMultiMemory from "./chain-multi-memory";
-import chainCombineDocuments from "./chain-combine-documents";
-import chainSummarizeDocuments from "./chain-summarize-documents";
-import chainQuestionAnswer from "./chain-question-answer";
+// import chainSimple from "./chain-simple";
+// import chainMemory from "./chain-memory";
+// import chainMultiMemory from "./chain-multi-memory";
+// import chainCombineDocuments from "./chain-combine-documents";
+// import chainSummarizeDocuments from "./chain-summarize-documents";
+// import chainQuestionAnswer from "./chain-question-answer";
 
 import webSearchAndGenerate from "./web-search-and-generate";
-import webSearchAndChat from "./web-search-and-chat";
+// import webSearchAndChat from "./web-search-and-chat";
 
 // Add examples here!
 
@@ -56,10 +56,10 @@ const examples = {
   "prompt-sequential": promptSequential,
   "prompt-parallel": promptParallel,
 
-  embeddings: embeddings,
+  // embeddings: embeddings,
   "embeddings-create": embeddingsCreate,
-  "embeddings-qa": embeddingsQA,
-  "embeddings-search": embeddingsSearch,
+  // "embeddings-qa": embeddingsQA,
+  // "embeddings-search": embeddingsSearch,
 
   "qa-simple": qaSimple,
   "qa-chunks": qaChunks,
@@ -90,17 +90,17 @@ const examples = {
   "tracing-web": tracingWeb,
   "tracing-web-prompt": tracingWebPrompt,
 
-  "chain-simple": chainSimple,
-  "chain-memory": chainMemory,
-  "chain-multi-memory": chainMultiMemory,
-  "chain-combine-documents": chainCombineDocuments,
-  "chain-summarize-documents": chainSummarizeDocuments,
-  "chain-question-answer": chainQuestionAnswer,
+  // "chain-simple": chainSimple,
+  // "chain-memory": chainMemory,
+  // "chain-multi-memory": chainMultiMemory,
+  // "chain-combine-documents": chainCombineDocuments,
+  // "chain-summarize-documents": chainSummarizeDocuments,
+  // "chain-question-answer": chainQuestionAnswer,
 
   "web-search-and-generate": webSearchAndGenerate,
-  "web-search-and-chat": webSearchAndChat,
+  // "web-search-and-chat": webSearchAndChat,
 
-  chat,
+  // chat,
   transcribe,
 };
 

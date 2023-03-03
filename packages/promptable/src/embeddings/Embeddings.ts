@@ -1,10 +1,19 @@
-export class Embeddings<Document> {
-  vector: number[];
-  document: Document;
+import { Document } from "@documents/Document";
 
-  constructor(document: Document, embeddings: number[]) {
+export class Embeddings<TDoc extends Document> {
+  vector: number[];
+  document: TDoc;
+
+  constructor(document: TDoc, vector: number[]) {
     this.document = document;
-    this.vector = embeddings;
+    this.vector = vector;
+  }
+
+  toJSON() {
+    return {
+      vector: this.vector,
+      document: this.document.toJSON(),
+    };
   }
 }
 
