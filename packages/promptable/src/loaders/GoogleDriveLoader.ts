@@ -1,13 +1,8 @@
 import { google } from "googleapis";
-import {
-  AudioDocument,
-  Document,
-  ImageDocument,
-  TextDocument,
-} from "src/documents/Document";
-import { Loader } from ".";
+import { Document } from "src/documents/Document";
+import { Loader } from "@loaders/Loader";
 
-export class GoogleDriveLoader implements Loader {
+export class GoogleDriveLoader implements Loader<any> {
   private drive: any;
 
   constructor(credentials: any, token: any) {

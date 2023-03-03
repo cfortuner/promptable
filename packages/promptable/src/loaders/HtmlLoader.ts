@@ -1,8 +1,8 @@
-import { Loader } from "@loaders/index";
+import { Loader } from "@loaders/Loader";
 import { convert } from "html-to-text";
-import { TextDocument } from "src/documents/Document";
+import { TextDocument } from "@documents/TextDocument";
 
-export class HTMLLoader implements Loader {
+export class HTMLLoader implements Loader<TextDocument> {
   async load(html: string, meta?: Record<string, any>) {
     const options = {
       wordwrap: 130,
@@ -10,6 +10,6 @@ export class HTMLLoader implements Loader {
 
     const text = convert(html, options);
 
-    return [new TextDocument(text)];
+    return [new TextDocument({ text })];
   }
 }

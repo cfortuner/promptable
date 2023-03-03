@@ -20,20 +20,11 @@
         "declarationMap": true,
         "resolveJsonModule": true,
         "paths": {
-            "@datastores/*": [
-                "src/datastores/*"
+            "@vector-stores/*": [
+                "src/vector-stores/*"
             ],
             "@types/*": [
                 "src/types/*"
-            ],
-            "@memory/*": [
-                "src/memories/*"
-            ],
-            "@chains/*": [
-                "../../examples/src/chains/*"
-            ],
-            "@steps/*": [
-                "src/steps/*"
             ],
             "@utils/*": [
                 "src/utils/*"
@@ -46,6 +37,18 @@
             ],
             "@loaders/*": [
                 "src/loaders/*"
+            ],
+            "@parsers/*": [
+                "src/parsers/*"
+            ],
+            "@embeddings/*": [
+                "src/embeddings/*"
+            ],
+            "@documents/*": [
+                "src/documents/*"
+            ],
+            "@indicies/*": [
+                "src/indicies/*"
             ]
         }
     },

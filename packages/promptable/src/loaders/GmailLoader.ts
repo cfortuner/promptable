@@ -1,8 +1,8 @@
+import { TextDocument } from "@documents/TextDocument";
 import { google } from "googleapis";
-import { TextDocument } from "src/documents/Document";
-import { Loader } from ".";
+import { Loader } from "./Loader";
 
-export class GmailLoader implements Loader {
+export class GmailLoader implements Loader<TextDocument> {
   private gmail: any;
 
   constructor(credentials: any, token: any) {
@@ -29,9 +29,12 @@ export class GmailLoader implements Loader {
       return acc;
     }, {});
     return [
-      new TextDocument(text, {
-        source: `https://mail.google.com/mail/u/0/#inbox/${messageId}`,
-        headers,
+      new TextDocument({
+        text,
+        metadata: {
+          source: `https://mail.google.com/mail/u/0/#inbox/${messageId}`,
+          headers,
+        },
       }),
     ];
   }

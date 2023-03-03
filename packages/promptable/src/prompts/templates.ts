@@ -209,7 +209,7 @@ export const FixMarkup = new PromptTemplate(
     `
 );
 
-const promptTemplates = {
+const Templates = {
   QA,
   ExtractText,
   Summarize,
@@ -219,4 +219,4 @@ const promptTemplates = {
   FixMarkup,
 };
 
-export default promptTemplates;
+export default Templates;

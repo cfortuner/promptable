@@ -1,8 +1,8 @@
 import { Octokit } from "@octokit/rest";
-import { TextDocument } from "src/documents/Document";
-import { Loader } from ".";
+import { TextDocument } from "@documents/TextDocument";
+import { Loader } from "@loaders/Loader";
 
-export class GithubLoader implements Loader {
+export class GithubLoader implements Loader<TextDocument> {
   private octokit: Octokit;
 
   constructor(token: string) {
@@ -35,7 +35,7 @@ export class GithubLoader implements Loader {
       //@ts-ignore
       const text = Buffer.from(file.content || "", "base64").toString();
       const source = `https://github.com/${repo}/blob/${ref}/${path}`;
-      return [new TextDocument(text, { source })];
+      return [new TextDocument({ text, metadata: { source } })];
     }
   }
 }

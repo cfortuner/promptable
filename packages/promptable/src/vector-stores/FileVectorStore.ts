@@ -15,7 +15,7 @@ export class FileVectorStore<
   filePath: string;
 
   constructor(opts: FileVectorStoreOptions) {
-    super();
+    super(opts);
     this.filePath = opts.filePath || `./data/${opts.name}/index.json`;
     this.name = opts.name || "default";
 

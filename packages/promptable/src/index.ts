@@ -1,22 +1,16 @@
-export { BufferedChatMemory } from "src/memories/BufferedChatMemory";
+// Documents
+import { Documents } from "@documents/index";
+export { Documents };
 
-import { Document } from "./documents/Document";
-export type { Document };
-
-// Prebuilt prompts
+import Templates from "@prompts/templates";
 import {
   Prompt,
   PromptVariables,
   PromptConfiguration,
-  PromptTemplate,
   prompt,
 } from "@prompts/Prompt";
-export { Prompt, PromptTemplate, prompt };
+export { Prompt, Templates, prompt };
 export type { PromptVariables, PromptConfiguration };
-
-// prebuilt prompts
-import promptTemplates, { QA } from "@prompts/prompt-templates";
-export { promptTemplates, QA };
 
 // Providers
 import {
@@ -45,39 +39,30 @@ export type {
   Tokenizer,
 };
 
+// vector stores
+import { VectorStore, VectorStores } from "@vector-stores/index";
+export type { VectorStore };
+export { VectorStores };
+
 // Embeddings
-import { Embeddings, EmbeddedDocument } from "./embeddings";
+import { Embeddings, EmbeddingsWithScore } from "@embeddings/Embeddings";
 export { Embeddings };
-export type { EmbeddedDocument };
+export type { EmbeddingsWithScore };
 
 // Loaders
-import { Loader } from "@loaders/index";
+import { Loader } from "@loaders/Loader";
 export type { Loader };
-import { HTMLLoader } from "@loaders/HtmlLoader";
-import { FileLoader } from "@loaders/FileLoader";
-export { FileLoader, HTMLLoader };
+import { Loaders } from "@loaders/index";
+export { Loaders };
 
 // Parsing
-import { JSONParser, CSVParser, Parser, ListParser } from "@parsers/index";
-export type { Parser };
-export { JSONParser, CSVParser, ListParser };
+export type { Parser } from "@parsers/Parser";
+import { Parsers } from "@parsers/index";
+export { Parsers };
 
 // Splitting
-import {
-  TextSplitter,
-  CharacterTextSplitter,
-  SentenceTextSplitter,
-  TokenSplitter,
-} from "@utils/TextSplitter";
-export {
-  TokenSplitter,
-  TextSplitter,
-  CharacterTextSplitter,
-  SentenceTextSplitter,
-};
-
-import { Memory } from "./memories";
-export type { Memory };
+import { Splitters } from "@utils/splitters/index";
+export { Splitters };
 
 import { injectVariables } from "@utils/inject-variables";
 import { parseJsonSSE } from "@utils/parse-json-sse";
@@ -87,12 +72,14 @@ import {
   MergeDocuments,
 } from "@utils/merge-documents";
 export type { MergeDocuments };
-export const utils = {
+export const Utils = {
+  Splitters,
   injectVariables,
   parseJsonSSE,
   mergeDocumentsWithSeparator,
   mergeDocumentsTruncated,
 };
+
 export type { ExtractFormatObject } from "./utils/type-utils";
 
 import { loadPromptablePrompts } from "./prompts/load";

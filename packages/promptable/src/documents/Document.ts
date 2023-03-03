@@ -5,7 +5,6 @@ export interface Metadata {
 }
 
 export interface CreateDocumentOptions {
-  type: DocumentType;
   id?: string;
   metadata?: Metadata;
 }

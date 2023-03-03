@@ -1,14 +1,11 @@
-import { v4 as uuid } from "uuid";
 import fs from "fs";
-import {
-  AudioDocument,
-  Document,
-  ImageDocument,
-  TextDocument,
-} from "src/documents/Document";
-import { Loader } from ".";
+import { Document } from "src/documents/Document";
+import { Loader } from "./Loader";
+import { ImageDocument } from "@documents/ImageDocument";
+import { AudioDocument } from "@documents/AudioDocument";
+import { TextDocument } from "@documents/TextDocument";
 
-export class FileLoader implements Loader {
+export class FileLoader implements Loader<Document> {
   async load(filepaths: string[]): Promise<Document[]> {
     const documents: Document[] = [];
 
@@ -37,19 +34,28 @@ export class FileLoader implements Loader {
             case "jpg":
             case "jpeg":
             case "svg":
-              document = new ImageDocument(data, { source: filepath });
+              document = new ImageDocument({
+                image: data,
+                metadata: { source: filepath },
+              });
               break;
             case "wav":
             case "mp4":
             case "mp3":
-              document = new AudioDocument(data, { source: filepath });
+              document = new AudioDocument({
+                audio: data,
+                metadata: { source: filepath },
+              });
               break;
             case "txt":
             case "csv":
             case "json":
             default:
-              document = new TextDocument(data.toString(), {
-                source: filepath,
+              document = new TextDocument({
+                text: data.toString(),
+                metadata: {
+                  source: filepath,
+                },
               });
               break;
           }

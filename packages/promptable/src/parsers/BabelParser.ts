@@ -7,7 +7,7 @@ interface Node {
   [key: string]: any;
 }
 
-export class CodeParser implements Parser<Node[]> {
+export class BabelParser implements Parser<Node[]> {
   /**
    * Parses the input code string into an array of AST nodes representing the parsed code.
    *

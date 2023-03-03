@@ -1,8 +1,8 @@
 import { Converter } from "showdown";
-import { TextDocument } from "src/documents/Document";
-import { Loader } from ".";
+import { TextDocument } from "@documents/TextDocument";
+import { Loader } from "@loaders/Loader";
 
-export class MarkdownLoader implements Loader {
+export class MarkdownLoader implements Loader<TextDocument> {
   /**
    *
    * The MarkdownLoader loads a Markdown string and converts it to HTML using the showdown library,
@@ -17,6 +17,6 @@ export class MarkdownLoader implements Loader {
     const converter = new Converter();
     const html = converter.makeHtml(markdown);
     const text = html.replace(/(<([^>]+)>)/gi, "");
-    return [new TextDocument(text, { ...meta })];
+    return [new TextDocument({ text, metadata: meta })];
   }
 }

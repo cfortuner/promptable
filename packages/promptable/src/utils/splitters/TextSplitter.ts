@@ -1,6 +1,5 @@
-import sentencize from "@stdlib/nlp-sentencize";
 import GPT3Tokenizer from "gpt3-tokenizer";
-import { Document } from "..";
+import { TextDocument } from "@documents/TextDocument";
 
 export interface TextSplitterOptions {
   lengthFn?: (text: string) => number;
@@ -43,14 +42,17 @@ export abstract class TextSplitter {
   mergeText(texts: string[], separator: string = " "): string {
     return texts.map((text) => text.trim()).join(separator);
   }
-  mergeDocuments(docs: Document[]): string {
-    const texts = docs.map((doc) => doc.data);
+  mergeDocuments(docs: TextDocument[]): string {
+    const texts = docs.map((doc) => doc.text);
     return this.mergeText(texts);
   }
-  splitDocuments(docs: Document[], opts?: TextSplitterOptions): Document[] {
-    const texts = docs.map((doc) => doc.data);
+  splitDocuments(
+    docs: TextDocument[],
+    opts?: TextSplitterOptions
+  ): TextDocument[] {
+    const texts = docs.map((doc) => doc.text);
     const metas = docs.map((doc, i) => ({
-      ...doc.meta,
+      ...doc.metadata,
       ...opts?.meta,
       parentId: doc.id,
       part: i,
@@ -69,10 +71,12 @@ export abstract class TextSplitter {
       const text = texts[i];
       const chunks = this.splitText(text, opts);
       for (const chunk of chunks) {
-        docs.push({
-          data: chunk,
-          meta: metas[i] || {},
-        });
+        docs.push(
+          new TextDocument({
+            text: chunk,
+            metadata: metas[i] || {},
+          })
+        );
       }
     }
     return docs;
@@ -110,31 +114,6 @@ export abstract class TextSplitter {
 
     return encoded.bpe.length;
   };
-}
-
-export class CharacterTextSplitter extends TextSplitter {
-  character: string;
-
-  constructor(character: string = "\\n\\n", opts?: TextSplitterOptions) {
-    super(opts);
-    this.character = character;
-  }
-
-  splitText = (text: string, opts?: TextSplitterOptions): string[] => {
-    const texts = text.split(this.character).map((t) => t.trim());
-    return opts?.chunk || this.chunk
-      ? this.createChunks(texts, this.character)
-      : texts.filter((t) => t.length);
-  };
-}
-
-export class SentenceTextSplitter extends TextSplitter {
-  splitText(text: string, opts?: TextSplitterOptions): string[] {
-    const sentences = sentencize(text).map((s) => s.trim());
-    return opts?.chunk || this.chunk
-      ? this.createChunks(sentences, " ")
-      : sentences.filter((t) => t.length);
-  }
 }
 
 export class TokenSplitter extends TextSplitter {
