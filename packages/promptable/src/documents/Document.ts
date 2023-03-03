@@ -4,58 +4,37 @@ export interface Metadata {
   [key: string]: any;
 }
 
-export class Document {
-  metadata: Metadata = {};
+export interface CreateDocumentOptions {
+  type: DocumentType;
+  id?: string;
+  metadata?: Metadata;
+}
 
-  constructor(metadata?: Metadata) {
-    if (metadata) {
-      this.metadata = metadata;
-    }
+export abstract class Document {
+  id: string;
+  metadata: Metadata;
+
+  constructor(params: CreateDocumentOptions) {
+    this.id = params.id || uuid();
+    this.metadata = params.metadata || {};
   }
 }
 
-export class TextDocument extends Document {
-  text: string;
-  embedding?: number[];
+// factory function for creating a document base on the type
+const createDocument = (params: CreateDocumentOptions) => {};
 
-  constructor(text: string, metadata?: Metadata) {
-    super(metadata);
-    this.text = text;
-  }
-}
+// // example of a multi-modal document
+// class MultiModalDocument extends Document {
+//   textDoc: TextDocument;
+//   imageDoc: ImageDocument;
 
-export class ImageDocument extends Document {
-  image: Uint8Array; // blob
-  embedding?: number[];
-
-  constructor(image: Uint8Array, metadata?: Metadata) {
-    super(metadata);
-    this.image = image;
-  }
-}
-
-export class AudioDocument extends Document {
-  audio: Uint8Array; // blob
-  embedding?: number[];
-
-  constructor(audio: Uint8Array, metadata?: Metadata) {
-    super(metadata);
-    this.audio = audio;
-  }
-}
-
-// example of a multi-modal document
-class MultiModalDocument extends Document {
-  textDoc: TextDocument;
-  imageDoc: ImageDocument;
-
-  constructor(
-    textDoc: TextDocument,
-    imageDoc: ImageDocument,
-    metadata?: Metadata
-  ) {
-    super(metadata);
-    this.textDoc = textDoc;
-    this.imageDoc = imageDoc;
-  }
-}
+//   constructor(
+//     textDoc: TextDocument,
+//     imageDoc: ImageDocument,
+//     metadata?: Metadata
+//   ) {
+//     super(metadata);
+//     this.textDoc = textDoc;
+//     this.imageDoc = imageDoc;
+//   }
+// }

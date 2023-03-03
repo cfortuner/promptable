@@ -23,7 +23,7 @@ import {
   CreateEmbeddingRequest as CreateOpenAIEmbeddingsRequest,
   CreateEmbeddingResponse as CreateOpenAIEmbeddingResponse,
 } from "openai";
-import { Document } from "src";
+import { Document, TextDocument } from "src/documents/Document";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { logger } from "@utils/Logger";
 import { EmbeddedDocument } from "src/embeddings";
@@ -249,54 +249,29 @@ export class OpenAI
   }
 
   async createEmbeddings(
-    req: CreateEmbeddingsRequest,
+    req: { docs: TextDocument[] } & Omit<CreateEmbeddingsRequest, "docs">,
     options: Omit<CreateOpenAIEmbeddingsRequest, "input"> = this
       .embeddingsConfig
   ) {
     const replaceNewlines = (text: string, char: string) =>
       text.replace(/\n/g, char);
 
-    const isArray = (
-      inp: string | string[] | Document | Document[]
-    ): inp is string[] | Document[] => {
-      return Array.isArray(inp);
-    };
-
-    // the following code is to make sure that the input is an array of documents
-    const input = isArray(req.input)
-      ? req.input.map((doc) =>
-          replaceNewlines(typeof doc === "string" ? doc : doc.data, " ")
-        )
-      : replaceNewlines(
-          typeof req.input === "string" ? req.input : req.input.data,
-          " "
-        );
-
-    const documents = isArray(req.input)
-      ? req.input.map((doc) =>
-          typeof doc === "string" ? { data: doc, meta: {} } : doc
-        )
-      : [
-          typeof req.input === "string"
-            ? { data: req.input, meta: {} }
-            : req.input,
-        ];
+    const input = req.docs.map((i) => replaceNewlines(i.text, " "));
 
     const response = await this.api.createEmbedding({ ...options, input });
 
-    const embeddedDocuments = [];
-    for (let i = 0; i < documents.length; i++) {
-      const newDoc = {
-        data: documents[i].data,
-        meta: documents[i].meta,
-        embedding: response?.data.data[i].embedding,
-      };
+    const embeddings = response.data.data.map((d) => {
+      return d.embedding;
+    });
 
-      embeddedDocuments.push(newDoc as EmbeddedDocument);
-    }
+    // add embeddings to the docs
+    req.docs.forEach((d, i) => {
+      d.embedding = embeddings[i];
+    });
 
     return {
-      documents: embeddedDocuments,
+      documents: req.docs,
+      embeddings,
       providerResponse: response.data,
     };
   }
@@ -371,9 +346,5 @@ export class OpenAITokenizer implements Tokenizer {
   countTokens(text: string) {
     const { tokens } = this.encode(text);
     return tokens.length;
-  }
-
-  countDocumentTokens(doc: Document) {
-    return this.countTokens(doc.data);
   }
 }

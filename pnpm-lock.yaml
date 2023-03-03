@@ -400,6 +400,7 @@ importers:
       '@jest/globals': ^29.4.1
       '@notionhq/client': ^2.2.3
       '@octokit/rest': ^19.0.7
+      '@pinecone-database/pinecone': ^0.0.9
       '@slack/web-api': ^6.8.1
       '@stdlib/nlp-sentencize': ^0.0.2
       '@types/css': ^0.0.33
@@ -437,6 +438,7 @@ importers:
     dependencies:
       '@notionhq/client': 2.2.3
       '@octokit/rest': 19.0.7
+      '@pinecone-database/pinecone': 0.0.9
       '@slack/web-api': 6.8.1
       '@stdlib/nlp-sentencize': 0.0.2
       axios: 1.2.4
@@ -5301,6 +5303,11 @@ packages:
     resolution: {integrity: sha512-LUewfj94xCMH2rbD5YJ+6AQ4AVjFYTgpp6rboWM5T7N3IsIF65SBEOVcYMGAEzO/kKNiNaW4LoWtoThOhH06gw==}
     dependencies:
       '@octokit/openapi-types': 16.0.0
+    dev: false
+
+  /@pinecone-database/pinecone/0.0.9:
+    resolution: {integrity: sha512-zAWMABO0sY5mGkKLL/GE4HXu4aps5AXw4O3BI0OwjQ5XtQhFvrOF1NZ4XnlIcwR7j09Z0u7z+RgNgW5OZ5UJyQ==}
+    engines: {node: '>=18.0.0'}
     dev: false
 
   /@pkgr/utils/2.3.1:

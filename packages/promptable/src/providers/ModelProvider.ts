@@ -1,5 +1,4 @@
-import { Document } from "src";
-import { EmbeddedDocument } from "src/embeddings";
+import { Document, TextDocument } from "src/documents/Document";
 
 export enum ModelProviderType {
   OpenAI,
@@ -49,11 +48,12 @@ export interface CompletionsModelProvider extends ModelProvider {
 }
 
 export type CreateEmbeddingsRequest = {
-  input: Document[] | Document | string | string[];
+  docs: Document[];
 };
 
 export type CreateEmbeddingsResponse<T> = {
-  documents: EmbeddedDocument[];
+  documents: Document[];
+  embeddings: number[][];
   providerResponse: T;
 } & { [key: string]: any };
 
@@ -69,7 +69,6 @@ export interface Tokenizer {
   decode(tokens: number[]): string;
   truncate(text: string, maxTokens: number): string;
   countTokens(text: string): number;
-  countDocumentTokens(doc: Document): number;
 }
 
 export interface TranscriptionModelProvider extends ModelProvider {
