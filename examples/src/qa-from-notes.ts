@@ -5,7 +5,6 @@ import chalk from "chalk";
 import {
   CharacterTextSplitter,
   FileLoader,
-  ListParser,
   OpenAI,
   promptTemplates,
 } from "@promptable/promptable";

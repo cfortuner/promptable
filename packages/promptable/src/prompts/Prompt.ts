@@ -1,7 +1,5 @@
 import { injectVariables } from "@utils/inject-variables";
-import { NoopParser, Parser } from "@prompts/Parser";
-import { ExtractFormatObject, ExtractVariableNames } from "@utils/type-utils";
-import { extractVariableNames } from "@utils/extract-variable-names";
+import { ExtractFormatObject } from "@utils/type-utils";
 
 export type PromptVariables<T extends string> = {
   [K in keyof ExtractFormatObject<T>]: Required<ExtractFormatObject<T>[K]>;

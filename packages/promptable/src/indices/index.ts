@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { Document } from "src/Document";
+import { Document } from "src/documents/Document";
 
 export abstract class Index {
   constructor(documents: Document[] = []) {

@@ -1,6 +1,6 @@
 export { BufferedChatMemory } from "src/memories/BufferedChatMemory";
 
-import { Document } from "./Document";
+import { Document } from "./documents/Document";
 export type { Document };
 
 // Prebuilt prompts
@@ -58,7 +58,7 @@ import { FileLoader } from "@loaders/FileLoader";
 export { FileLoader, HTMLLoader };
 
 // Parsing
-import { JSONParser, CSVParser, Parser, ListParser } from "@prompts/Parser";
+import { JSONParser, CSVParser, Parser, ListParser } from "@parsers/index";
 export type { Parser };
 export { JSONParser, CSVParser, ListParser };
 

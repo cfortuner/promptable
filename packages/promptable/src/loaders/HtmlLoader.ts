@@ -1,7 +1,6 @@
 import { Loader } from "@loaders/index";
 import { convert } from "html-to-text";
-
-// There is also an alias to `convert` called `htmlToText`.
+import { TextDocument } from "src/documents/Document";
 
 export class HTMLLoader implements Loader {
   async load(html: string, meta?: Record<string, any>) {
@@ -11,11 +10,6 @@ export class HTMLLoader implements Loader {
 
     const text = convert(html, options);
 
-    return [
-      {
-        data: text,
-        meta,
-      },
-    ];
+    return [new TextDocument(text)];
   }
 }
