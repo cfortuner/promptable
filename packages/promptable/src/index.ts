@@ -84,5 +84,5 @@ export type { ExtractFormatObject } from "./utils/type-utils";
 import { loadPromptablePrompts } from "./prompts/load";
 export { loadPromptablePrompts };
 
-import { wikipediaAgent, agentRun } from "./agents";
-export { wikipediaAgent, agentRun };
+import { wikipediaAgent, agentRun, reactRun } from "./agents";
+export { wikipediaAgent, agentRun, reactRun };
