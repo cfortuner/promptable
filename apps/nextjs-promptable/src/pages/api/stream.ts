@@ -35,9 +35,7 @@ export default async function handler(
   // then add the user message
   chatHistory.addUserMessage(userInput);
 
-  const chatbotPrompt = promptable.prompts.chatbot();
-
-  const promptText = chatbotPrompt.format({
+  const { text: prompt } = promptable.promptTemplates.Chatbot.build({
     memory: chatHistory.get(),
     userInput,
   });
@@ -45,7 +43,7 @@ export default async function handler(
   const oaiRes = await axios.post(
     "https://api.openai.com/v1/completions",
     {
-      prompt: promptText,
+      prompt,
       model: "text-davinci-003",
       max_tokens: 1000,
       stream: true,
