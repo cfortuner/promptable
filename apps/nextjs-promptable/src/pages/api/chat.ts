@@ -16,6 +16,7 @@ export default async function handler(
 
   // clear the chat history
   if (clear) {
+    console.log('clearing chat history')
     chatHistory.clear();
     return res.status(200).json({});
   }

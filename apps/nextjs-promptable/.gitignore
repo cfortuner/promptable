@@ -23,6 +23,10 @@ next-env.d.ts
 # misc
 .DS_Store
 *.pem
+.idea
+.idea/
+
+
 
 # debug
 npm-debug.log*

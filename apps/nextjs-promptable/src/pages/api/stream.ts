@@ -20,6 +20,7 @@ export default async function handler(
 
   // clear the chat history
   if (clear) {
+    console.log('clearing chat history')
     chatHistory.clear();
     return res.status(200).json({});
   }
@@ -28,7 +29,7 @@ export default async function handler(
 
   // We don't know what the last message was b/c we streamed it to the client.
   // so we need to find it in the list of previous messages.
-  const lastBotMessage = messages.reverse().find((m) => !m.isUserMessage);
+  const lastBotMessage = messages?.reverse().find((m) => !m.isUserMessage);
   console.log("The last bot message was:", lastBotMessage);
   chatHistory.addBotMessage(lastBotMessage?.text ?? "");
 
