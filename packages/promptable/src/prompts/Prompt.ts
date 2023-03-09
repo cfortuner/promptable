@@ -1,8 +1,8 @@
 import { injectVariables } from "@utils/inject-variables";
 import { ExtractFormatObject } from "@utils/type-utils";
 
-export type PromptVariables<T extends string> = {
-  [K in keyof ExtractFormatObject<T>]: Required<ExtractFormatObject<T>[K]>;
+export type PromptVariables<TPromptText extends string> = {
+  [K in keyof ExtractFormatObject<TPromptText>]: Required<ExtractFormatObject<TPromptText>[K]>;
 };
 
 export interface PromptConfiguration {
@@ -17,15 +17,15 @@ export const DEFAULT_PROMPT_CONFIGURATION: PromptConfiguration = {
   max_tokens: 128,
 };
 
-export class Prompt<T extends string, V extends PromptVariables<T>> {
-  readonly template: PromptTemplate<T, V>;
+export class Prompt<TPromptText extends string, TPromptVariables extends PromptVariables<TPromptText>> {
+  readonly template: PromptTemplate<TPromptText, TPromptVariables>;
   constructor(
-    initTemplate: PromptTemplate<T, V> | T,
-    readonly variables: V,
+    initTemplate: PromptTemplate<TPromptText, TPromptVariables> | TPromptText,
+    readonly variables: TPromptVariables,
     readonly configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
   ) {
     if (typeof initTemplate === "string") {
-      this.template = new PromptTemplate(initTemplate);
+      this.template = new PromptTemplate(initTemplate, configuration);
     } else {
       this.template = initTemplate;
     }
@@ -35,12 +35,12 @@ export class Prompt<T extends string, V extends PromptVariables<T>> {
   }
 
   clone({
-    variables,
-    configuration,
+    variables = {},
+    configuration = {},
   }: {
-    variables?: Partial<V> | V;
+    variables?: Partial<TPromptVariables> | TPromptVariables;
     configuration?: Partial<PromptConfiguration> | PromptConfiguration;
-  }): Prompt<T, V> {
+  } = {}): Prompt<TPromptText, TPromptVariables> {
     return new Prompt(
       this.template,
       {
@@ -68,12 +68,12 @@ export class Prompt<T extends string, V extends PromptVariables<T>> {
   }
 }
 
-export class PromptTemplate<T extends string, V extends PromptVariables<T>> {
-  readonly text: T;
+export class PromptTemplate<TPromptText extends string, TPromptVariables extends PromptVariables<TPromptText>> {
+  readonly text: TPromptText;
   readonly configuration: PromptConfiguration;
 
   constructor(
-    text: T,
+    text: TPromptText,
     configuration: PromptConfiguration = DEFAULT_PROMPT_CONFIGURATION
   ) {
     this.text = text;
@@ -86,8 +86,8 @@ export class PromptTemplate<T extends string, V extends PromptVariables<T>> {
    * @param variables
    * @returns  Prompt
    */
-  build(variables: V, configuration?: PromptConfiguration) {
-    return new Prompt<T, V>(this, variables, configuration);
+  build(variables: TPromptVariables, configuration?: PromptConfiguration) {
+    return new Prompt<TPromptText, TPromptVariables>(this, variables, configuration);
   }
 
   toJSON() {
@@ -98,9 +98,9 @@ export class PromptTemplate<T extends string, V extends PromptVariables<T>> {
   }
 }
 
-export const prompt = <T extends string>(
-  template: T,
-  variables: PromptVariables<T>,
+export const prompt = <TPromptText extends string>(
+  template: TPromptText,
+  variables: PromptVariables<TPromptText>,
   configuration?: PromptConfiguration
 ) => {
   return new PromptTemplate(template, configuration).build(variables);
