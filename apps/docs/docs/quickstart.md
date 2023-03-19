@@ -79,7 +79,7 @@ await provider.stream(promptText, (chunk: string) => {
 ## Using Embeddings
 
 ```ts
-import * as p from "@promptable/promptable";
+import * as p from "promptable";
 
 // Create a model provider!
 const provider = new p.OpenAI(apiKey);
